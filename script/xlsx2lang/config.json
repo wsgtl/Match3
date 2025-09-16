@@ -1,0 +1,11 @@
+{
+  "xlsx": {
+    "head": 2,
+    "src": "./excel/语言@Lang.xlsx",
+    "dest": "./json"
+  },
+  "ts": false,
+  "json": {
+    "uglify": false
+  }
+}

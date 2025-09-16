@@ -1,0 +1,21 @@
+{
+    "str_play": "play",
+    "str_info": "info",
+    "str_citw": "Collect 100 items to withdraw %s.",
+    "purse_tip_1": "          Game Policies and Prize \n            Withdrawal Guidelines\n1.Earning and Viewing Prizes\nTokens earned by playing games may result in winning prizes,which will be added to your balance.\nTo view your balance,navigate to the main page of the game.\n2.Prize Fulfillment and Account\nRequirements\nAll eligible cash prizes will be awarded using the specified method within the game.\nIf you do not have an account,you can create one for free on the official website.\nPrize fulfillment is subject to the Terms of Service and Privacy Policy.",
+    "purse_tip_2": "3. Withdrawal Process\nTo withdraw funds, you must\nEnter your transfer account nformation.\nFollow the provided withdrawal instructions.\nWithdrawal requests are processed within 7 days.,\n4. withdrawal Limitsay\nThe maximum amount for a single withdrawal is $500.\nAll payments will be made in US Dollars (USD).\n5.Balance and Account Management\nIf you delete the game from your device, your balance will be permanently deleted, and any unclaimed prizes without valid withdrawal requests will be forfeited.",
+    "purse_tip_3": "6. incorrect Withdrawal Information\nOnce funds are transferred to the specified account, we cannot redirect or recover funds due to incorrect account details or other errors.\nThe player is solely responsible for ensuring the accuracy of the provided account information.\n7. Taxes and Fees\nYou are solely responsible for any applicable taxes or transfer fees.\nThe game reserves the right to withhold amounts from payments as required by government authorities.\n8. Inability to Fulfill Prizes\nIf a prize cannot be fulfilled due to the winner's actions (e.g., failure to withdraw funds within the stipulateo timeframe, deletion of the winner's account), we reserve the right to forfeitthe prize.\nThe decision regarding unfulfilled prizes is made at our sole discretion.",
+    "str_aritoday": "Already received it today",
+    "str_thead": "The ad is not ready yet,please try again later",
+    "str_nogold": "No enough gold coin",
+    "str_tacurrently": "There are currently no objects that can be withdrawn",
+    "str_rri": "Reach %s,redeem immediately.",
+    "str_ymilt": "Your money is less than %s.",
+    "str_arhbc": "All rewards have been claimed. Please click Leave.",
+    "str_ibfw": "Insufficient balance for withdrawal.",
+    "str_ass": "Account setup successful.",
+    "str_nec": "Not enough coins.",
+    "str_pstf": "Please stop rotating first.",
+    "str_teif": "The energy is full.",
+    "str_twcynt": "To withdraw cash, you need to queue up. There are still %s people ahead of you."
+}

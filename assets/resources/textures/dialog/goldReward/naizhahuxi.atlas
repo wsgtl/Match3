@@ -1,0 +1,159 @@
+
+naizhahuxi.png
+size: 1932,1482
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+huoyan/huoyan_00
+  rotate: true
+  xy: 2, 1112
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_01
+  rotate: true
+  xy: 388, 1112
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_02
+  rotate: true
+  xy: 774, 1112
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_03
+  rotate: true
+  xy: 1160, 1112
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_04
+  rotate: true
+  xy: 1546, 1112
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_05
+  rotate: true
+  xy: 2, 742
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_06
+  rotate: true
+  xy: 388, 742
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_07
+  rotate: true
+  xy: 774, 742
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_08
+  rotate: true
+  xy: 1160, 742
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_09
+  rotate: true
+  xy: 1546, 742
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_10
+  rotate: true
+  xy: 2, 372
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_11
+  rotate: true
+  xy: 388, 372
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_12
+  rotate: true
+  xy: 774, 372
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_13
+  rotate: true
+  xy: 1160, 372
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_14
+  rotate: true
+  xy: 1546, 372
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_15
+  rotate: true
+  xy: 2, 2
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_16
+  rotate: true
+  xy: 388, 2
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_17
+  rotate: true
+  xy: 774, 2
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_18
+  rotate: true
+  xy: 1160, 2
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+huoyan/huoyan_19
+  rotate: true
+  xy: 1546, 2
+  size: 368, 384
+  orig: 512, 512
+  offset: 72, 64
+  index: -1
+
+naizhahuxi2.png
+size: 1014,996
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+nezha
+  rotate: false
+  xy: 2, 2
+  size: 1010, 992
+  orig: 1010, 992
+  offset: 0, 0
+  index: -1

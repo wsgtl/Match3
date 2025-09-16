@@ -1,0 +1,34 @@
+
+zhibi.png
+size: 1804,1044
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+guangxiao
+  rotate: true
+  xy: 2, 96
+  size: 946, 950
+  orig: 958, 962
+  offset: 6, 6
+  index: -1
+zhibi
+  rotate: true
+  xy: 1267, 253
+  size: 116, 175
+  orig: 116, 175
+  offset: 0, 0
+  index: -1
+zhibi2
+  rotate: true
+  xy: 954, 2
+  size: 1040, 311
+  orig: 1041, 311
+  offset: 0, 0
+  index: -1
+zhibi3
+  rotate: true
+  xy: 1267, 371
+  size: 671, 535
+  orig: 672, 535
+  offset: 0, 0
+  index: -1

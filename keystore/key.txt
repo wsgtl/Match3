@@ -1,0 +1,19 @@
+密钥库别名:  key0
+密码:   jjnnss
+别名密码:    jjnnss
+游戏名：Jackpot Nezha
+包名：com.jackpot.nezhaslotsqq
+max SDK key：xZiRIeeqQfFw6N0iSdefa651dPMl0OL2TUE3SmDWSmexlpHDUsW4LJLiVkeVXFCeL3KEDwOM43u9pME7utD3uf
+激励广告位ID： b02f84af8734b5c8
+插屏广告位ID： e99212d09fef432e
+
+admob ID:  ca-app-pub-2325233743737469~7408193360
+af key:   bczkaJCR5tXG4VETeTA2Ea
+
+haskkey:  fCXUwpg1fcCSGOB5cbJlR9PEku4=
+
+https://play.google.com/store/apps/details?id=com.jackpot.nezhaslotsqq
+隐私政策网址：https://sites.google.com/view/cjkvkk9081di83nbxxnsuhjsuui2q3/home
+
+//生成output.zip秘钥
+java -jar E:\szhy\keystore/pepk.jar --keystore=key.jks --alias=key0 --output=output.zip --include-cert --rsa-aes-encryption --encryption-key-path=encryption_public_key.pem

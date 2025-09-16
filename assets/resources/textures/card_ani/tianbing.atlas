@@ -1,0 +1,27 @@
+
+tianbing.png
+size: 551,194
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dikuan2
+  rotate: false
+  xy: 2, 2
+  size: 189, 190
+  orig: 191, 190
+  offset: 1, 0
+  index: -1
+tianbing1
+  rotate: false
+  xy: 377, 10
+  size: 172, 182
+  orig: 172, 182
+  offset: 0, 0
+  index: -1
+yuan1
+  rotate: true
+  xy: 193, 8
+  size: 184, 182
+  orig: 184, 182
+  offset: 0, 0
+  index: -1

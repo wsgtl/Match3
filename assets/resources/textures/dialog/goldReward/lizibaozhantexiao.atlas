@@ -1,0 +1,118 @@
+
+lizibaozhantexiao.png
+size: 2045,1151
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+guangquan
+  rotate: false
+  xy: 580, 93
+  size: 230, 226
+  orig: 330, 330
+  offset: 52, 51
+  index: -1
+tx_00
+  rotate: false
+  xy: 1147, 113
+  size: 206, 205
+  orig: 578, 578
+  offset: 186, 188
+  index: -1
+tx_02
+  rotate: false
+  xy: 341, 82
+  size: 237, 237
+  orig: 578, 578
+  offset: 170, 171
+  index: -1
+tx_04
+  rotate: false
+  xy: 1755, 311
+  size: 258, 259
+  orig: 578, 578
+  offset: 158, 159
+  index: -1
+tx_06
+  rotate: false
+  xy: 1755, 572
+  size: 276, 278
+  orig: 578, 578
+  offset: 148, 148
+  index: -1
+tx_08
+  rotate: false
+  xy: 1748, 852
+  size: 295, 297
+  orig: 578, 578
+  offset: 138, 137
+  index: -1
+tx_10
+  rotate: false
+  xy: 831, 4
+  size: 314, 316
+  orig: 578, 578
+  offset: 127, 126
+  index: -1
+tx_12
+  rotate: true
+  xy: 2, 2
+  size: 332, 337
+  orig: 578, 578
+  offset: 117, 114
+  index: -1
+tx_14
+  rotate: false
+  xy: 2, 336
+  size: 349, 355
+  orig: 578, 578
+  offset: 108, 104
+  index: -1
+tx_16
+  rotate: false
+  xy: 462, 321
+  size: 367, 373
+  orig: 578, 578
+  offset: 98, 94
+  index: -1
+tx_18
+  rotate: true
+  xy: 909, 322
+  size: 383, 392
+  orig: 578, 578
+  offset: 89, 84
+  index: -1
+tx_20
+  rotate: true
+  xy: 1343, 320
+  size: 400, 410
+  orig: 578, 578
+  offset: 80, 74
+  index: -1
+tx_22
+  rotate: false
+  xy: 1343, 722
+  size: 403, 427
+  orig: 578, 578
+  offset: 84, 65
+  index: -1
+tx_24
+  rotate: false
+  xy: 909, 707
+  size: 432, 442
+  orig: 578, 578
+  offset: 63, 57
+  index: -1
+tx_26
+  rotate: false
+  xy: 462, 696
+  size: 445, 453
+  orig: 578, 578
+  offset: 56, 52
+  index: -1
+tx_28
+  rotate: false
+  xy: 2, 693
+  size: 458, 456
+  orig: 578, 578
+  offset: 50, 53
+  index: -1

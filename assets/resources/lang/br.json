@@ -1,0 +1,21 @@
+{
+    "str_play": "jogar",
+    "str_info": "informação",
+    "str_citw": "Colete 100 itens para sacar %s.",
+    "purse_tip_1": "          Políticas de Jogo e Prêmio\n           Diretrizes de saque\n1. Ganhar e visualizar prêmios\nOs tokens ganhos ao jogar podem resultar em prêmios vencedores, que serão adicionados ao seu saldo.\nPara ver seu saldo, navegue até a página principal do jogo.\n2. Cumprimento do Prêmio e Conta\nRequisitos\nTodos os prêmios em dinheiro elegíveis serão concedidos usando o método especificado dentro do jogo.\nSe você não tiver uma conta, você pode criar uma gratuitamente no site oficial.\nA entrega do prêmio está sujeita aos Termos de Serviço e Política de Privacidade.",
+    "purse_tip_2": "3. Processo de retirada\nPara sacar fundos, você deve\nInsira as informações da sua conta de transferência.\nSiga as instruções de retirada fornecidas.\nOs pedidos de retirada são processados em até 7 dias.,\n4. Limite de retirada\nO valor máximo para um único saque é de $ 500.\nTodos os pagamentos serão feitos em dólares americanos (USD).\n5. Gestão de Saldo e Conta\nSe você excluir o jogo do seu dispositivo, seu saldo será excluído permanentemente e quaisquer prêmios não reclamados sem solicitações de saque válidas serão perdidos.",
+    "purse_tip_3": "6. Informações de saque incorretas\nDepois que os fundos são transferidos para a conta especificada, não podemos redirecionar ou recuperar fundos devido a detalhes incorretos da conta ou outros erros.\nO jogador é o único responsável por garantir a precisão das informações de conta fornecidas.\n7. Impostos e Taxas\nVocê é o único responsável por quaisquer impostos ou taxas de transferência aplicáveis.\nO jogo reserva-se o direito de reter valores de pagamentos conforme exigido pelas autoridades governamentais.\n8. Incapacidade de cumprir prêmios\nSe um prêmio não puder ser cumprido devido às ações do vencedor (por exemplo, falha em sacar fundos dentro do prazo estipulado, exclusão da conta do vencedor), nos reservamos o direito de perder o prêmio.\nA decisão sobre prêmios não cumpridos é tomada a nosso exclusivo critério.",
+    "str_aritoday": "Já recebeu hoje",
+    "str_thead": "O anúncio não está pronto. Por favor, tente novamente mais tarde.",
+    "str_nogold": "Não há moedas suficientes",
+    "str_tacurrently": "Ainda não há itens para extrair",
+    "str_rri": "Alcance %s,resgate agora.",
+    "str_ymilt": "Você tem menos de %s dólares.",
+    "str_arhbc": "Todos os prêmios já foram resgatados. Clique em 'Sair' para continuar.",
+    "str_ibfw": "Você não tem saldo suficiente para sacar.",
+    "str_ass": "Conta criada com sucesso.",
+    "str_nec": "Moedas insuficientes.",
+    "str_pstf": "Por favor, pare de girar primeiro.",
+    "str_teif": "A energia está completa.",
+    "str_twcynt": "Para sacar dinheiro, você precisa entrar na fila. Ainda há %s pessoas na sua frente."
+}

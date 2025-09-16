@@ -1,0 +1,14 @@
+{
+  "name": "Match3",
+  "uuid": "4ee20b8f-b7f7-49b5-b96e-b0fb2b3eaccd",
+  "creator": {
+    "version": "3.8.3"
+  },
+  "devDependencies": {
+    "glob": "^7.2.3",
+    "node-xlsx": "^0.21.0"
+  },
+  "scripts": {
+    "xlsx2lang": "node ./script/xlsx2lang"
+  }
+}

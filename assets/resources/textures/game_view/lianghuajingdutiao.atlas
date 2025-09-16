@@ -1,0 +1,287 @@
+
+lianghuajingdutiao.png
+size: 1940,1937
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+lianghua3
+  rotate: false
+  xy: 799, 993
+  size: 188, 137
+  orig: 189, 137
+  offset: 0, 0
+  index: -1
+tx_15
+  rotate: true
+  xy: 1128, 835
+  size: 1100, 810
+  orig: 1262, 846
+  offset: 82, 18
+  index: -1
+tx_16
+  rotate: false
+  xy: 799, 29
+  size: 1109, 804
+  orig: 1262, 846
+  offset: 79, 24
+  index: -1
+tx_17
+  rotate: false
+  xy: 2, 1132
+  size: 1124, 803
+  orig: 1262, 846
+  offset: 68, 25
+  index: -1
+tx_18
+  rotate: true
+  xy: 2, 2
+  size: 1128, 795
+  orig: 1262, 846
+  offset: 69, 33
+  index: -1
+
+lianghuajingdutiao2.png
+size: 2019,1916
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_01
+  rotate: false
+  xy: 2, 1558
+  size: 392, 199
+  orig: 1262, 846
+  offset: 448, 209
+  index: -1
+tx_02
+  rotate: false
+  xy: 898, 1406
+  size: 471, 332
+  orig: 1262, 846
+  offset: 377, 178
+  index: -1
+tx_03
+  rotate: false
+  xy: 1371, 1293
+  size: 534, 445
+  orig: 1262, 846
+  offset: 364, 149
+  index: -1
+tx_04
+  rotate: false
+  xy: 2, 992
+  size: 652, 554
+  orig: 1262, 846
+  offset: 304, 123
+  index: -1
+tx_20
+  rotate: true
+  xy: 656, 708
+  size: 696, 713
+  orig: 1262, 846
+  offset: 284, 115
+  index: -1
+tx_21
+  rotate: true
+  xy: 650, 2
+  size: 704, 716
+  orig: 1262, 846
+  offset: 280, 112
+  index: -1
+tx_28
+  rotate: true
+  xy: 2, 238
+  size: 752, 646
+  orig: 1262, 846
+  offset: 256, 116
+  index: -1
+tx_29
+  rotate: true
+  xy: 1371, 557
+  size: 734, 646
+  orig: 1262, 846
+  offset: 266, 126
+  index: -1
+tx_30
+  rotate: false
+  xy: 396, 1548
+  size: 500, 196
+  orig: 1262, 846
+  offset: 380, 498
+  index: -1
+tx_31
+  rotate: false
+  xy: 1339, 1740
+  size: 484, 174
+  orig: 1262, 846
+  offset: 388, 532
+  index: -1
+tx_32
+  rotate: false
+  xy: 869, 1746
+  size: 468, 168
+  orig: 1262, 846
+  offset: 397, 560
+  index: -1
+tx_33
+  rotate: false
+  xy: 426, 1752
+  size: 441, 162
+  orig: 1262, 846
+  offset: 409, 588
+  index: -1
+tx_34
+  rotate: false
+  xy: 2, 1759
+  size: 422, 155
+  orig: 1262, 846
+  offset: 419, 617
+  index: -1
+
+lianghuajingdutiao3.png
+size: 1616,1382
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_05
+  rotate: false
+  xy: 750, 716
+  size: 768, 664
+  orig: 1262, 846
+  offset: 248, 97
+  index: -1
+tx_06
+  rotate: false
+  xy: 2, 25
+  size: 893, 689
+  orig: 1262, 846
+  offset: 185, 72
+  index: -1
+tx_22
+  rotate: true
+  xy: 897, 2
+  size: 712, 717
+  orig: 1262, 846
+  offset: 276, 110
+  index: -1
+tx_27
+  rotate: false
+  xy: 2, 720
+  size: 746, 660
+  orig: 1262, 846
+  offset: 262, 109
+  index: -1
+
+lianghuajingdutiao4.png
+size: 2048,1441
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_07
+  rotate: false
+  xy: 2, 725
+  size: 1015, 714
+  orig: 1262, 846
+  offset: 124, 46
+  index: -1
+tx_08
+  rotate: false
+  xy: 1019, 722
+  size: 1027, 717
+  orig: 1262, 846
+  offset: 118, 43
+  index: -1
+tx_23
+  rotate: true
+  xy: 744, 2
+  size: 718, 719
+  orig: 1262, 846
+  offset: 273, 108
+  index: -1
+tx_26
+  rotate: false
+  xy: 2, 6
+  size: 740, 717
+  orig: 1262, 846
+  offset: 262, 106
+  index: -1
+
+lianghuajingdutiao5.png
+size: 1852,1508
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_09
+  rotate: false
+  xy: 737, 786
+  size: 1040, 720
+  orig: 1262, 846
+  offset: 111, 39
+  index: -1
+tx_19
+  rotate: false
+  xy: 730, 2
+  size: 1120, 782
+  orig: 1262, 846
+  offset: 72, 46
+  index: -1
+tx_24
+  rotate: false
+  xy: 2, 65
+  size: 726, 720
+  orig: 1262, 846
+  offset: 268, 106
+  index: -1
+tx_25
+  rotate: false
+  xy: 2, 787
+  size: 733, 719
+  orig: 1262, 846
+  offset: 264, 106
+  index: -1
+
+lianghuajingdutiao6.png
+size: 1898,1610
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_12
+  rotate: false
+  xy: 2, 2
+  size: 1071, 798
+  orig: 1262, 846
+  offset: 96, 29
+  index: -1
+tx_13
+  rotate: true
+  xy: 1093, 529
+  size: 1079, 803
+  orig: 1262, 846
+  offset: 92, 25
+  index: -1
+tx_14
+  rotate: false
+  xy: 2, 802
+  size: 1089, 806
+  orig: 1262, 846
+  offset: 87, 22
+  index: -1
+
+lianghuajingdutiao7.png
+size: 1587,1065
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tx_10
+  rotate: true
+  xy: 797, 12
+  size: 1051, 788
+  orig: 1262, 846
+  offset: 107, 36
+  index: -1
+tx_11
+  rotate: true
+  xy: 2, 2
+  size: 1061, 793
+  orig: 1262, 846
+  offset: 101, 32
+  index: -1

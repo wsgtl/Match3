@@ -1,0 +1,41 @@
+
+neizha.png
+size: 588,194
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dikuan2
+  rotate: false
+  xy: 2, 2
+  size: 189, 190
+  orig: 191, 190
+  offset: 1, 0
+  index: -1
+ditu4
+  rotate: true
+  xy: 193, 8
+  size: 184, 182
+  orig: 184, 182
+  offset: 0, 0
+  index: -1
+neizha
+  rotate: true
+  xy: 377, 8
+  size: 184, 182
+  orig: 184, 182
+  offset: 0, 0
+  index: -1
+youyan4_1
+  rotate: true
+  xy: 561, 159
+  size: 33, 25
+  orig: 33, 25
+  offset: 0, 0
+  index: -1
+zuoyan4_2
+  rotate: true
+  xy: 561, 123
+  size: 34, 24
+  orig: 34, 24
+  offset: 0, 0
+  index: -1

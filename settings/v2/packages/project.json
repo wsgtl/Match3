@@ -1,0 +1,29 @@
+{
+  "__version__": "1.0.6",
+  "general": {
+    "designResolution": {
+      "width": 1080,
+      "height": 1920
+    }
+  },
+  "custom_joint_texture_layouts": [],
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "gou"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 3,
+      "1": 45,
+      "2": 18,
+      "3": 2,
+      "4": 4,
+      "5": 2
+    },
+    "gravity": {
+      "y": -40
+    }
+  }
+}

@@ -1,0 +1,102 @@
+// Copyright (c) 2017-2020 Xiamen Yaji Software Co., Ltd.
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:
+        cullMode: none
+      properties:
+        alphaThreshold: { value: 0.5 }
+        dissolve: { value: white, editor: { tooltip: 'dissolve map' } }
+        dissolveThreshold: { value: 0.5, editor: { range: [0, 1, 0.01], slide: true } }
+        dissolveColor: { value: [1., 1., 1., 1.], editor: { type: color } }
+}%
+
+CCProgram sprite-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #if USE_LOCAL
+    #include <builtin/uniforms/cc-local>
+  #endif
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+
+  out vec4 color;
+  out vec2 uv0;
+
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1);
+
+    #if USE_LOCAL
+      pos = cc_matWorld * pos;
+    #endif
+
+    pos = cc_matViewProj * pos;
+    uv0 = a_texCoord;
+    color = a_color;
+
+    return pos;
+  }
+}%
+
+CCProgram sprite-fs %{
+  precision highp float;
+  #include <builtin/internal/alpha-test>
+
+  in vec4 color;
+
+  #if USE_TEXTURE
+    in vec2 uv0;
+    #pragma builtin(local)
+    layout(set = 2, binding = 10) uniform sampler2D cc_spriteTexture;
+
+    uniform sampler2D dissolve;
+  #endif
+
+  uniform Dissolve {
+     float dissolveThreshold;
+  };
+  uniform Constant {
+      vec4 dissolveColor;
+  };
+  vec4 frag () {
+    vec4 o = vec4(1, 1, 1, 1);
+
+    float value = 1.0;
+    #if USE_TEXTURE
+      vec4 dissolveMap = texture(dissolve, uv0);
+      value *= dissolveMap.r;
+    #endif
+
+    if(value < dissolveThreshold){
+      discard;
+    }
+
+    #if USE_TEXTURE
+      o *= texture(cc_spriteTexture, uv0);
+    #endif
+
+    o *= color;
+    ALPHA_TEST(o);
+
+
+    if(value < dissolveThreshold + 0.03){
+      // o = vec4(0.9, 0.6, 0.3, o.a);
+      // float a = o.a;
+      // o = dissolveColor;
+      o = vec4(dissolveColor.rgb,o.a);
+    }
+    return o;
+  }
+}%

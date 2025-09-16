@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name_1" translatable="false">Jackpot&#xA0;Nezha</string>
+    <string name="facebook_app_id" translatable="false"> </string>
+    <string name="facebook_client_token" translatable="false"> </string>
+    <string name="admob_id" translatable="false">ca-app-pub-2325233743737469~7408193360</string>
+</resources>

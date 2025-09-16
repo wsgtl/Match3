@@ -1,0 +1,46 @@
+1.APP包名：com.luckbash.lksma
+2.APP名称：Jewelry Collector
+3.开发引擎及版本 cocos creator 3.8.3
+4.签名相关 
+签名文件和icon以附件形式与本文档一起打包
+签名KEY密码：jjjcccppp
+别名：key0
+密码：jjjcccppp
+Versioncode：1
+Versionname: 1.0
+
+Max相关 
+SDK版本：1.5.3
+应用id： 
+激励广告位ID： 87d2c8137a78228d
+插屏广告位ID： 3f34061d94fbce2f
+横幅广告位ID： 
+admob ID: ca-app-pub-9742962109921558~6678355304
+Report key： kYVJnzYQqaxjNLmErt4buY
+SDK key：cDH3qp_qqeDkvuZITbPw6orrhh3nuTg8aTqoDbCCdgU5b6IJKm93yFGo8ka5sPOCereeKQfl552bBAlCqe8yZB
+
+
+
+
+   Game Policies and Prize  Withdrawal Guideline
+
+3. 출금 절차
+출금을 위해 다음이 필요합니다:
+
+이체 계좌 정보 입력
+
+제공된 출금 지침 따르기
+
+출금 요청 처리 기간: 7일 이내
+
+4. 출금 한도
+
+1회 최대 출금 금액: $500
+
+모든 결제는 미화(USD)로 진행됩니다
+
+5. 잔액 및 계정 관리
+
+게임을 삭제할 경우 잔액은 영구적으로 삭제됩니다
+
+유효한 출금 요청 없이 미청구된 상금은 몰수됩니다

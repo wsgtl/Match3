@@ -1,0 +1,83 @@
+
+xingxingshangguang2.png
+size: 78,157
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+xx1
+  rotate: true
+  xy: 2, 71
+  size: 40, 41
+  orig: 43, 44
+  offset: 2, 2
+  index: -1
+xx10
+  rotate: true
+  xy: 45, 39
+  size: 29, 30
+  orig: 31, 33
+  offset: 1, 2
+  index: -1
+xx11
+  rotate: false
+  xy: 45, 19
+  size: 20, 18
+  orig: 24, 22
+  offset: 2, 2
+  index: -1
+xx2
+  rotate: false
+  xy: 2, 113
+  size: 44, 42
+  orig: 48, 45
+  offset: 2, 1
+  index: -1
+xx3
+  rotate: true
+  xy: 48, 123
+  size: 32, 27
+  orig: 35, 30
+  offset: 1, 2
+  index: -1
+xx4
+  rotate: false
+  xy: 2, 10
+  size: 19, 18
+  orig: 22, 22
+  offset: 1, 2
+  index: -1
+xx5
+  rotate: true
+  xy: 42, 2
+  size: 15, 19
+  orig: 18, 23
+  offset: 2, 2
+  index: -1
+xx6
+  rotate: true
+  xy: 2, 30
+  size: 39, 41
+  orig: 44, 45
+  offset: 3, 2
+  index: -1
+xx7
+  rotate: false
+  xy: 45, 70
+  size: 31, 31
+  orig: 34, 34
+  offset: 1, 1
+  index: -1
+xx8
+  rotate: true
+  xy: 48, 103
+  size: 18, 20
+  orig: 22, 22
+  offset: 2, 1
+  index: -1
+xx9
+  rotate: false
+  xy: 23, 11
+  size: 17, 17
+  orig: 21, 21
+  offset: 2, 2
+  index: -1

@@ -1,0 +1,34 @@
+
+tianjiang.png
+size: 193,640
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dikuan2
+  rotate: false
+  xy: 2, 448
+  size: 189, 190
+  orig: 191, 190
+  offset: 1, 0
+  index: -1
+lvse
+  rotate: false
+  xy: 2, 264
+  size: 184, 182
+  orig: 184, 182
+  offset: 0, 0
+  index: -1
+mao
+  rotate: false
+  xy: 2, 2
+  size: 100, 76
+  orig: 100, 76
+  offset: 0, 0
+  index: -1
+tianbing2
+  rotate: false
+  xy: 2, 80
+  size: 183, 182
+  orig: 184, 182
+  offset: 1, 0
+  index: -1
