@@ -18,8 +18,6 @@ const { ccclass, property } = _decorator;
 @ccclass('Top')
 export class Top extends Component {
     @property(Node)
-    btnBack: Node = null;
-    @property(Node)
     btnSetting: Node = null;
     @property(Node)
     btnRule: Node = null;
@@ -33,7 +31,6 @@ export class Top extends Component {
     protected onLoad(): void {
         this.btnRule.on(Button.EventType.CLICK, this.onRule, this);
         this.btnSetting.on(Button.EventType.CLICK, this.onSetting, this);
-        this.btnBack.on(Button.EventType.CLICK, this.onBack, this);
         CoinManger.instance.curTop = this;
         this.showBack(false);
     }
@@ -62,7 +59,6 @@ export class Top extends Component {
 
     showBack(v: boolean, cb: Function = null) {
         this.cb = cb;
-        this.btnBack.active = v;
         this.btnRule.active = !v;
         this.btnSetting.active = !v;
         this.coinbg.canClick = !v;

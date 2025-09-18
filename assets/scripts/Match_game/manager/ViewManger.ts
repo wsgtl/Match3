@@ -2,7 +2,7 @@ import { prefabs } from "../../Match_common/recycle/AssetUtils";
 import ViewComponent from "../../Match_common/ui/ViewComponent";
 import { isVaild } from '../../Match_common/utils/ViewUtil';
 import { Node } from 'cc';
-import { GameOverData, JakcpotType, LimitType, RewardType, WinType } from "../GameUtil_Match";
+import { GameOverData, JakcpotType, LimitType, RewardType } from "../GameUtil_Match";
 import { ActionEffect } from "../../Match_common/effects/ActionEffect";
 import { delay } from "../../Match_common/utils/TimeUtil";
 import { i18n } from "../../Match_common/i18n/I18nManager";
@@ -152,15 +152,7 @@ export namespace ViewManager {
     }
 
 
-    /** 兑换券界面 */
-    export function showCash(parent: Node, addNum: number = 0, cb?: Function) {
-        prefabs.instantiate("prefabs/dialog/cash").then((dialog) => {
-            if (isVaild(dialog)) {
-                const script = dialog.getComponent(ViewComponent);
-                script.show(parent ?? upperNode, { addNum, cb });
-            }
-        })
-    }
+
     /** 钱包提现界面 */
     export function showPurse() {
         prefabs.instantiate("prefabs/dialog/purse").then((dialog) => {
@@ -252,15 +244,7 @@ export namespace ViewManager {
             }
         })
     }
-    /** 赢界面 */
-    export function showWinDialog(type:WinType,num:number,cb:Function) {
-        prefabs.instantiate("prefabs/dialog/win").then((dialog) => {
-            if (isVaild(dialog)) {
-                const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, { type,num,cb});
-            }
-        })
-    }
+
     /** 幸运奖励界面 */
     export function showLuckyDialog(cb:Function) {
         prefabs.instantiate("prefabs/dialog/luckyDialog").then((dialog) => {
@@ -315,15 +299,7 @@ export namespace ViewManager {
             }
         })
     }
-    /** 限时奖励界面 */
-    export function showLimitDialog(type:LimitType,cb:Function) {
-        prefabs.instantiate("prefabs/dialog/limitDialog").then((dialog) => {
-            if (isVaild(dialog)) {
-                const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, { type,cb});
-            }
-        })
-    }
+
     /** 提现卡设置界面 */
     export function showWithdrawalMethodDialog(cb:Function,closeCb:Function) {
         prefabs.instantiate("prefabs/dialog/withdrawMethodDialog").then((dialog) => {
@@ -332,52 +308,7 @@ export namespace ViewManager {
                 script.show(upperNode, { cb,closeCb});
             }
         })
-    }
-    /** 体力值界面 */
-    export function showEnergyDialog(cb:Function) {
-        prefabs.instantiate("prefabs/dialog/energyDialog").then((dialog) => {
-            if (isVaild(dialog)) {
-                const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, {cb});
-            }
-        })
-    }
-    /** 免费游戏开始界面 */
-    export function showFreeGameStartDialog(num:number,cb:Function) {
-        prefabs.instantiate("prefabs/dialog/freeGameStart").then((dialog) => {
-            if (isVaild(dialog)) {
-                const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, {num,cb});
-            }
-        })
-    }
-    /** 免费游戏结算界面 */
-    export function showFreeGameEndDialog(coin:number,money:number,cb:Function) {
-        prefabs.instantiate("prefabs/dialog/freeGameEnd").then((dialog) => {
-            if (isVaild(dialog)) {
-                const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, {coin,money,cb});
-            }
-        })
-    }
-    /** 免费游戏增加次数界面 */
-    export function showFreeGameAddDialog(cb:Function) {
-        prefabs.instantiate("prefabs/dialog/freeGameAdd").then((dialog) => {
-            if (isVaild(dialog)) {
-                const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, {cb});
-            }
-        })
-    }
-    /** 免费游戏转场 */
-    export function showFreeGameChange(cb:Function,chagneCb:Function) {
-        prefabs.instantiate("prefabs/dialog/freeGameChange").then((dialog) => {
-            if (isVaild(dialog)) {
-                const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, {cb,chagneCb});
-            }
-        })
-    }
+    }  
 
     /**广告没准备好 */
     export const adNotReady = () => {

@@ -1,43 +1,26 @@
-import { _decorator, Node, SpriteFrame, Sprite } from 'cc';
+import { _decorator, Node } from 'cc';
 import ViewComponent from '../../../Match_common/ui/ViewComponent';
 
 import { adHelper } from '../../../Match_common/native/AdHelper';
 import Debugger from '../../../Match_common/Debugger';
-import { GameStorage } from '../../GameStorage_Match';
-import { Prefab } from 'cc';
-import { instantiate } from 'cc';
 import { ViewManager } from '../../manager/ViewManger';
 import { AudioManager } from '../../manager/AudioManager';
 import { tween } from 'cc';
 import { Tween } from 'cc';
 import { view } from 'cc';
 import { UIUtils } from '../../../Match_common/utils/UIUtils';
-import { CardType, GameUtil, RewardType, WinType } from '../../GameUtil_Match';
 import { nextFrame } from '../../../Match_common/utils/TimeUtil';
 import { GameManger } from '../../manager/GameManager';
 import { GuideManger } from '../../manager/GuideManager';
 import { GuideMask } from '../guide/GuideMask';
-import { Treasure } from '../component/Treasure';
-import { Button } from 'cc';
 import { Top } from '../component/Top';
-import { ButtonLock } from '../../../Match_common/Decorator';
-import { Board } from '../component/Board';
-import { CoinManger } from '../../manager/CoinManger';
-import { MoneyManger } from '../../manager/MoneyManger';
-import { v3 } from 'cc';
-import { NativeFun } from '../../../Match_common/native/NativeFun';
-import { BtnSpin } from '../component/BtnSpin';
-import { Layout } from 'cc';
-import { Vec2 } from 'cc';
-import { WinNum } from '../component/WinNum';
 import { JackpotManger } from '../../manager/JackpotManager';
-import { BtnGift } from '../component/BtnGift';
-import { NumFont } from '../../../Match_common/ui/NumFont';
-import { sp } from 'cc';
-import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
-import { FountainAni } from '../aniComponent/FountainAni';
-import { MathUtil } from '../../../Match_common/utils/MathUtil';
-import { EventTracking } from '../../../Match_common/native/EventTracking';
+import { Bird } from '../component/Bird';
+import { CardType, GameUtil } from '../../GameUtil_Match';
+import { Di } from '../component/Di';
+import { instantiate } from 'cc';
+import { Prefab } from 'cc';
+import { Board } from '../component/Board';
 const { ccclass, property } = _decorator;
 
 const debug = Debugger("GameView")
@@ -45,11 +28,14 @@ const debug = Debugger("GameView")
 export class GameView extends ViewComponent {
     @property(Node)
     content: Node = null;
+    @property(Board)
+    boardNode: Board = null;
     @property(Node)
     dialogNode: Node = null;
     @property(Top)
     top: Top = null;
-   
+
+
 
 
     onLoad() {
@@ -63,7 +49,7 @@ export class GameView extends ViewComponent {
 
         ViewManager.setUpDialogNode(this.dialogNode);
 
-  
+
 
         // this.initGuide();
     }
@@ -97,7 +83,7 @@ export class GameView extends ViewComponent {
         if (!GuideManger.isGuide()) {
 
         }
-
+        this.boardNode.initBoard();
     }
     private set isAni(v: boolean) {
         GameManger.instance.isAni = v;
@@ -105,11 +91,11 @@ export class GameView extends ViewComponent {
     private get isAni() {
         return GameManger.instance.isAni;
     }
-    
+   
 
 
 
-  
+
 
 
     private delay(time: number, node?: Node) {
@@ -123,7 +109,7 @@ export class GameView extends ViewComponent {
                 .start();
         });
     }
-   
+
     onDestroy() {
         // Tween.stopAllByTarget(this.node);
         Tween.stopAllByTarget(this.node);
@@ -132,10 +118,10 @@ export class GameView extends ViewComponent {
     }
 
 
-    playBgm(isFrrGame:boolean) {
-        if(isFrrGame)
+    playBgm(isFrrGame: boolean) {
+        if (isFrrGame)
             AudioManager.playBgm("bgm2", 0.7);
-        else 
+        else
             AudioManager.playBgm("bgm1", 0.3);
     }
 
@@ -145,7 +131,7 @@ export class GameView extends ViewComponent {
     // private initGuide() {
     //     if (!GuideManger.isGuide()) return;
     //     this.delay(5).then(()=>{EventTracking.sendEventLevel(1);})//第一关上报
-        
+
     //     ViewManager.showGuideMask(async (n: Node) => {
     //         this.gm = n.getComponent(GuideMask);
     //         this.gm.showMask();
