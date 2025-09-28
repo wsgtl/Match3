@@ -15,12 +15,9 @@ import { GuideManger } from '../../manager/GuideManager';
 import { GuideMask } from '../guide/GuideMask';
 import { Top } from '../component/Top';
 import { JackpotManger } from '../../manager/JackpotManager';
-import { Bird } from '../component/Bird';
-import { CardType, GameUtil } from '../../GameUtil_Match';
-import { Di } from '../component/Di';
-import { instantiate } from 'cc';
-import { Prefab } from 'cc';
 import { Board } from '../component/Board';
+import { TaskShow } from '../component/TaskShow';
+import { Button } from 'cc';
 const { ccclass, property } = _decorator;
 
 const debug = Debugger("GameView")
@@ -34,6 +31,18 @@ export class GameView extends ViewComponent {
     dialogNode: Node = null;
     @property(Top)
     top: Top = null;
+    @property(Node)
+    bottom: Node = null;
+    @property(Node)
+    btnShuffle: Node = null;
+    @property(Node)
+    btnColor: Node = null;
+    @property(Node)
+    btnBomb: Node = null;
+    @property(Node)
+    btnMoneys: Node = null;
+    @property(TaskShow)
+    ts: TaskShow = null;
 
 
 
@@ -48,7 +57,9 @@ export class GameView extends ViewComponent {
         this.fit();
 
         ViewManager.setUpDialogNode(this.dialogNode);
-
+        this.btnShuffle.on(Button.EventType.CLICK, this.onShuffle,this);
+        this.btnBomb.on(Button.EventType.CLICK, this.onBomb,this);
+        this.btnColor.on(Button.EventType.CLICK, this.onColor,this);
 
 
         // this.initGuide();
@@ -61,6 +72,8 @@ export class GameView extends ViewComponent {
         const ch = cha / 2;
         const cy = (ch < 60 ? ch : ch - 80);
         this.top.node.y = 960 + cy;
+        this.bottom.y = -840 - ch * 0.4;
+        this.content.y = -190 + ch * 0.2;
 
         nextFrame().then(() => {
             const p = UIUtils.transformOtherNodePos2localNode(this.node, this.dialogNode);
@@ -91,9 +104,38 @@ export class GameView extends ViewComponent {
     private get isAni() {
         return GameManger.instance.isAni;
     }
-   
 
+    public showTaskDi() {
+        this.ts.show();
 
+    }
+    /**打乱道具 */
+    private onShuffle() {
+        if (this.isAni) return;
+        adHelper.showRewardVideo("打乱道具",async()=>{
+            this.isAni = true;
+            await this.boardNode.shuffle();
+            this.isAni = false;
+        },ViewManager.adNotReady);
+    }
+    /**颜色道具 */
+    private onColor() {
+        if (this.isAni) return;
+        adHelper.showRewardVideo("颜色道具",async()=>{
+            this.isAni = true;
+            await this.boardNode.clearSameColor();
+            this.isAni = false;
+        },ViewManager.adNotReady);
+    }
+    /**炸弹道具 */
+    private onBomb() {
+        if (this.isAni) return;
+        adHelper.showRewardVideo("炸弹道具",async ()=>{
+             this.isAni = true;
+            await this.boardNode.bombClear();
+            this.isAni = false;
+        },ViewManager.adNotReady);
+    }
 
 
 

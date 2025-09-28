@@ -10,6 +10,7 @@ import { Vec2 } from "cc";
 import { GameStorage } from "./GameStorage_Match";
 import { MathUtil } from "../Match_common/utils/MathUtil";
 import { LangStorage } from "../Match_common/localStorage/LangStorage";
+import { EditBoxComponent } from "cc";
 
 /**结算数据 */
 export type GameOverData = {
@@ -65,6 +66,16 @@ export enum PayType {
    steam,
    visa
 }
+/**颜色 */
+export enum ColorType {
+   g = 1,
+   y,
+   b,
+   r,
+   g1,
+   p,
+   pink
+}
 export type LuckyRewardData = {
    type: RewardType,
    num: number,
@@ -81,27 +92,30 @@ export type CoinCashData = {
    money: number,
 }
 
+
 /**移动数据 */
 export type MoveData = {
-   from:number,
-   to?:number,
-   tos?:number[],//支持连续移动
-   changeType?:CardType//变换类型
+   from: number,
+   to?: number,
+   tos?: number[],//支持连续移动
+   changeType?: CardType//变换类型
 }
 /**新生成类型 */
 export type CardCreateData = {
-   index:number,
-   type:CardType,
+   index: number,
+   type: CardType,
 }
 
 export namespace GameUtil {
-   export const CardW: number = 160;//卡牌宽
-   export const CardH: number = 160;//卡牌高
+   export const CardW: number = 170;//卡牌宽
+   export const CardH: number = 170;//卡牌高
    export const AllRow: number = 6;//行数
    export const AllCol: number = 6;//列数
    export const MaxIdnex: number = AllRow * AllCol;
    /**底血量 */
    export const DiBlood: number = 3;
+   /**颜色数量 */
+   export const ColorNum: number = 7;
    /**出中奖池概率 */
    export const MajorPro: number = 0.1;
    /**出大奖池概率 */
@@ -119,7 +133,8 @@ export namespace GameUtil {
    const yi = 100000000;
    /**金币提现金额 */
    export const coinCash: CoinCashData[] = [{ coin: 3 * yi, money: 500 }, { coin: 6 * yi, money: 1000 }, { coin: 9 * yi, money: 1500 }, { coin: 12 * yi, money: 2000 }, { coin: 15 * yi, money: 2500 }, { coin: 18 * yi, money: 3000 }];
-
+   /**附近八个位置 */
+   export const Nearby8:number[]=[-1,1,AllCol,-AllCol,AllCol-1,AllCol+1,-AllCol-1,-AllCol+1];
 
 
    export function getCashNum(bl: number = 1) {//获取最低提现金额
@@ -146,10 +161,10 @@ export namespace GameUtil {
       return MathUtil.random(1, 5);
    }
    /**获取排除掉传入值的随机类型 */
-   export function getRandomExcluderCard(e1:number,e2:number) {
+   export function getRandomExcluderCard(e1: number, e2: number) {
       let c = [];
-      for(let i=1;i<=5;i++){
-         if(i==e1||i==e2)continue;
+      for (let i = 1; i <= 5; i++) {
+         if (i == e1 || i == e2) continue;
          c.push(i);
       }
       return c.getRandomItem();
@@ -167,11 +182,15 @@ export namespace GameUtil {
    export function getPost(index: number): Vec3 {
       return v3(((index % AllCol) - 2.5) * CardW, ((~~(index / AllCol)) - 2.5) * CardH);
    }
+   /**标号获取任务栏真实坐标 */
+   export function getPostask(index: number): Vec3 {
+      return v3(((index % AllCol) - 2.5) * 38, 7 + ((~~(index / AllCol)) - 2.5) * 37);
+   }
    /**通过真实坐标获取标号 */
    export function getIndext(p: Vec3): number {
       return (Math.floor(p.x / CardW) + 3) + (Math.floor(p.y / CardH) + 3) * AllCol;
    }
-   export function getStartY(){
+   export function getStartY() {
       return getPost(MaxIdnex).y;
    }
    /**是否同一行 */
@@ -179,17 +198,20 @@ export namespace GameUtil {
       return ~~(i1 / AllCol) == ~~(i2 / AllCol);
    }
    /**是否相邻 */
-   export function isAdjoin(i1: number, i2: number){
-      if(i1-1==i2||i1+1==i2)
-         return isRow(i1,i2);
-      if(i1-AllCol==i2||i1+AllCol==i2)
-         return i2>=0&&i2<MaxIdnex;
+   export function isAdjoin(i1: number, i2: number) {
+      if (i1 - 1 == i2 || i1 + 1 == i2)
+         return isRow(i1, i2);
+      if (i1 - AllCol == i2 || i1 + AllCol == i2)
+         return i2 >= 0 && i2 < MaxIdnex;
    }
    /**是否超出 */
    export function isOver(index: number) {
       return index < 0 || index >= MaxIdnex;
    }
-
+   /**获取该类型颜色 */
+   export function getColor(type: CardType): ColorType {
+      return ((type - 1) % ColorNum) + 1;
+   }
 
 
 }

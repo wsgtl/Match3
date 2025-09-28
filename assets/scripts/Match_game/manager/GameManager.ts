@@ -40,9 +40,9 @@ export class GameManger {
 
 
     public initDiBoard() {
-        this.board = [];
+        this.diBoard = [];
         for (let i = 0; i < GameUtil.MaxIdnex; i++) {
-            this.board[i] = GameUtil.DiBlood;
+            this.diBoard[i] = GameUtil.DiBlood;
         }
         return this.diBoard;
     }
@@ -171,19 +171,25 @@ export class GameManger {
                 this.board[v] = 0;
                 const tos: number[] = [];
                 let cur = i;
-                for (let k = i-1; k >= 0; k--) {
-                    const i1=group[k];
-                    const i2=group[cur];
-                    const cha = Math.abs(i1-i2)
-                    if(cha==GameUtil.AllCol||cha==1){
+                for (let k = i - 1; k >= 0; k--) {
+                    const i1 = group[k];
+                    const i2 = group[cur];
+                    const cha = Math.abs(i1 - i2)
+                    if (cha == GameUtil.AllCol || cha == 1) {
                         tos.push(i1);
-                        cur=k;
+                        cur = k;
                     }
                 }
                 md.push({ from: v, tos });
             }
         })
         return md;
+    }
+    /**清理掉小组的 */
+    public justClearGroup(group: number[]){
+        group.forEach((v, i) => {
+            this.board[v] = 0;
+        });
     }
     /**下坠 */
     public drop(): MoveData[] {
@@ -229,5 +235,46 @@ export class GameManger {
 
         }
         console.log(s);
+    }
+
+    /**底扣血 */
+    public diBlood(group: number[]) {
+        group.forEach(v => {
+            this.diBoard[v] = Math.max(0, this.diBoard[v] - 1);
+        })
+        this.gv.showTaskDi();
+    }
+
+    /**打乱位置 */
+    public shuffle() {
+        const max = GameUtil.MaxIdnex - 1;
+        for (let i = 0; i <= max; i++) {
+            const j = MathUtil.random(0, max);
+            const v = this.board[i];
+            this.board[i] = this.board[j];
+            this.board[j] = v;
+        }
+    }
+    /**随机获取同颜色的，并消除 */
+    public clearSameColor() {
+        const color = GameUtil.getColor(this.board.getRandomItem());
+        const group: number[] = [];
+        this.board.forEach((v, i) => {
+            if (color == GameUtil.getColor(v)) {
+                group.push(i);
+            }
+        })
+        return { group, color };
+    }
+    /**爆炸道具，清理九宫格的卡片 */
+    public bombClear():number[]{
+        const x = MathUtil.random(1,4);
+        const y = MathUtil.random(1,4);
+        const index = GameUtil.getIndex(x,y);
+        const group:number[]=[index];
+        GameUtil.Nearby8.forEach(v=>{
+            group.push(index+v);
+        })
+        return group;
     }
 }

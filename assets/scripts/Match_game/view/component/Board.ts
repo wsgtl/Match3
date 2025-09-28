@@ -113,28 +113,22 @@ export class Board extends Component {
 
         const md = GameManger.instance.clearAndUp(group);
         const pros: Promise<void>[] = [];
-        console.log("雪豹1")
         md.forEach(v => {
             if (v.tos) {
                 pros.push(this.board[v.from].moveTos(v.tos));
             }
         })
         const first = md[0];
-        console.log("雪豹2")
         if (first.changeType) {
-            console.log("雪豹3")
             await Promise.all(pros);
-            console.log("雪豹4")
             this.board[first.from].setType(first.changeType);
         }
-        console.log("雪豹5")
+        this.diBlood(group);
     }
     /**下坠,连消流程 */
     private async dropAndClear() {
-        console.log("丁真1")
         const md = GameManger.instance.drop();
         const cn = GameManger.instance.createNewBird();
-        console.log("丁真2")
         if (md.length) {
             md.forEach(v => {
                 const f = this.board[v.from];
@@ -142,9 +136,7 @@ export class Board extends Component {
                 f.dropTo(v.to);
             })
         }
-        console.log("丁真3")
         await delay(0.3, this.node);
-        console.log("丁真4")
         let dy = 1;
         cn.forEach(v => { dy = Math.max(GameUtil.AllRow - GameUtil.getPos(v.index).y) });
         cn.forEach(v => {
@@ -152,17 +144,57 @@ export class Board extends Component {
             b.initAni(v.index, dy);
 
         })
-        console.log("丁真5")
-        await delay(1, this.node);
+        await delay(0.5, this.node);
+        await this.findOneClear();
+    }
+    /**棋盘中找到可清除的第一个组，然后消除操作 */
+    private async findOneClear() {
         const group = GameManger.instance.findOneClear();
-        console.log("丁真6")
         if (group) {
-            console.log("丁真7")
             await this.clearGroup(group);
             await this.dropAndClear();
-        } else {
-            console.log("我是丁真")
         }
+    }
+    /**底扣血 */
+    private diBlood(group: number[]) {
+        GameManger.instance.diBlood(group);
+        GameManger.instance.diBoard.forEach((v, i) => {
+            this.diBoard[i].init(v);
+        })
+    }
+    /**打乱 */
+    public async shuffle() {
+        GameManger.instance.shuffle();
+        this.board.forEach((v, i) => {
+            const t = GameManger.instance.board[i];
+            v.shuffleChange(t, i);
+        })
+        await delay(0.5);
+        await this.findOneClear();
+    }
+    /**颜色道具 */
+    public async clearSameColor() {
+        const data = GameManger.instance.clearSameColor();
+        await this.justClearGroup(data.group);
+        await this.dropAndClear();
+    }
+    /**爆炸道具 */
+    public async bombClear(){
+        const group = GameManger.instance.bombClear();
+        await this.justClearGroup(group);
+        await this.dropAndClear();
+    }
+    /**清理掉道具影响的卡片 */
+    public async justClearGroup(group: number[]) {
+        GameManger.instance.justClearGroup(group);
+        group.forEach(v => {
+            this.board[v].colorClearAni();
+            this.board[v] = null;
+        })
+        if (group.length) {
+            await delay(0.3);
+        }
+        this.diBlood(group);
     }
 }
 

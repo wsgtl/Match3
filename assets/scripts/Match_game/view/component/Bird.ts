@@ -52,6 +52,16 @@ export class Bird extends Component {
         await ActionEffect.scale(this.node, 0.1, 0);
         this.node.destroy();
     }
+    async colorClearAni(){
+        await tweenPromise(this.icon,t=>t.to(0.1,{angle:30}).to(0.2,{angle:-30}).to(0.1,{angle:0}))
+        await this.clearAni();
+    }
+    async shuffleChange(type: CardType,i:number){
+        await ActionEffect.moveTo(this.node,0.3,0,0);
+        this.setType(type);
+        const pos = GameUtil.getPost(i);
+        await tweenPromise(this.node, t => t.to(0.2, { position: pos }));
+    }
 }
 
 
