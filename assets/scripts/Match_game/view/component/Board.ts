@@ -57,6 +57,7 @@ export class Board extends Component {
         this.board[i1].changeTo(i1);
         await this.board[i2].changeTo(i2);
         await this.changeToClear(i1, i2);
+        GameManger.instance.afterCombo();
         GameManger.instance.isAni = false;
     }
 
@@ -110,7 +111,7 @@ export class Board extends Component {
     }
     /**清理相连 */
     private async clearGroup(group: number[]) {
-
+        GameManger.instance.addCombo();
         const md = GameManger.instance.clearAndUp(group);
         const pros: Promise<void>[] = [];
         md.forEach(v => {
@@ -171,18 +172,21 @@ export class Board extends Component {
         })
         await delay(0.5);
         await this.findOneClear();
+        GameManger.instance.afterCombo();
     }
     /**颜色道具 */
     public async clearSameColor() {
         const data = GameManger.instance.clearSameColor();
         await this.justClearGroup(data.group);
         await this.dropAndClear();
+        GameManger.instance.afterCombo();
     }
     /**爆炸道具 */
     public async bombClear(){
         const group = GameManger.instance.bombClear();
         await this.justClearGroup(group);
         await this.dropAndClear();
+        GameManger.instance.afterCombo();
     }
     /**清理掉道具影响的卡片 */
     public async justClearGroup(group: number[]) {

@@ -19,7 +19,7 @@ enum Aligning {
 export class NumFont extends Layout {
 
     @property({ type: SpriteAtlas, tooltip: '数字图集' })
-    protected spriteAtlas: SpriteAtlas = null;
+    public spriteAtlas: SpriteAtlas = null;
 
     protected _num: string = '';
 

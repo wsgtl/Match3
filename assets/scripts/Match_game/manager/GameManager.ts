@@ -277,4 +277,17 @@ export class GameManger {
         })
         return group;
     }
+    private combo=0;
+    /**combo */
+    public addCombo(){
+        this.combo++;
+        this.gv.showCombo(this.combo);
+    }
+     /**结束连击后 */
+    public afterCombo(){
+        //根据连击数给予奖励
+        this.combo = 0;
+    }
+   
+
 }

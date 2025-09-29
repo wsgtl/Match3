@@ -18,6 +18,7 @@ import { JackpotManger } from '../../manager/JackpotManager';
 import { Board } from '../component/Board';
 import { TaskShow } from '../component/TaskShow';
 import { Button } from 'cc';
+import { Combo } from '../component/Combo';
 const { ccclass, property } = _decorator;
 
 const debug = Debugger("GameView")
@@ -43,6 +44,8 @@ export class GameView extends ViewComponent {
     btnMoneys: Node = null;
     @property(TaskShow)
     ts: TaskShow = null;
+    @property(Combo)
+    combo: Combo = null;
 
 
 
@@ -136,7 +139,10 @@ export class GameView extends ViewComponent {
             this.isAni = false;
         },ViewManager.adNotReady);
     }
-
+    /**显示combo */
+    public showCombo(n:number){
+        this.combo.show(n);
+    }
 
 
 
