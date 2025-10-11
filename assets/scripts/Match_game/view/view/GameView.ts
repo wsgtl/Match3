@@ -19,6 +19,7 @@ import { Board } from '../component/Board';
 import { TaskShow } from '../component/TaskShow';
 import { Button } from 'cc';
 import { Combo } from '../component/Combo';
+import { GiftProgress } from '../component/GiftProgress';
 const { ccclass, property } = _decorator;
 
 const debug = Debugger("GameView")
@@ -46,6 +47,8 @@ export class GameView extends ViewComponent {
     ts: TaskShow = null;
     @property(Combo)
     combo: Combo = null;
+    @property(GiftProgress)
+    gp: GiftProgress = null;
 
 
 
@@ -142,6 +145,10 @@ export class GameView extends ViewComponent {
     /**显示combo */
     public showCombo(n:number){
         this.combo.show(n);
+    }
+    /**增加combo进度条 */
+    public addComboProgress(){
+        this.gp.addCombo();
     }
 
 

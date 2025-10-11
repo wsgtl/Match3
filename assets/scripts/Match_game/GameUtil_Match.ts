@@ -130,6 +130,10 @@ export namespace GameUtil {
    export const FreeGameAddTimes: number = 3;
    /**钱提现金额 */
    export const moneyCash: number[] = [500, 1000, 1500, 2000, 2500, 3000];
+   /**连击进度条总数 */
+   export const CombosProgress:number = 100;
+   /**连击礼物百分比 */
+   export const ComboGifts:number[]=[0.3,0.6,1];
    const yi = 100000000;
    /**金币提现金额 */
    export const coinCash: CoinCashData[] = [{ coin: 3 * yi, money: 500 }, { coin: 6 * yi, money: 1000 }, { coin: 9 * yi, money: 1500 }, { coin: 12 * yi, money: 2000 }, { coin: 15 * yi, money: 2500 }, { coin: 18 * yi, money: 3000 }];

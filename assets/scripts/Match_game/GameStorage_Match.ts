@@ -13,23 +13,10 @@ export namespace GameStorage {
         coin: 100000,
         /**钱数 */
         money: 0,
-        /**兑换券数 */
-        cash: 0,
-        /**宝箱进度 */
-        treasure: 0,
-        /**葫芦进度 */
-        lotus: 0,
         /**提现卡类型 */
         payType: 1,
         /**提现卡号 */
         cardId: "",
-        /**体力 */
-        energy: {
-            /**体力值 */
-            energy: 0,
-            /**上次体力更新时间 */
-            time: 0,
-        },
         /**猪礼物 */
         pig: {
             /**猪礼物倒计时 */
@@ -37,21 +24,6 @@ export namespace GameStorage {
             /**猪礼物上次领取奖励天数 */
             day: 0,
         },
-        /**限时活动 */
-        limit: {
-            /**莲花两个 */
-            lotus: 0,
-            /**钱标两个 */
-            cash: 0,
-            /**上次免费领取奖励天数 */
-            day: 0,
-        },
-        /**当前关卡 */
-        curLevel: 1,
-        /**当前关卡第几次 */
-        curLevelTime: 0,
-        /**上一关卡 */
-        lastLevel: 1,
         /**新手引导完成第几步 0：没完成 1：完成主页引导 2：完成游戏页引导 */
         guideStep: 0,
     }
@@ -105,60 +77,8 @@ export namespace GameStorage {
         _gameData.money = num;
         saveLocal();
     }
-    /**获取兑换券 */
-    export function getCash() {
-        return _gameData.cash;
-    }
-    /**增加兑换券 */
-    export function addCash(num: number) {
-        _gameData.cash += num;
-        saveLocal();
-    }
-    /**获取宝箱进度 */
-    export function getTreasure() {
-        return _gameData.treasure;
-    }
-    /**设置宝箱进度 */
-    export function setTreasure(num: number) {
-        _gameData.treasure = num;
-        saveLocal();
-    }
-    /**获取葫芦进度 */
-    export function getLotus() {
-        return _gameData.lotus;
-    }
-    /**设置葫芦进度 */
-    export function setLotus(num: number) {
-        _gameData.lotus = num;
-        saveLocal();
-    }
-    /**当前关卡等级 */
-    export function getCurLevel() {
-        return _gameData.curLevel;
-    }
-    /**存储下一关 */
-    export function nextLevel() {
-        _gameData.curLevel += 1;
-        saveLocal();
-    }
-    /**当前关卡第几次 */
-    export function getCurLevelTimes() {
-        return _gameData.curLevelTime;
-    }
-    /**存储下一关 */
-    export function setLevelTime(t: number) {
-        _gameData.curLevelTime = t;
-        saveLocal();
-    }
-    /**上一关卡等级 */
-    export function getLastLevel() {
-        return _gameData.lastLevel;
-    }
-    /**存储上一关 */
-    export function setLastLevel(level: number) {
-        _gameData.lastLevel = level;
-        saveLocal();
-    }
+    
+    
     /** 当前猪礼物 */
     export function getPig() {
         return _gameData.pig;
@@ -173,25 +93,7 @@ export namespace GameStorage {
         _gameData.pig.day = day;
         saveLocal();
     }
-    /**限时活动 */
-    export function getLimit() {
-        return _gameData.limit;
-    }
-    /**限时活动莲花两个次数 */
-    export function setLimitLotus(num: number) {
-        _gameData.limit.lotus = num;
-        saveLocal();
-    }
-    /**限时活动钱标两个奖励次数 */
-    export function setLimitCash(num: number) {
-        _gameData.limit.cash = num;
-        saveLocal();
-    }
-    /**限时活动上次免费奖励天数 */
-    export function setLimitDay(day: number) {
-        _gameData.limit.day = day;
-        saveLocal();
-    }
+    
     /**提现卡类型 */
     export function getPayType() {
         return _gameData.payType;
@@ -249,19 +151,5 @@ export namespace GameStorage {
         _gameData.guideStep = step;
         saveLocal();
     }
-    /**获取体力值 */
-    export function getEnergy() {
-        return _gameData.energy;
-    }
-    /**设置体力值 */
-    export function setEnergy(v: number) {
-        _gameData.energy.energy = v;
-        saveLocal();
-    }
-    /**刷新体力值时间 */
-    export function setEnergyTime(v: number) {
-        _gameData.energy.time = v;
-        saveLocal();
-    }
-
+   
 }

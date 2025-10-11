@@ -22,10 +22,7 @@ export class GameManger {
     private gv: GameView;
     public init(gv: GameView) {
         this.gv = gv;
-        this.curLevel = GameStorage.getCurLevel();
-        this.lastLevel = GameStorage.getLastLevel();
-        GameStorage.setLastLevel(this.curLevel);
-        console.log(`第${this.curLevel}关,上一关是:${this.lastLevel}`);
+
 
     }
 
@@ -282,6 +279,7 @@ export class GameManger {
     public addCombo(){
         this.combo++;
         this.gv.showCombo(this.combo);
+        this.gv.addComboProgress();
     }
      /**结束连击后 */
     public afterCombo(){
