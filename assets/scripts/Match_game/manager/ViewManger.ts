@@ -216,6 +216,15 @@ export namespace ViewManager {
             }
         })
     }
+    /** 奖励弹出界面 */
+    export function showRewardPop( type:RewardType,rewardNum:number) {
+        prefabs.instantiate("prefabs/dialog/rewardPop").then((dialog) => {
+            if (isVaild(dialog)) {
+                const script = dialog.getComponent(ViewComponent);
+                script.show(upperNode, { type, rewardNum});
+            }
+        })
+    }
     /** 金币奖励界面 */
     export function showRewardCoin(num: number, cb: Function) {
         prefabs.instantiate("prefabs/dialog/rewardCoin").then((dialog) => {
@@ -290,12 +299,21 @@ export namespace ViewManager {
             }
         })
     }
-    /** 气泡转盘界面 */
-    export function showLuckyWheelDialog(isFree:boolean,num:number,cb:Function) {
-        prefabs.instantiate("prefabs/dialog/luckyWheelDialog").then((dialog) => {
+    /** slot界面 */
+    export function showSlotDialog(cb:Function) {
+        prefabs.instantiate("prefabs/dialog/slotDialog").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, { isFree,num,cb});
+                script.show(upperNode, { cb});
+            }
+        })
+    }
+    /** slot再来一次界面 */
+    export function showSlotMoreDialog(cb:Function) {
+        prefabs.instantiate("prefabs/dialog/slotMoreDialog").then((dialog) => {
+            if (isVaild(dialog)) {
+                const script = dialog.getComponent(ViewComponent);
+                script.show(upperNode, { cb});
             }
         })
     }

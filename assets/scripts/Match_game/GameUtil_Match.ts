@@ -43,7 +43,6 @@ export enum RewardType {
    none = 0,
    money = 1,//现金
    coin,//金币
-   energy,//体力
 }
 /**奖池类型 */
 export enum JakcpotType {
