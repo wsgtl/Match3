@@ -1,0 +1,13 @@
+
+cd.png
+size: 26,41
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+l-cd2
+  rotate: false
+  xy: 2, 2
+  size: 22, 37
+  orig: 24, 39
+  offset: 1, 1
+  index: -1

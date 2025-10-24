@@ -207,21 +207,21 @@ export namespace ViewManager {
             }
         })
     }
-    /** 奖励界面 */
-    export function showReward( cb: Function) {
-        prefabs.instantiate("prefabs/dialog/reward").then((dialog) => {
+    /** 通关奖励界面 */
+    export function showRewardWin(rewardNum:number, cb: Function) {
+        prefabs.instantiate("prefabs/dialog/rewardWin").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, { cb });
+                script.show(upperNode, { cb,rewardNum });
             }
         })
     }
     /** 奖励弹出界面 */
-    export function showRewardPop( type:RewardType,rewardNum:number) {
+    export function showRewardPop( type:RewardType,rewardNum:number,cb:Function) {
         prefabs.instantiate("prefabs/dialog/rewardPop").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, { type, rewardNum});
+                script.show(upperNode, { type, rewardNum,cb});
             }
         })
     }
@@ -236,11 +236,20 @@ export namespace ViewManager {
     }
 
     /** 奖励动画界面 */
-    export function showRewardAni(type: RewardType, num: number, cb: Function) {
+    export function showRewardAni1(type: RewardType, num: number, cb: Function) {
         prefabs.instantiate("prefabs/dialog/rewardAni").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, { type, num, cb });
+                script.show(upperNode, { type, num, cb,ani:1 });
+            }
+        })
+    }
+    /** 奖励动画2 */
+    export function showRewardAni2(type: RewardType,from:Node,to:Node, cb: Function) {
+        prefabs.instantiate("prefabs/dialog/rewardAni").then((dialog) => {
+            if (isVaild(dialog)) {
+                const script = dialog.getComponent(ViewComponent);
+                script.show(upperNode, { type, from,to,cb,ani:2 });
             }
         })
     }
@@ -283,7 +292,7 @@ export namespace ViewManager {
     }
     /** 提现界面 */
     export function showWithdrawDialog(isCoin:boolean = false) {
-        prefabs.instantiate("prefabs/dialog/withdrawDialog").then((dialog) => {
+        prefabs.instantiate("prefabs/withdraw/withdrawDialog").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
                 script.show(upperNode, { isCoin});
@@ -300,11 +309,11 @@ export namespace ViewManager {
         })
     }
     /** slot界面 */
-    export function showSlotDialog(cb:Function) {
+    export function showSlotDialog(isFirst:boolean = true,cb:Function) {
         prefabs.instantiate("prefabs/dialog/slotDialog").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, { cb});
+                script.show(upperNode, { isFirst,cb});
             }
         })
     }
@@ -320,10 +329,37 @@ export namespace ViewManager {
 
     /** 提现卡设置界面 */
     export function showWithdrawalMethodDialog(cb:Function,closeCb:Function) {
-        prefabs.instantiate("prefabs/dialog/withdrawMethodDialog").then((dialog) => {
+        prefabs.instantiate("prefabs/withdraw/withdrawMethodDialog").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
                 script.show(upperNode, { cb,closeCb});
+            }
+        })
+    }  
+    /** 礼盒奖励界面 */
+    export function showRewardBoxDialog(cb:Function) {
+        prefabs.instantiate("prefabs/dialog/rewardBox").then((dialog) => {
+            if (isVaild(dialog)) {
+                const script = dialog.getComponent(ViewComponent);
+                script.show(upperNode, { cb});
+            }
+        })
+    }  
+    /** 多倍钱奖励界面 */
+    export function showRewardDoubleDialog(cb:Function) {
+        prefabs.instantiate("prefabs/dialog/rewardDouble").then((dialog) => {
+            if (isVaild(dialog)) {
+                const script = dialog.getComponent(ViewComponent);
+                script.show(upperNode, {cb });
+            }
+        })
+    }  
+    /** 时空门界面 */
+    export function showDoorDialog(cb:Function) {
+        prefabs.instantiate("prefabs/dialog/door").then((dialog) => {
+            if (isVaild(dialog)) {
+                const script = dialog.getComponent(ViewComponent);
+                script.show(upperNode, { cb});
             }
         })
     }  

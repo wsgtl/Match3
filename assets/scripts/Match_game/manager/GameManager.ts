@@ -5,7 +5,11 @@ import { v2 } from "cc";
 import { GameStorage } from "../GameStorage_Match";
 import { GameView } from "../view/view/GameView";
 import { GuideManger } from "./GuideManager";
-import { CardCreateData, CardType, GameUtil, MoveData } from "../GameUtil_Match";
+import { CardCreateData, CardType, GameUtil, MoveData, RewardType } from "../GameUtil_Match";
+import { ViewManager } from "./ViewManger";
+import { MoneyManger } from "./MoneyManger";
+import { WithdrawUtil } from "../view/withdraw/WithdrawUtil";
+import { CoinManger } from "./CoinManger";
 
 const debug = Debugger("GameManger");
 export class GameManger {
@@ -32,6 +36,14 @@ export class GameManger {
     private visited: Uint8Array = new Uint8Array(GameUtil.MaxIdnex);
     public board: CardType[] = [];
     public diBoard: number[] = [];
+    /**剩余通关奖励时间 */
+    public passRewardTime: number = 0;
+    /**当前是否是通关奖励 */
+    public isPassReward: boolean = false;
+    /**通关奖励获得的钱 */
+    public passRewardMoney: number = 0;
+    /**当前使用道具 0:无 1：炸弹 2：魔法棒*/
+    public curUseProp: number = 0;
 
     isAni: boolean = false;
 
@@ -40,6 +52,7 @@ export class GameManger {
         this.diBoard = [];
         for (let i = 0; i < GameUtil.MaxIdnex; i++) {
             this.diBoard[i] = GameUtil.DiBlood;
+            // this.diBoard[i] = 1;
         }
         return this.diBoard;
     }
@@ -183,7 +196,7 @@ export class GameManger {
         return md;
     }
     /**清理掉小组的 */
-    public justClearGroup(group: number[]){
+    public justClearGroup(group: number[]) {
         group.forEach((v, i) => {
             this.board[v] = 0;
         });
@@ -209,17 +222,50 @@ export class GameManger {
         }
         return md;
     }
+    private sfw: number[] = [- GameUtil.AllCol, 1, -1];
     /**生成新的 */
     public createNewBird() {
         const group: CardCreateData[] = [];
-        this.board.forEach((v, i) => {
-            if (v == 0) {
-                const type = GameUtil.getRandomMiniCard();
-                this.board[i] = type;
-                group.push({ index: i, type });
-            }
+        const posGroup: number[] = [];
+        for (let i = 0; i < this.board.length; i++) {
+            const v = this.board[i];
+            if (v != 0) continue;
+            posGroup.push(i);
+        }
+        const isMustCombo = this.mustCombo > this.combo;
+        let comboType: CardType;
+        if (isMustCombo) {
+            comboType = this.getNearType(posGroup);
+        }
+        let times = 0;
+        posGroup.forEach((i) => {
+            const type = (isMustCombo && times < 3) ? comboType : GameUtil.getRandomMiniCard();
+            times++;//控制数量
+            this.board[i] = type;
+            group.push({ index: i, type });
         })
         return group;
+    }
+    /**获取相邻卡片类型使得可以连消 */
+    private getNearType(posGroup:number[]) {
+        this.sfw.shuffle();
+        const pg = MathUtil.copyArr(posGroup);
+        pg.shuffle();
+        for (let i = 0; i < pg.length; i++) {
+            const _i = pg[i];
+            const v = this.board[_i];
+            if (v != 0) continue;
+            for (let j of this.sfw) {
+                const index = _i + j;
+                if (index < 0) continue;
+                if (j == - GameUtil.AllCol || GameUtil.isRow(_i, index)) {
+                    const type = this.board[index];
+                    if (type < 6 && type > 0)
+                        return this.board[index];//计算可连消的方块
+                }
+            }
+        }
+        return GameUtil.getRandomMiniCard();
     }
     private showLog() {
         let s = "";
@@ -241,6 +287,14 @@ export class GameManger {
         })
         this.gv.showTaskDi();
     }
+    /**判断是否通关 */
+    public isPass() {
+        // return true;
+        for (let a of this.diBoard) {
+            if (a > 0) return false;
+        }
+        return true;
+    }
 
     /**打乱位置 */
     public shuffle() {
@@ -253,8 +307,9 @@ export class GameManger {
         }
     }
     /**随机获取同颜色的，并消除 */
-    public clearSameColor() {
-        const color = GameUtil.getColor(this.board.getRandomItem());
+    public clearSameColor(index: number) {
+        // const color = GameUtil.getColor(this.board.getRandomItem());
+        const color = GameUtil.getColor(this.board[index]);
         const group: number[] = [];
         this.board.forEach((v, i) => {
             if (color == GameUtil.getColor(v)) {
@@ -264,28 +319,72 @@ export class GameManger {
         return { group, color };
     }
     /**爆炸道具，清理九宫格的卡片 */
-    public bombClear():number[]{
-        const x = MathUtil.random(1,4);
-        const y = MathUtil.random(1,4);
-        const index = GameUtil.getIndex(x,y);
-        const group:number[]=[index];
-        GameUtil.Nearby8.forEach(v=>{
-            group.push(index+v);
+    public bombClear(index: number): number[] {
+        // const x = MathUtil.random(1, 4);
+        // const y = MathUtil.random(1, 4);
+        // const index = GameUtil.getIndex(x, y);
+        const pos = GameUtil.getPos(index);
+        const x = GameUtil.BombPos[pos.x];//位置纠正，让在边上的炸弹可以炸到全部9个
+        const y = GameUtil.BombPos[pos.y];
+        index = GameUtil.getIndex(x, y);
+        const group: number[] = [index];
+        GameUtil.Nearby8.forEach(v => {
+            group.push(index + v);
         })
         return group;
     }
-    private combo=0;
+    /**必连消次数 */
+    public mustCombo: number = 0;
+    /**连消次数 */
+    private combo: number = 0;
+    public getCombo() {
+        return this.combo;
+    }
     /**combo */
-    public addCombo(){
+    public addCombo() {
         this.combo++;
         this.gv.showCombo(this.combo);
-        this.gv.addComboProgress();
+        if (!this.isPassReward) this.gv.addComboProgress();
     }
-     /**结束连击后 */
-    public afterCombo(){
-        //根据连击数给予奖励
+    /**获取随机必连消次数 */
+    public calMustCombo() {
+        this.mustCombo = MathUtil.probability(0.6) ? 0 : MathUtil.probability(0.5) ? 5 : 10;
+        // this.mustCombo = 20;
+    }
+    /**结束连击后 */
+    public async afterCombo() {
+        this.mustCombo = 0;
+        if (!this.isPassReward) await this.showRewardForCombo();
         this.combo = 0;
+        if (!this.isPassReward) this.gv.afterCombo();
+        if (this.isPassReward && this.passRewardTime <= 0) {
+            this.gv.endPassReward();
+        }
     }
-   
+    public showRewardForCombo() {
+        return new Promise<void>(res => {
+            //根据连击数给予奖励
+            if (this.combo < 5) {
+                res();
+            } else if (this.combo < 10) {
+                const type: RewardType = MathUtil.random(1, 2);
+                const num = type == RewardType.money ? MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree) : CoinManger.instance.getReward();
+                ViewManager.showRewardPop(type, num, () => {
+                    res();
+                });
+            } else {
+                ViewManager.showSlotDialog(true, () => {
+                    res();
+                });
+            }
+        })
 
+    }
+    /**通关奖励关卡结束后恢复 */
+    public endPassReward() {
+        this.passRewardMoney = 0;
+        for (let i in this.diBoard) {
+            this.diBoard[i] = GameUtil.DiBlood;
+        }
+    }
 }

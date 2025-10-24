@@ -20,6 +20,10 @@ import { TaskShow } from '../component/TaskShow';
 import { Button } from 'cc';
 import { Combo } from '../component/Combo';
 import { GiftProgress } from '../component/GiftProgress';
+import { GameUtil } from '../../GameUtil_Match';
+import { NumFont } from '../../../Match_common/ui/NumFont';
+import { sp } from 'cc';
+import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 const { ccclass, property } = _decorator;
 
 const debug = Debugger("GameView")
@@ -49,6 +53,10 @@ export class GameView extends ViewComponent {
     combo: Combo = null;
     @property(GiftProgress)
     gp: GiftProgress = null;
+    @property(NumFont)
+    passTime: NumFont = null;
+    @property(sp.Skeleton)
+    king: sp.Skeleton = null;
 
 
 
@@ -63,9 +71,9 @@ export class GameView extends ViewComponent {
         this.fit();
 
         ViewManager.setUpDialogNode(this.dialogNode);
-        this.btnShuffle.on(Button.EventType.CLICK, this.onShuffle,this);
-        this.btnBomb.on(Button.EventType.CLICK, this.onBomb,this);
-        this.btnColor.on(Button.EventType.CLICK, this.onColor,this);
+        this.btnShuffle.on(Button.EventType.CLICK, this.onShuffle, this);
+        this.btnBomb.on(Button.EventType.CLICK, this.onBomb, this);
+        this.btnColor.on(Button.EventType.CLICK, this.onColor, this);
 
 
         // this.initGuide();
@@ -118,40 +126,74 @@ export class GameView extends ViewComponent {
     /**打乱道具 */
     private onShuffle() {
         if (this.isAni) return;
-        adHelper.showRewardVideo("打乱道具",async()=>{
+        adHelper.showRewardVideo("打乱道具", async () => {
             this.isAni = true;
             await this.boardNode.shuffle();
             this.isAni = false;
-        },ViewManager.adNotReady);
+        }, ViewManager.adNotReady);
     }
     /**颜色道具 */
     private onColor() {
         if (this.isAni) return;
-        adHelper.showRewardVideo("颜色道具",async()=>{
-            this.isAni = true;
-            await this.boardNode.clearSameColor();
-            this.isAni = false;
-        },ViewManager.adNotReady);
+        adHelper.showRewardVideo("颜色道具", async () => {
+            GameManger.instance.curUseProp = 2;
+            this.boardNode.setUseProp();
+        }, ViewManager.adNotReady);
     }
     /**炸弹道具 */
     private onBomb() {
         if (this.isAni) return;
-        adHelper.showRewardVideo("炸弹道具",async ()=>{
-             this.isAni = true;
-            await this.boardNode.bombClear();
-            this.isAni = false;
-        },ViewManager.adNotReady);
+        adHelper.showRewardVideo("炸弹道具", async () => {
+            GameManger.instance.curUseProp = 1;
+            this.boardNode.setUseProp();
+        }, ViewManager.adNotReady);
     }
+
     /**显示combo */
-    public showCombo(n:number){
+    public showCombo(n: number) {
         this.combo.show(n);
     }
     /**增加combo进度条 */
-    public addComboProgress(){
+    public addComboProgress() {
         this.gp.addCombo();
     }
+    /**结束连击后 */
+    public async afterCombo() {
+        await this.gp.calShowGift();
+        if (GameManger.instance.isPass()) {
+            //通关展示倒计时
 
+            //通关奖励时间
+            GameManger.instance.passRewardTime = GameUtil.PassRewardTime;
+            GameManger.instance.isPassReward = true;
+            this.boardNode.showPassReward();
+            this.countDownPassTime();
+            ActionEffect.skAni(this.king,"animation2");
+        }
+    }
+    private async countDownPassTime() {
+        const ins = GameManger.instance;
+        while (ins.passRewardTime > 0) {
+            await this.delay(1);
+            ins.passRewardTime--;
+            this.passTime.num = ins.passRewardTime + "_";
+            if (ins.passRewardTime <= 0 && ins.getCombo() == 0) {
+                this.endPassReward();
+            }
+        }
 
+    }
+    /**结束奖励关卡 */
+    public endPassReward() {
+        ActionEffect.skAni(this.king,"animation1");
+        GameManger.instance.isPassReward = false;
+
+        ViewManager.showRewardWin(GameManger.instance.passRewardMoney, () => { });
+        GameManger.instance.endPassReward();
+        this.boardNode.renewDi();
+        this.boardNode.hidePassReward();
+
+    }
 
     private delay(time: number, node?: Node) {
         return new Promise<void>(resolve => {

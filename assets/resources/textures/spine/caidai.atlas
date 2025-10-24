@@ -1,0 +1,41 @@
+
+caidai.png
+size: 141,157
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidai
+  rotate: true
+  xy: 2, 50
+  size: 54, 86
+  orig: 54, 86
+  offset: 0, 0
+  index: -1
+huang
+  rotate: true
+  xy: 2, 106
+  size: 49, 101
+  orig: 49, 101
+  offset: 0, 0
+  index: -1
+lan
+  rotate: true
+  xy: 2, 2
+  size: 46, 99
+  orig: 47, 99
+  offset: 1, 0
+  index: -1
+lanlv
+  rotate: false
+  xy: 103, 32
+  size: 34, 49
+  orig: 34, 49
+  offset: 0, 0
+  index: -1
+zihong
+  rotate: true
+  xy: 105, 83
+  size: 72, 34
+  orig: 72, 34
+  offset: 0, 0
+  index: -1

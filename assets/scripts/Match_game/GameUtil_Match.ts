@@ -119,10 +119,10 @@ export namespace GameUtil {
    export const MajorPro: number = 0.1;
    /**出大奖池概率 */
    export const GrandPro: number = 0;
-   /**兑换券收集到可提现数量 */
-   export const CashWithdrawNum: number = 100;
-   /**新手引导送大额钱 */
-   export const GuideMoney: number = 50;
+   /**通关奖励时间 */
+   export const PassRewardTime: number = 30;
+   /**主页送钱倒计时时间 */
+   export const GetMoneyTime: number = 60;
    /**3~5个免费游戏标可以有几次免费游戏 */
    export const FreeGameTimes: number[] = [5, 6, 7];
    /**看广告增加的免费游戏次数 */
@@ -130,7 +130,7 @@ export namespace GameUtil {
    /**钱提现金额 */
    export const moneyCash: number[] = [500, 1000, 1500, 2000, 2500, 3000];
    /**连击进度条总数 */
-   export const CombosProgress:number = 100;
+   export const CombosProgress:number = 120;
    /**连击礼物百分比 */
    export const ComboGifts:number[]=[0.3,0.6,1];
    const yi = 100000000;
@@ -138,6 +138,8 @@ export namespace GameUtil {
    export const coinCash: CoinCashData[] = [{ coin: 3 * yi, money: 500 }, { coin: 6 * yi, money: 1000 }, { coin: 9 * yi, money: 1500 }, { coin: 12 * yi, money: 2000 }, { coin: 15 * yi, money: 2500 }, { coin: 18 * yi, money: 3000 }];
    /**附近八个位置 */
    export const Nearby8:number[]=[-1,1,AllCol,-AllCol,AllCol-1,AllCol+1,-AllCol-1,-AllCol+1];
+   /**炸弹位置纠正 */
+   export const BombPos:number[]=[1,1,2,3,4,4];
 
 
    export function getCashNum(bl: number = 1) {//获取最低提现金额

@@ -10,19 +10,18 @@ import { UIUtils } from '../../../Match_common/utils/UIUtils';
 import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { v3 } from 'cc';
 import { MathUtil } from '../../../Match_common/utils/MathUtil';
-import { delay } from '../../../Match_common/utils/TimeUtil';
+import { delay, tweenPromise } from '../../../Match_common/utils/TimeUtil';
 import { Vec3 } from 'cc';
 import { GameStorage } from '../../GameStorage_Match';
 import { tween } from 'cc';
 import { AudioManager } from '../../manager/AudioManager';
+import { TERRAIN_HEIGHT_BASE } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('RewardAni')
 export class RewardAni extends ViewComponent {
     @property(Node)
     icon: Node = null;
-    @property(Node)
-    light: Node = null;
     @property([SpriteFrame])
     sf: SpriteFrame[] = [];
 
@@ -30,19 +29,22 @@ export class RewardAni extends ViewComponent {
     /**增加的奖励 */
     num: number;
     cb: Function;
+
     show(parent: Node, args?: any): void {
         parent.addChild(this.node);
         this.type = args.type;
         this.num = args.num;
         this.cb = args.cb;
         this.icon.getComponent(Sprite).spriteFrame = this.sf[this.type - 1];
-        if (this.type == RewardType.cash)
-            this.cashAni();
-        else
-            this.ani();
+        if (args.ani == 1) {
+            this.ani1();
+        } else if (args.ani == 2) {
+            this.ani2(args.from, args.to);
+        }
+
     }
-    ani() {
-        const all = 10;
+    ani1() {
+        const all = 15;
         const time = 0.5;
         let toNode: Node;
         let trueNum: number;
@@ -66,20 +68,21 @@ export class RewardAni extends ViewComponent {
         const item = this.num / all;
         if (!toNode) { this.node.destroy(); return; }
         const pos = UIUtils.transformOtherNodePos2localNode(toNode, this.node);
+        AudioManager.playEffect("jump");
         for (let i = 0; i < all; i++) {
             const ic = instantiate(this.icon);
             this.node.addChild(ic);
-            delay(0.05 * i).then(async () => {
+            delay(0.02 * i).then(async () => {
                 ic.active = true;
-                AudioManager.playEffect("jump");
+                // AudioManager.playEffect("jump");
                 await ActionEffect.scale(ic, 0.1, 1, 0, "backOut");
-                const toP = v3(MathUtil.random(100, 200) * MathUtil.randomOne(), MathUtil.random(-100, 0));
+                const toP = v3(MathUtil.random(50, 150) * MathUtil.randomOne(), MathUtil.random(-100, 0));
                 const cp1 = v3(toP.x / 2, 400);
-                await ActionEffect.bezierTo(ic, toP, cp1, 0.3);
-                await delay(0.05 * i)
+                await ActionEffect.bezierTo(ic, toP, cp1, 0.2);
+                await delay(0.02 * i)
                 const cp = v3(ic.x + MathUtil.randomOne() * 300, pos.y / 2);
-                await ActionEffect.bezierTo(ic, pos, cp, 0.5);
-                AudioManager.playEffect("ceil",0.5);
+                await ActionEffect.bezierTo(ic, pos, cp, 0.4);
+                // AudioManager.playEffect("ceil", 0.5);
                 const sn = Math.floor(startNum + (i + 1) * item);
                 ins.showNum(sn);
                 ic.destroy();
@@ -91,18 +94,38 @@ export class RewardAni extends ViewComponent {
             })
         }
     }
-    async lightAni(){
-        this.light.active = true;
-        await ActionEffect.scale(this.light,0.5,1,0,"backOut");
-        ActionEffect.fadeOut(this.light,1);
+    ani2(from: Node, to: Node) {
+        const all = 6;
+
+        if (!to) { this.node.destroy(); return; }
+        const fp = from ? UIUtils.transformOtherNodePos2localNode(from, this.node) : v3();
+        const tp = UIUtils.transformOtherNodePos2localNode(to, this.node);
+        AudioManager.playEffect("jump");
+        const sc = 0.6;
+        for (let i = 0; i < all; i++) {
+            const ic = instantiate(this.icon);
+            this.node.addChild(ic);
+            ic.position = fp;
+            delay(0.01 * i).then(async () => {
+                ic.active = true;
+                // AudioManager.playEffect("jump");
+                await ActionEffect.scale(ic, 0.1, sc, 0, "backOut");
+                // const toP = v3(fp.x + MathUtil.random(50, 100) * MathUtil.randomOne(), fp.y + MathUtil.random(-60, 0));
+                const toP = v3(fp.x + MathUtil.random(50, 100) * (i%2==1?1:-1), fp.y + MathUtil.random(-60, 0));
+                const cp1 = v3((fp.x + toP.x) / 2, fp.y + 200);
+                await ActionEffect.bezierTo(ic, toP, cp1, 0.2);
+                await delay(0.02*i);
+                await tweenPromise(ic, tw => tw.to(0.4, { position: tp }))
+                // AudioManager.playEffect("ceil", 0.5);
+                ic.destroy();
+                if (i == all - 1) {
+                    this.cb?.();
+                    this.node.destroy();
+                }
+            })
+        }
     }
-    async cashAni() {
-        AudioManager.playEffect("switch");
-        this.icon.active = true;
-        await ActionEffect.moveBy(this.icon,0.4,0,800);
-        this.node.destroy();
-        this.cb?.(); 
-    }
+
 }
 
 

@@ -8,6 +8,10 @@ import { GameUtil } from "../GameUtil_Match";
 import { MathUtil } from "../../Match_common/utils/MathUtil";
 import { LangStorage } from "../../Match_common/localStorage/LangStorage";
 import { ActionEffect } from "../../Match_common/effects/ActionEffect";
+import { FormatUtil } from "../../Match_common/utils/FormatUtil";
+import { WithdrawStorage } from "../view/withdraw/WithdrawStorage";
+import { WithdrawUtil, MoneyControl } from "../view/withdraw/WithdrawUtil";
+import { GameManger } from "./GameManager";
 
 export class MoneyManger {
     public static _instance: MoneyManger = null;
@@ -45,9 +49,21 @@ export class MoneyManger {
             if (isVaild(this._curMoney)) {
                 this._curMoney.showCurMoney();
             }
-        }else{
-            ActionEffect.numAddAni(last,curMoney,(n:number)=>{this.showNum(n)});
+        } else {
+            ActionEffect.numAddAni(last, curMoney, (n: number) => { this.showNum(n) });
         }
+        if(!WithdrawStorage.getIsToCashOut()){
+            // if(curMoney>=WithdrawUtil.getCashNum()){
+            //     GameManger.instance.guideTipCashOut();
+            //     WithdrawStorage.setIsToCashOut();
+            //     return;
+            // }
+        }
+        // const m = WithdrawUtil.getCashNumAuto(curMoney);
+        // if(m){//气泡显示还剩多少钱可提现
+        //     const sy = m-curMoney;
+        //     GameManger.instance.tipCashOut(1,[FormatUtil.toMoneyLabel(sy),FormatUtil.toMoneyLabel(m)]);
+        // }   
     }
     public showNum(num: number) {
         if (isVaild(this._curMoney)) {
@@ -59,37 +75,57 @@ export class MoneyManger {
             this._curMoney.showCurMoney();
         }
     }
+    // /**获取奖励钱，根据剩余钱越变越少 */
+    // public getReward(bl: number = 1) {
+    //     const cur = GameStorage.getMoney();
+    //     const cha = GameUtil.getCashNum() - cur;
+    //     const rate = LangStorage.getData().rate;
+    //     const fsl1 = 350 * rate;//根据汇率计算
+    //     const fsl2 = 250 * rate;//根据汇率计算
+    //     const fsl3 = 130 * rate;//根据汇率计算
+    //     if (cha > fsl1) {//钱越多，赚的钱比例越来越低
+    //         return Math.floor(cha * MathUtil.random(20, 40) / 10 * bl) / 100;
+    //     }
+    //     if (cha > fsl2) {
+    //         return Math.floor(cha * MathUtil.random(15, 30) / 10 * bl) / 100;
+    //     }
+    //     if (cha > fsl3) {
+    //         return Math.floor(cha * MathUtil.random(10, 20) / 10 * bl) / 100;
+    //     }
+
+    //     const max = cha / 200;
+    //     const min = cha / 600;
+    //     const num = MathUtil.randomFloat(min, max);
+
+    //     let xsd = 2;
+    //     if (cha <= 10) {
+    //         // 计算 a 的数量级，并动态调整小数位数
+    //         const magnitude = Math.floor(Math.log10(cha));
+    //         xsd = 3 - magnitude; // 每小 10 倍，位数 +1
+    //     }
+    //     return parseFloat(num.toFixed(xsd)) * bl;
+    // }
     /**获取奖励钱，根据剩余钱越变越少 */
     public getReward(bl: number = 1) {
         const cur = GameStorage.getMoney();
-        const cha = GameUtil.getCashNum() - cur;
         const rate = LangStorage.getData().rate;
-        const fsl1 = 350 * rate;//根据汇率计算
-        const fsl2 = 250 * rate;//根据汇率计算
-        const fsl3 = 130 * rate;//根据汇率计算
-        if (cha > fsl1) {//钱越多，赚的钱比例越来越低
-            return Math.floor(cha * MathUtil.random(3, 10) / 10 * bl) / 100;
+        let data: MoneyControl;
+        for (let n of WithdrawUtil.MoneyControlData) {
+            if (n.right * rate > cur) {
+                data = n;
+                break;
+            }
         }
-        if (cha > fsl2) {
-            return Math.floor(cha * MathUtil.random(2, 8) / 10 * bl) / 100;
+        if (data) {
+            const _bl = bl * MathUtil.randomFloat(data.min, data.max) * rate;
+            const num = _bl * data.base;
+            let xsd = 4;
+            return parseFloat(num.toFixed(xsd));
         }
-        if (cha > fsl3) {
-            return Math.floor(cha * MathUtil.random(1, 5) / 10 * bl) / 100;
-        }
-
-        const max = cha / 200;
-        const min = cha / 600;
-        const num = MathUtil.randomFloat(min, max);
-
-        let xsd = 2;
-        if (cha <= 10) {
-            // 计算 a 的数量级，并动态调整小数位数
-            const magnitude = Math.floor(Math.log10(cha));
-            xsd = 3 - magnitude; // 每小 10 倍，位数 +1
-        }
-        return parseFloat(num.toFixed(xsd)) * bl;
+        return 0;
     }
-    public rate(money:number){
+    public rate(money: number) {
         return LangStorage.getData().rate * money;
     }
+
 }

@@ -6,6 +6,9 @@ import { tweenPromise } from '../../../Match_common/utils/TimeUtil';
 import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { Label } from 'cc';
 import { v3 } from 'cc';
+import { MoneyManger } from '../../manager/MoneyManger';
+import { WithdrawUtil } from '../withdraw/WithdrawUtil';
+import { FormatUtil } from '../../../Match_common/utils/FormatUtil';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bird')
@@ -14,6 +17,8 @@ export class Bird extends Component {
     icon: Node = null;
     @property(Label)
     l: Label = null;
+    @property(Label)
+    moneyL: Label = null;
     @property([SpriteFrame])
     sf: SpriteFrame[] = [];
 
@@ -61,6 +66,16 @@ export class Bird extends Component {
         this.setType(type);
         const pos = GameUtil.getPost(i);
         await tweenPromise(this.node, t => t.to(0.2, { position: pos }));
+    }
+    public money:number = 0;
+    setMoney(){
+        this.moneyL.node.active = true;
+        this.money = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.Pass);
+        this.moneyL.string = FormatUtil.toMoneyLabel(this.money);
+    }
+    hideMoney(){
+        this.moneyL.node.active = false;
+        this.money = 0;
     }
 }
 

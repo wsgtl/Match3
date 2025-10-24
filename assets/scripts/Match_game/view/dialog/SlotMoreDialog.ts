@@ -8,17 +8,29 @@ const { ccclass, property } = _decorator;
 export class SlotMoreDialog extends DialogComponent {
     @property(Node)
     btnClaim:Node = null;
+    @property(Node)
+    close:Node = null;
 
     protected onLoad(): void {
         this.btnClaim.on(Button.EventType.CLICK,this.onClaim,this);
+        this.close.on(Button.EventType.CLICK,this.onClose,this);
     }
     protected onDestroy(): void {
-        this.btnClaim.off(Button.EventType.CLICK,this.onClaim,this);
+        // this.btnClaim.off(Button.EventType.CLICK,this.onClaim,this);
+    }
+    private cb:Function;
+    showStart(args?: any): void {
+        this.cb = args.cb;
     }
     onClaim(){
         if(this.isAni)return;
         this.closeAni();
-        ViewManager.showSlotDialog(null);
+        ViewManager.showSlotDialog(false,this.cb);
+    }
+    onClose(){
+        if(this.isAni)return;
+        this.closeAni();
+        this.cb();
     }
 }
 

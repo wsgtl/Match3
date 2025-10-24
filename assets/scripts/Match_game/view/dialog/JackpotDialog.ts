@@ -18,6 +18,7 @@ import { ViewManager } from '../../manager/ViewManger';
 import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { UIUtils } from '../../../Match_common/utils/UIUtils';
 import { CoinManger } from '../../manager/CoinManger';
+import { WithdrawUtil } from '../withdraw/WithdrawUtil';
 const { ccclass, property } = _decorator;
 
 @ccclass('JackpotDialog')
@@ -32,11 +33,14 @@ export class JackpotDialog extends DialogComponent {
     btnNt: Node = null;
     @property(NumFont)
     num: NumFont = null;
+    @property(NumFont)
+    numBtn: NumFont = null;
     @property([Node])
     jackpots: Node[] = [];
 
     type: JakcpotType;
     coinNum: number;
+    moneyNum:number;
     cb: Function
     show(parent: Node, args?: any) {
         parent.addChild(this.node);
@@ -53,9 +57,13 @@ export class JackpotDialog extends DialogComponent {
         this.num.aligning = 1;
         // this.num.num = data.symbol + FormatUtil.toXXDXX(num, 6);
         // this.num.num = FormatUtil.toXXDXX(num,0,false);
+        this.moneyNum = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.Mini);
+        const data = LangStorage.getData();
+        // this.numBtn.num = data.symbol + " " + FormatUtil.toXXDXXxsd(this.moneyNum);
+        this.numBtn.num = FormatUtil.toMoney(this.moneyNum);
         ActionEffect.numAddAni(0, num, (n: number) => {if(isVaild(this.node)) this.num.num = FormatUtil.toXXDXX(n, 0, false); }, true, 29, this.node);
         this.btnClaim.on(Button.EventType.CLICK, this.onClaim, this);
-        this.btnNt.on(Button.EventType.CLICK, this.onNothink, this);
+        this.btnNt.once(Button.EventType.CLICK, this.onNothink, this);
         this.ani();
 
     }
@@ -102,19 +110,23 @@ export class JackpotDialog extends DialogComponent {
         // this.createYb();
     }
     onClaim() {
+        if(this.isAni)return;
         const jack = ["grand", "major", "mini"][this.type - 1];
         adHelper.showRewardVideo(jack + "奖池领取", () => {
             // MoneyManger.instance.addMoney(this.money);
             CoinManger.instance.addCoin(this.coinNum);
+            // MoneyManger.instance.addMoney(this.moneyNum);
+            this.cb(this.moneyNum);
             this.closeAni();
         }, ViewManager.adNotReady);
 
     }
     onNothink() {
+        if(this.isAni)return;
+        CoinManger.instance.addCoin(this.coinNum);
         this.closeAni();
         adHelper.timesToShowInterstitial();
-        this.cb();
+        // this.cb();
     }
 }
-
 

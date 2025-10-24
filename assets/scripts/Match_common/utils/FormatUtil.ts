@@ -108,7 +108,11 @@ export namespace FormatUtil {
     }
 
     /**显示钱格式 */
-    export function toMoney(num: number, useGrouping: boolean = true, minDecimalDigits: number = 0) {
+    export function toMoney(num: number, useGrouping: boolean = false, minDecimalDigits: number = 0) {
         return LangStorage.getData().symbol + " " + FormatUtil.toXXDXXxsd(num, useGrouping, minDecimalDigits);
+    }
+    /**显示钱格式 $33.33 */
+    export function toMoneyLabel(num: number, useGrouping: boolean = false, minDecimalDigits: number = 0) {
+        return toMoney(num,useGrouping,minDecimalDigits).replace("_",".");
     }
 }

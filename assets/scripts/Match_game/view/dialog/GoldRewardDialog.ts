@@ -18,6 +18,8 @@ import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { JackpotManger } from '../../manager/JackpotManager';
 import { view } from 'cc';
 import { MathUtil } from '../../../Match_common/utils/MathUtil';
+import { sp } from 'cc';
+import { Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('GoldRewardDialog')
@@ -25,9 +27,7 @@ export class GoldRewardDialog extends ViewComponent {
     @property([Node])
     jackpots: Node[] = [];
     @property(Node)
-    btnAdd: Node = null;
-    @property(Node)
-    btnClaim: Node = null;
+    btnBack: Node = null;
     @property(Node)
     yb: Node = null;
     @property(Node)
@@ -36,12 +36,15 @@ export class GoldRewardDialog extends ViewComponent {
     hand: Node = null;
     @property(Node)
     top: Node = null;
+    @property(sp.Skeleton)
+    cone: sp.Skeleton = null;
     @property(NumFont)
     moneyNode: NumFont = null;
     @property(NumFont)
     freeTimes: NumFont = null;
 
     cb: Function;
+    private isAni: boolean = false;
     private ybArr: Yb[] = [];
     /**固定奖池出现 */
     private randomJackpot: JakcpotType[] = [1, 1, 2, 2, 3, 3, 3];
@@ -64,10 +67,10 @@ export class GoldRewardDialog extends ViewComponent {
         this.initJackpot();
         this.showJackpotShowNum();
         // this.showBtn(false);
-        this.btnAdd.on(Button.EventType.CLICK, this.onBtnAdd, this);
-        this.btnClaim.on(Button.EventType.CLICK, this.onBtnCliam, this);
+        // this.btnAdd.on(Button.EventType.CLICK, this.onBtnAdd, this);
+        this.btnBack.on(Button.EventType.CLICK, this.onBtnBack, this);
         const w = 250;
-        const h = 200;
+        const h = 280;
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 4; j++) {
                 const yb = instantiate(this.yb);
@@ -90,11 +93,11 @@ export class GoldRewardDialog extends ViewComponent {
         this.showFreeTimes();
         this.showMoney(this.curMoney);
 
-        const cha = (view.getVisibleSize().y-1920)/2;
-        this.top.y=820+cha*0.7;
+        const cha = (view.getVisibleSize().y - 1920) / 2;
+        this.top.y = 820 + cha * 0.7;
     }
     private initJackpot() {
-        
+
         for (let i = this.randomJackpot.length; i < 12; i++) {
             this.randomJackpot[i] = 0;
         }
@@ -105,16 +108,16 @@ export class GoldRewardDialog extends ViewComponent {
 
     showBtn(v: boolean) {
         // this.btnAdd.active = v;
-        this.btnClaim.active = v;
+        this.btnBack.active = v;
     }
     onBtnAdd() {
         adHelper.showRewardVideo("宝箱弹窗多开两个按钮", () => {
-            this.canClickNum += Math.min(2,this.randomJackpot.length);
+            this.canClickNum += Math.min(2, this.randomJackpot.length);
             this.showAllAd(false);
             this.showFreeTimes();
         }, ViewManager.adNotReady);
     }
-    onBtnCliam() {
+    onBtnBack() {
         this.node.destroy();
         this.cb();
     }
@@ -125,18 +128,25 @@ export class GoldRewardDialog extends ViewComponent {
         })
     }
     @ButtonLock(0.5)
-    clickYb(ybcom: Yb) {
+    async clickYb(ybcom: Yb) {
+        if (this.isAni) return;
+        this.isAni = true;
         this.hand.active = false;
         AudioManager.vibrate(50, 155);
         AudioManager.playEffect("yb");
-        // if (!this.isInit) {
-        this.canClickNum--;
-        if (this.canClickNum <= 0) {
-            this.showAllAd(true);//显示要点击广告
-        }
-        // }
-        this.showFreeTimes();
+        
         let type: JakcpotType = JakcpotType.mini;
+        this.showCone(ybcom.node.position).then(() => {
+            this.isAni = false;
+            this.canClickNum--;
+            if (this.canClickNum <= 0) {
+                this.showAllAd(true);//显示要点击广告
+            }
+            this.showFreeTimes();
+        })
+
+        await delay(0.7);
+        AudioManager.playEffect("cone",1);
         if (this.randomJackpot.length) {
             type = this.randomJackpot.pop();
         } else {
@@ -151,7 +161,7 @@ export class GoldRewardDialog extends ViewComponent {
                 const last = this.curMoney;
                 this.curMoney += money;
                 ActionEffect.numAddAni(last, this.curMoney, (n: number) => { this.showMoney(n) });
-            }, 0.5)
+            }, 0.4)
         } else {
             ybcom.show(type);
             this.jackpotShowNum[type]++;
@@ -171,8 +181,15 @@ export class GoldRewardDialog extends ViewComponent {
                 this.showJackpotShowNum();
             });
             // ViewManager.showJackpotDialog(type, MoneyManger.instance.getReward(), () => { });
-            ViewManager.showJackpotDialog(type, JackpotManger.getData()[type-1], () => { });
+            ViewManager.showJackpotDialog(type, JackpotManger.getData()[type - 1], () => { });
         }
+    }
+    private async showCone(pos: Vec3) {
+        this.cone.node.x = pos.x + 100;
+        this.cone.node.y = pos.y - 120;
+        this.cone.node.active = true;
+        ActionEffect.skAniOnce(this.cone, "chuizi");
+        await delay(1);
     }
     private showJackpotShowNum() {
         this.jackpots.forEach((v, i) => {
@@ -189,13 +206,13 @@ export class GoldRewardDialog extends ViewComponent {
         const num = this.jackpotShowNum[type];
         const p = this.jackpots[type - 1];
         const dot = p.getChildByName("dots").getChildByName("d" + num);
-        ViewManager.showRewardParticle(RewardType.none, from, dot, () => { this.showJackpotShowNum(); }, 0.3);
+        ViewManager.showRewardParticle(RewardType.none, from, dot, () => { this.showJackpotShowNum(); }, 0.4);
     }
     private showFreeTimes() {
         this.freeTimes.num = this.canClickNum;
     }
     private showMoney(num: number) {
-        const n = FormatUtil.toXXDXX(num, 2, false,2);
+        const n = FormatUtil.toXXDXX(num, 2, false, 2);
         const str = LangStorage.getData().symbol + " " + n;
         this.moneyNode.num = str;
     }

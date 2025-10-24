@@ -1,0 +1,27 @@
+
+lihe.png
+size: 1703,741
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+guan
+  rotate: false
+  xy: 1232, 235
+  size: 469, 504
+  orig: 469, 504
+  offset: 0, 0
+  index: -1
+guang
+  rotate: false
+  xy: 2, 2
+  size: 736, 737
+  orig: 746, 746
+  offset: 6, 5
+  index: -1
+kai
+  rotate: true
+  xy: 740, 146
+  size: 593, 490
+  orig: 595, 492
+  offset: 1, 1
+  index: -1

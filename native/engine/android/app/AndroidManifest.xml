@@ -18,13 +18,9 @@
     <activity android:name="com.cocos.lib.CocosEditBoxActivity" android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize" android:screenOrientation="behind" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
     <activity android:name="com.luckbash.lksma.WebviewActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" android:exported="false"/>
     <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-    <!-- Adjust 的核心广播接收器，用于监听 INSTALL_REFERRER -->
-    <receiver
-        android:name="com.adjust.sdk.AdjustReferrerReceiver"
-        android:permission="android.permission.INSTALL_PACKAGES"
-        android:exported="true">
+    <receiver android:name="com.adjust.sdk.AdjustReferrerReceiver" android:permission="android.permission.INSTALL_PACKAGES" android:exported="true">
       <intent-filter>
-        <action android:name="com.android.vending.INSTALL_REFERRER" />
+        <action android:name="com.android.vending.INSTALL_REFERRER"/>
       </intent-filter>
     </receiver>
   </application>

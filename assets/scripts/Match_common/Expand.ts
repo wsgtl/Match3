@@ -13,6 +13,8 @@ declare global {
         getRandomItems(n: number): T[];
         /**获取数组内随机下标 */
         getRandomIndex(): number;
+        /**删除数组内第一个相同元素 */
+        delSame(n:T);
         /**打乱数组
          * @param num 打乱次数，越多越乱
          */
@@ -74,7 +76,18 @@ if (!Array.prototype.hasOwnProperty("getRandomItems")) {
         }
     })
 }
-
+if (!Array.prototype.hasOwnProperty("delSame")) {
+    Object.defineProperty(Array.prototype, "delSame", {
+        value: function (n) {
+            for(let i=this.length-1;i>=0;i--){
+                if(this[i]==n){
+                    this.splice(i,1);
+                    return;
+                }
+            }
+        }
+    })
+}
 
 if (!Array.prototype.hasOwnProperty("getRandomIndex")) {
     Object.defineProperty(Array.prototype, "getRandomIndex", {

@@ -1,12 +1,14 @@
 import { sys } from "cc";
 
 export enum ITEM_STORAGE {
-    LANGUAGE = "Match_Lang",
-    AUDIO = "Match_audio",
-    EventTracking = "Match_event",
-    Game = "Match_game",
-    JACKPOT = "Match_jackpot",
-    WAITWITHDRWW = "Match_waitwithdraw"
+    LANGUAGE = "Match3_Lang",
+    AUDIO = "Match3_audio",
+    EventTracking = "Match3_event",
+    EventTrackings = "Match3_events",
+    Game = "Match3_game",
+    JACKPOT = "Match3_jackpot",
+    WAITWITHDRWW = "Match3_waitwithdraw",
+    WAITWITHDRWWS = "Match3_waitwithdraws"
 }
 
 /**

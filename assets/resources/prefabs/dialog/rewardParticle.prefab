@@ -226,7 +226,7 @@
     "_startColor": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 249,
+      "g": 163,
       "b": 111,
       "a": 255
     },
@@ -335,8 +335,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 67,
-      "height": 69
+      "width": 121,
+      "height": 120
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
