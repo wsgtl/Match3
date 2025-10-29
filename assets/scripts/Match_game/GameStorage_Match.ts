@@ -1,5 +1,5 @@
 import { BaseStorageNS, ITEM_STORAGE } from "../Match_common/localStorage/BaseStorage";
-import { PayType } from "./GameUtil_Match";
+import { PayType, PropType } from "./GameUtil_Match";
 
 
 /**
@@ -8,24 +8,14 @@ import { PayType } from "./GameUtil_Match";
 export namespace GameStorage {
     /**游戏信息 */
     const _gameData = {
-
         /**金币数 */
         coin: 100000,
         /**钱数 */
         money: 0,
-        /**提现卡类型 */
-        payType: 1,
-        /**提现卡号 */
-        cardId: "",
-        /**猪礼物 */
-        pig: {
-            /**猪礼物倒计时 */
-            pigTime: 0,
-            /**猪礼物上次领取奖励天数 */
-            day: 0,
-        },
         /**新手引导完成第几步 0：没完成 1：完成主页引导 2：完成游戏页引导 */
         guideStep: 0,
+        /**道具数量 */
+        prop:[3,3,3]
     }
     const key = ITEM_STORAGE.Game;
     /**
@@ -79,39 +69,25 @@ export namespace GameStorage {
     }
     
     
-    /** 当前猪礼物 */
-    export function getPig() {
-        return _gameData.pig;
-    }
-    /**存储猪礼物倒计时 */
-    export function setPigTime(time: number) {
-        _gameData.pig.pigTime = time;
-        saveLocal();
-    }
-    /**存储猪礼物上次领取天数 */
-    export function setPigDay(day: number) {
-        _gameData.pig.day = day;
-        saveLocal();
-    }
     
-    /**提现卡类型 */
-    export function getPayType() {
-        return _gameData.payType;
-    }
-    /**设置提现卡类型 */
-    export function setPayType(type: PayType) {
-        _gameData.payType = type;
-        saveLocal();
-    }
-    /**提现卡类型 */
-    export function getCardId() {
-        return _gameData.cardId;
-    }
-    /**设置提现卡类型 */
-    export function setCardId(cardId: string) {
-        _gameData.cardId = cardId;
-        saveLocal();
-    }
+    // /**提现卡类型 */
+    // export function getPayType() {
+    //     return _gameData.payType;
+    // }
+    // /**设置提现卡类型 */
+    // export function setPayType(type: PayType) {
+    //     _gameData.payType = type;
+    //     saveLocal();
+    // }
+    // /**提现卡类型 */
+    // export function getCardId() {
+    //     return _gameData.cardId;
+    // }
+    // /**设置提现卡类型 */
+    // export function setCardId(cardId: string) {
+    //     _gameData.cardId = cardId;
+    //     saveLocal();
+    // }
 
     /**当前签到信息 */
     // export function getDaily() {
@@ -149,6 +125,17 @@ export namespace GameStorage {
     /**设置新手引导完成第几步 */
     export function setGuideStep(step: number) {
         _gameData.guideStep = step;
+        saveLocal();
+    }
+    /**获取道具数量 */
+    export function getProp(){
+        return _gameData.prop;
+    }
+    /**增加道具数量 */
+    export function addProp(type:PropType,num:number){
+        let n = _gameData.prop[type-1]??0;
+        n+=num;
+        _gameData.prop[type-1]=n;
         saveLocal();
     }
    

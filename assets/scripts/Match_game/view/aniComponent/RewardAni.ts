@@ -16,6 +16,8 @@ import { GameStorage } from '../../GameStorage_Match';
 import { tween } from 'cc';
 import { AudioManager } from '../../manager/AudioManager';
 import { TERRAIN_HEIGHT_BASE } from 'cc';
+import { Button } from 'cc';
+import { ButtonLock } from '../../../Match_common/Decorator';
 const { ccclass, property } = _decorator;
 
 @ccclass('RewardAni')
@@ -82,6 +84,7 @@ export class RewardAni extends ViewComponent {
                 await delay(0.02 * i)
                 const cp = v3(ic.x + MathUtil.randomOne() * 300, pos.y / 2);
                 await ActionEffect.bezierTo(ic, pos, cp, 0.4);
+                this.sound();
                 // AudioManager.playEffect("ceil", 0.5);
                 const sn = Math.floor(startNum + (i + 1) * item);
                 ins.showNum(sn);
@@ -117,6 +120,7 @@ export class RewardAni extends ViewComponent {
                 await delay(0.02*i);
                 await tweenPromise(ic, tw => tw.to(0.4, { position: tp }))
                 // AudioManager.playEffect("ceil", 0.5);
+                this.sound();
                 ic.destroy();
                 if (i == all - 1) {
                     this.cb?.();
@@ -126,6 +130,21 @@ export class RewardAni extends ViewComponent {
         }
     }
 
+    private isSound:boolean = false;
+    private async sound(){
+        if(this.isSound)return;
+        this.isSound = true;
+        // const name = this.type==RewardType.money?"toMoney":"toCoin";
+        const name = "toCoin";
+        let i=5;
+        while(i>0){
+            i--;
+            AudioManager.playEffect(name);
+            await delay(0.15,this.node);
+        }
+         
+    }
+   
 }
 
 

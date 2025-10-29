@@ -7,6 +7,7 @@ import { FormatUtil } from '../../../Match_common/utils/FormatUtil';
 import { CoinManger } from '../../manager/CoinManger';
 import { MoneyManger } from '../../manager/MoneyManger';
 import { ViewManager } from '../../manager/ViewManger';
+import { AudioManager } from '../../manager/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('RewardPopDialog')
@@ -31,6 +32,7 @@ export class RewardPopDialog extends DialogComponent {
         this.mc.forEach((v,i)=>{
             v.active = i+1==this.type;
         })
+        AudioManager.playEffect("rewardShow");
     }
 
     onClaim() {

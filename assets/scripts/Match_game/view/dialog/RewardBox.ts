@@ -11,6 +11,7 @@ import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { delay } from '../../../Match_common/utils/TimeUtil';
 import { ViewManager } from '../../manager/ViewManger';
 import { RewardType } from '../../GameUtil_Match';
+import { AudioManager } from '../../manager/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('RewardBox')
@@ -33,8 +34,8 @@ export class RewardBox extends DialogComponent {
     private cb:Function;
     showStart(args?: any): void {
         this.cb = args.cb;
-        this.freeNum = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree);
-        this.moreNum = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardAd);
+        this.freeNum = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.BoxFree);
+        this.moreNum = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.Box);
 
         this.moreNumNode.num = FormatUtil.toMoney(this.moreNum);
         this.freeNumNode.num = "+" + FormatUtil.toMoney(this.freeNum);
@@ -46,12 +47,15 @@ export class RewardBox extends DialogComponent {
     }
     /**开始动画 */
     async startAni() {
+        AudioManager.playEffect("openBox");
+        // AudioManager.playEffect("next");
         this.s2.active = false;
         this.isAni = true;
         if (this.bg) ActionEffect.fadeIn(this.bg, 0.3);
         if (this.content) ActionEffect.scale(this.content, 0.3, 1, 0, "backOut");
         ActionEffect.skAniOnce(this.box, "animation",true);
         await delay(0.9);
+        // AudioManager.playEffect("kaixiang");
         this.s2.active = true;
         this.isAni = false;
        

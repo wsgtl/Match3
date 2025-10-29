@@ -242,7 +242,10 @@ export namespace WithdrawUtil {
       GoldReward: 0.2,//彩金
       Pass: 0.1,//通关三消奖励
       Mini: 2,//mini
-      PassAd:3,//通关奖励看广告倍数
+      PassAd:2,//通关奖励看广告倍数
+      BoxFree:1,//礼包免费
+      Box: 3,//礼包
+      Slot: 1.3,//老虎机钱
    }
 
    /**排队消耗数据 */

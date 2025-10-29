@@ -75,6 +75,13 @@ export enum ColorType {
    p,
    pink
 }
+/**道具 */
+export enum PropType{
+   none=0,
+   bomb,//炸弹道具
+   color,//颜色道具
+   shuffle,//打乱道具
+}
 export type LuckyRewardData = {
    type: RewardType,
    num: number,
@@ -106,6 +113,8 @@ export type CardCreateData = {
 }
 
 export namespace GameUtil {
+   /**是否是测试模式 */
+   export const IsTest: boolean = true;
    export const CardW: number = 170;//卡牌宽
    export const CardH: number = 170;//卡牌高
    export const AllRow: number = 6;//行数
@@ -122,7 +131,9 @@ export namespace GameUtil {
    /**通关奖励时间 */
    export const PassRewardTime: number = 30;
    /**主页送钱倒计时时间 */
-   export const GetMoneyTime: number = 60;
+   export const GetMoneyTime: number = 10;
+   /**每次观看广告增加的道具数 */
+   export const PropAddNum: number = 3;
    /**3~5个免费游戏标可以有几次免费游戏 */
    export const FreeGameTimes: number[] = [5, 6, 7];
    /**看广告增加的免费游戏次数 */
@@ -130,16 +141,16 @@ export namespace GameUtil {
    /**钱提现金额 */
    export const moneyCash: number[] = [500, 1000, 1500, 2000, 2500, 3000];
    /**连击进度条总数 */
-   export const CombosProgress:number = 120;
+   export const CombosProgress: number = 80;
    /**连击礼物百分比 */
-   export const ComboGifts:number[]=[0.3,0.6,1];
+   export const ComboGifts: number[] = [0.3, 0.6, 1];
+   /**老虎机中钱和金币概率 */
+   export const SlotProbability: number[] = [0.25, 0.4, 0.35];
    const yi = 100000000;
-   /**金币提现金额 */
-   export const coinCash: CoinCashData[] = [{ coin: 3 * yi, money: 500 }, { coin: 6 * yi, money: 1000 }, { coin: 9 * yi, money: 1500 }, { coin: 12 * yi, money: 2000 }, { coin: 15 * yi, money: 2500 }, { coin: 18 * yi, money: 3000 }];
    /**附近八个位置 */
-   export const Nearby8:number[]=[-1,1,AllCol,-AllCol,AllCol-1,AllCol+1,-AllCol-1,-AllCol+1];
+   export const Nearby8: number[] = [-1, 1, AllCol, -AllCol, AllCol - 1, AllCol + 1, -AllCol - 1, -AllCol + 1];
    /**炸弹位置纠正 */
-   export const BombPos:number[]=[1,1,2,3,4,4];
+   export const BombPos: number[] = [1, 1, 2, 3, 4, 4];
 
 
    export function getCashNum(bl: number = 1) {//获取最低提现金额
@@ -218,7 +229,17 @@ export namespace GameUtil {
       return ((type - 1) % ColorNum) + 1;
    }
 
-
+   /**根据数组概率，返回对应类型 */
+   export function calPropBackType(arr: number[]) {
+      let pa = 0;
+      const pro = Math.random();
+      for (let i = 0; i < arr.length; i++) {
+         pa += arr[i];
+         if (pro <= pa) {
+            return i;
+         }
+      }
+   }
 }
 
 

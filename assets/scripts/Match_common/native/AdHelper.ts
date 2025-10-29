@@ -5,6 +5,7 @@ import Debugger from "../Debugger";
 import { dragonBones } from "cc";
 import { delay } from "../utils/TimeUtil";
 import { NativeFun } from "./NativeFun";
+import { GameUtil } from "../../Match_game/GameUtil_Match";
 const debug = Debugger("AdHelper")
 
 export class AdHelper {
@@ -59,6 +60,10 @@ export class AdHelper {
     public showRewardVideo(placement:string,callback: CallableFunction, fail?: CallableFunction) {
         console.log("显示激励广告1")
         if (sys.platform === sys.Platform.ANDROID) {
+            if(GameUtil.IsTest){//测试模式关闭广告
+                callback?.();
+                return;
+            }
             console.log("显示激励广告2")
             native.jsbBridgeWrapper.dispatchEventToNative("showRewardVideo","激励广告:"+placement);
             this._getRewardVideo = callback;

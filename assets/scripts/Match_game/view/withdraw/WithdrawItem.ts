@@ -109,7 +109,7 @@ export class WithdrawItem extends Component {
     //提现
     onWithdraw() {
         if (!this.canClick) return;
-        if (!GameStorage.getCardId()) { this.showMethodCb(); return; }//没有填银行卡跳转弹窗
+        if (!WithdrawStorage.getCardId()) { this.showMethodCb(); return; }//没有填银行卡跳转弹窗
         if (this.type == RewardType.coin) CoinManger.instance.addCoin(-this.coinNum);
         else MoneyManger.instance.addMoney(-this.moneyNum);
         this.showMoneyAndCoinCb();

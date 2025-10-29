@@ -18,24 +18,30 @@ const { ccclass, property } = _decorator;
 export class BtnMoneys extends Component {
     @property(NumFont)
     time: NumFont = null;
+    @property(NumFont)
+    moneyNode: NumFont = null;
     @property(Node)
     icon: Node = null;
     @property(Node)
     hand: Node = null;
     public curTime = 0;
+    private money: number = 0;
     start() {
-        // this.curTime = GameStorage.getPig().pigTime;
+        this.curTime = GameUtil.GetMoneyTime;
         this.node.on(Button.EventType.CLICK, () => {
-            if(this.curTime>0)return;
-            if(GameManger.instance.isAni){
+            if (this.curTime > 0) return;
+            if (GameManger.instance.isAni) {
                 ViewManager.showTips(i18n.string("str_pstf"));
                 return;
             }
-            
-        ViewManager.showRewardPop(RewardType.money,MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree),()=>{
-                this.curTime=GameUtil.GetMoneyTime;
+
+            ViewManager.showRewardPop(RewardType.money, this.money, () => {
+                this.money = 0;
+                this.curTime = GameUtil.GetMoneyTime;
+                this.setMoney(false);
             });
-        })
+        });
+        this.setMoney(false);
         this.showTime();
         this.countDown();
     }
@@ -46,23 +52,33 @@ export class BtnMoneys extends Component {
             this.showTime();
             // GameStorage.setPigTime(this.curTime);
             this.hand.active = false;
-        }else{
-            this.hand.active = true;
+        } else {
+            if (this.money == 0) {
+                this.money = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree);
+                this.setMoney(true, this.money);
+            }
+
+            // this.hand.active = true;
             this.breathAni();
         }
         await delay(1, this.node);
         this.countDown();
     }
-    private showTime(){
+    private showTime() {
         // const str = FormatUtil.mColonS(this.curTime, "：");
-        const str = Math.round(this.curTime)+" _";
+        const str = Math.round(this.curTime) + " _";
         this.time.num = str;
     }
-    private breathAni(){
+    private breathAni() {
         tween(this.icon)
-        .to(0.5,{scale:v3(0.9,0.9,1)})
-        .to(0.5,{scale:v3(1,1,1)})
-        .start();
+            .to(0.5, { scale: v3(0.9, 0.9, 1) })
+            .to(0.5, { scale: v3(1, 1, 1) })
+            .start();
+    }
+    private setMoney(v: boolean, money: number = 0) {
+        this.moneyNode.node.active = v;
+        this.time.node.parent.active = !v;
+        this.moneyNode.num = FormatUtil.toMoney(money);
     }
 }
 

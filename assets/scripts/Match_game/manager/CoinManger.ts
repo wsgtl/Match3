@@ -30,12 +30,7 @@ export class CoinManger {
     public getCoinNode() {
         return this._curCoin;
     }
-    /**显示弹窗 */
-    public showDialog() {
-        if (!this._curDialog) {//已经有弹窗不显示
-            ViewManager.showCoinDialog(null);
-        }
-    }
+
     /**增加金币 */
     public addCoin(num: number, isShow: boolean = true) {
         const last = GameStorage.getCoin();

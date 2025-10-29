@@ -24,6 +24,8 @@ export class RewardDoubleDialog extends DialogComponent {
     btnReceive: Node = null;
     @property(Node)
     btnClaim: Node = null;
+    @property([Node])
+    icons: Node[] = [];
     @property(NumFont)
     num: NumFont = null;
     @property(NumFont)
@@ -32,26 +34,24 @@ export class RewardDoubleDialog extends DialogComponent {
 
     type: RewardType;
     cb: Function;
-    private rewardNum: number = 1;//奖励数量
-    private reciveNum: number = 2;//看广告奖励
+    private rewardNum: number = 0;//奖励数量
+    private reciveNum: number = 0;//看广告奖励
     show(parent: Node, args?: any) {
         parent.addChild(this.node);
-        this.init();
+        
         this.cb = args.cb;
+        this.type = args.type;
+        this.reciveNum = args.rewardNum;
+        this.rewardNum = this.reciveNum / 2;
+        this.icons.forEach((v,i)=>{
+            v.active = i+1==this.type;
+        })
+        this.init();
     }
     init() {
-        AudioManager.playEffect("reward", 2);
-        // this.type = type;
-
-
-        // this.showReciveNum(2);
-        const data = LangStorage.getData();
-        this.reciveNum = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardAd);
-        this.rewardNum = this.reciveNum/2;
-        this.num.aligning = 1;
-        this.num.num =  " +" + FormatUtil.toMoney(this.rewardNum);
-        this.btnNum.num =   FormatUtil.toMoney(this.reciveNum);
-        // this.showMoneyNode();
+        AudioManager.playEffect("rewardShow");
+        this.num.num = " +" + (this.type == RewardType.money ? FormatUtil.toMoney(this.rewardNum) : this.rewardNum);
+        this.btnNum.num = this.type == RewardType.money ? FormatUtil.toMoney(this.reciveNum) : this.reciveNum;
 
         this.btnClaim.once(Button.EventType.CLICK, this.onBtnClaim, this);
         this.btnReceive.on(Button.EventType.CLICK, this.onBtnReceive, this);
@@ -64,9 +64,7 @@ export class RewardDoubleDialog extends DialogComponent {
         this.closeAni();
         this.addReward(this.rewardNum);
         adHelper.timesToShowInterstitial();
-        // if (GameStorage.getCurLevel() > 1) {//第二局后有概率弹插屏广告
-        //     adHelper.timesToShowInterstitial();
-        // }
+
     }
     onBtnReceive() {
         adHelper.showRewardVideo("多倍钱奖励弹窗", () => {
@@ -75,14 +73,8 @@ export class RewardDoubleDialog extends DialogComponent {
         }, ViewManager.adNotReady)
     }
     private addReward(num: number) {
-        // ViewManager.showRewardAni(1, num, this.cb);
-        // const cb = this.cb;
-        // ViewManager.showRewardParticle(RewardType.money, this.node, MoneyManger.instance.getMoneyNode().moneyNode, () => {
-        //     // cb(num);
-        //     MoneyManger.instance.addMoney(num, false);
-        // })
-        MoneyManger.instance.addMoney(num, false);
-        ViewManager.showRewardAni1(RewardType.money,num,this.cb);
+        this.type == RewardType.money ? MoneyManger.instance.addMoney(num, false) : CoinManger.instance.addCoin(num, false);
+        ViewManager.showRewardAni1(this.type, num, this.cb);
     }
 
 

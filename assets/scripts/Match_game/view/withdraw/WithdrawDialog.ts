@@ -174,7 +174,7 @@ export class WithdrawDialog extends ViewComponent {
 
     }
     private showPayIcon() {
-        const type = GameStorage.getPayType();
+        const type = WithdrawStorage.getPayType();
         this.moneyCards.children.forEach((v) => {
             // v.getChildByName("pay").getComponent(Sprite).spriteFrame = this.paySf[type - 1];
             v.getComponent(WithdrawItem)?.showPayIcon(type);
@@ -229,7 +229,7 @@ export class WithdrawDialog extends ViewComponent {
         ViewManager.showTips(i18n.string("str_twcynt", num.toString()));
     }
     private showCardId() {
-        const cardId = GameStorage.getCardId();
+        const cardId = WithdrawStorage.getCardId();
         this.strEa.active = !cardId;
         this.cardId.node.active = !!cardId;
         this.cardId.string = cardId;

@@ -4,6 +4,7 @@ import { GameUtil } from '../../GameUtil_Match';
 import { tween } from 'cc';
 import { tweenPromise } from '../../../Match_common/utils/TimeUtil';
 import { ViewManager } from '../../manager/ViewManger';
+import { BaseStorageNS, ITEM_STORAGE } from '../../../Match_common/localStorage/BaseStorage';
 const { ccclass, property } = _decorator;
 
 @ccclass('GiftProgress')
@@ -20,6 +21,7 @@ export class GiftProgress extends Component {
     public curGift: number = 0;
 
     onLoad() {
+        this.recover();
         this.show();
     }
     show() {
@@ -41,12 +43,12 @@ export class GiftProgress extends Component {
     addCombo() {
         this.comboNum++;
         this.show();
-
+        this.saveData();
     }
     /**有礼物就弹 */
     async calShowGift() {
         await this.showGiftDialog();
-        if (this.curGift > this.giftClaim){//连击多次触发多个礼包的情况
+        if (this.curGift > this.giftClaim) {//连击多次触发多个礼包的情况
             await this.calShowGift();
         }
     }
@@ -54,6 +56,7 @@ export class GiftProgress extends Component {
         return new Promise<void>(res => {
             if (this.curGift > this.giftClaim) {
                 this.giftClaim++;
+                this.saveData();
                 if (this.giftClaim == 3) {
                     this.renew();
                     ViewManager.showDoorDialog(() => {
@@ -74,7 +77,24 @@ export class GiftProgress extends Component {
         this.comboNum = 0;
         this.giftClaim = 0;
         this.curGift = 0;
+        this.saveData();
         this.show();
+    }
+
+    private key = ITEM_STORAGE.GameGift;
+    /**
+     * 保存游戏信息
+     */
+    public saveData() {
+        let tag = JSON.stringify({ comboNum: this.comboNum, giftClaim: this.giftClaim });
+        BaseStorageNS.setItem(this.key, tag);
+    }
+    public recover() {
+        const d = BaseStorageNS.getItem(this.key);
+        if (!d) return;
+        const data = JSON.parse(d);
+        this.comboNum = data.comboNum;
+        this.giftClaim = data.giftClaim;
     }
 }
 

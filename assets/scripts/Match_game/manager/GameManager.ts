@@ -10,6 +10,7 @@ import { ViewManager } from "./ViewManger";
 import { MoneyManger } from "./MoneyManger";
 import { WithdrawUtil } from "../view/withdraw/WithdrawUtil";
 import { CoinManger } from "./CoinManger";
+import { BaseStorageNS, ITEM_STORAGE } from "../../Match_common/localStorage/BaseStorage";
 
 const debug = Debugger("GameManger");
 export class GameManger {
@@ -247,7 +248,8 @@ export class GameManger {
         return group;
     }
     /**获取相邻卡片类型使得可以连消 */
-    private getNearType(posGroup:number[]) {
+    private getNearType(posGroup: number[]) {
+        if (posGroup.length > 3) return GameUtil.getRandomMiniCard();
         this.sfw.shuffle();
         const pg = MathUtil.copyArr(posGroup);
         pg.shuffle();
@@ -349,10 +351,11 @@ export class GameManger {
     /**获取随机必连消次数 */
     public calMustCombo() {
         this.mustCombo = MathUtil.probability(0.6) ? 0 : MathUtil.probability(0.5) ? 5 : 10;
-        // this.mustCombo = 20;
+        // this.mustCombo = 10;
     }
     /**结束连击后 */
     public async afterCombo() {
+        this.saveBoardData();
         this.mustCombo = 0;
         if (!this.isPassReward) await this.showRewardForCombo();
         this.combo = 0;
@@ -369,9 +372,9 @@ export class GameManger {
             } else if (this.combo < 10) {
                 const type: RewardType = MathUtil.random(1, 2);
                 const num = type == RewardType.money ? MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree) : CoinManger.instance.getReward();
-                ViewManager.showRewardPop(type, num, () => {
+                ViewManager.showRewardDoubleDialog(type,num,  () => {
                     res();
-                });
+                });    
             } else {
                 ViewManager.showSlotDialog(true, () => {
                     res();
@@ -386,5 +389,21 @@ export class GameManger {
         for (let i in this.diBoard) {
             this.diBoard[i] = GameUtil.DiBlood;
         }
+    }
+    private key = ITEM_STORAGE.GameBoard;
+    /**
+     * 保存游戏信息
+     */
+    public saveBoardData() {
+        let tag = JSON.stringify({ board: this.board, diBoard: this.diBoard });
+        BaseStorageNS.setItem(this.key, tag);
+    }
+    public recoverBoard() {
+        const d = BaseStorageNS.getItem(this.key);
+        if (!d) return false;
+        const data = JSON.parse(d);
+        this.board = data.board;
+        this.diBoard = data.diBoard;
+        return true;
     }
 }

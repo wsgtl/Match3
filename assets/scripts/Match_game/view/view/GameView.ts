@@ -20,10 +20,11 @@ import { TaskShow } from '../component/TaskShow';
 import { Button } from 'cc';
 import { Combo } from '../component/Combo';
 import { GiftProgress } from '../component/GiftProgress';
-import { GameUtil } from '../../GameUtil_Match';
+import { GameUtil, PropType } from '../../GameUtil_Match';
 import { NumFont } from '../../../Match_common/ui/NumFont';
 import { sp } from 'cc';
 import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
+import { GameStorage } from '../../GameStorage_Match';
 const { ccclass, property } = _decorator;
 
 const debug = Debugger("GameView")
@@ -47,6 +48,10 @@ export class GameView extends ViewComponent {
     btnBomb: Node = null;
     @property(Node)
     btnMoneys: Node = null;
+    @property(Node)
+    moneybg: Node = null;
+    @property(Node)
+    boardLight: Node = null;
     @property(TaskShow)
     ts: TaskShow = null;
     @property(Combo)
@@ -75,7 +80,7 @@ export class GameView extends ViewComponent {
         this.btnBomb.on(Button.EventType.CLICK, this.onBomb, this);
         this.btnColor.on(Button.EventType.CLICK, this.onColor, this);
 
-
+        this.showPropNum();
         // this.initGuide();
     }
 
@@ -104,13 +109,28 @@ export class GameView extends ViewComponent {
 
 
     async init(isShowWin: boolean) {
+        this.showPassRewad(false);
         this.playBgm(false);
         GameManger.clearInstance();
         GameManger.instance.init(this);
         if (!GuideManger.isGuide()) {
 
         }
+        const isContinue = this.boardNode.recoverGame();
+        this.boardNode.initDi();
         this.boardNode.initBoard();
+        this.showTaskDi();
+        if (isContinue) {
+            ViewManager.showContinueGameDialog(() => {
+                this.boardNode.newGame();
+                this.boardNode.renewDi();
+                this.boardNode.renewBoard();
+                this.showTaskDi();
+                this.afterCombo();
+            },()=>{
+                this.afterCombo();
+            })
+        }
     }
     private set isAni(v: boolean) {
         GameManger.instance.isAni = v;
@@ -125,7 +145,9 @@ export class GameView extends ViewComponent {
     }
     /**打乱道具 */
     private onShuffle() {
-        if (this.isAni) return;
+        if (this.isAni || GameManger.instance.isPassReward) return;
+        if (this.showPropDialog(PropType.shuffle)) return;
+        this.boardNode.closeUseProp();
         adHelper.showRewardVideo("打乱道具", async () => {
             this.isAni = true;
             await this.boardNode.shuffle();
@@ -134,21 +156,55 @@ export class GameView extends ViewComponent {
     }
     /**颜色道具 */
     private onColor() {
-        if (this.isAni) return;
+        if (this.isAni || GameManger.instance.isPassReward) return;
+        if (this.showPropDialog(PropType.color)) return;
+        if (GameManger.instance.curUseProp == 2) {//再次点击关闭
+            this.boardNode.closeUseProp();
+            return;
+        }
         adHelper.showRewardVideo("颜色道具", async () => {
             GameManger.instance.curUseProp = 2;
-            this.boardNode.setUseProp();
+            this.boardNode.setUseProp(2);
         }, ViewManager.adNotReady);
     }
     /**炸弹道具 */
     private onBomb() {
-        if (this.isAni) return;
+        if (this.isAni || GameManger.instance.isPassReward) return;
+        if (this.showPropDialog(PropType.bomb)) return;
+        if (GameManger.instance.curUseProp == 1) {//再次点击关闭
+            this.boardNode.closeUseProp();
+            return;
+        }
+
         adHelper.showRewardVideo("炸弹道具", async () => {
             GameManger.instance.curUseProp = 1;
-            this.boardNode.setUseProp();
+            this.boardNode.setUseProp(1);
         }, ViewManager.adNotReady);
     }
-
+    /**显示道具弹窗 */
+    private showPropDialog(type: PropType) {
+        const n = GameStorage.getProp();
+        if (n[type - 1] > 0) {//有道具就使用
+            GameStorage.addProp(type, -1);
+            this.showPropNum();
+            return false;
+        }
+        ViewManager.showPropDialog(type, () => { this.showPropNum(); })
+        return true;
+    }
+    /**显示道具数量 */
+    private showPropNum() {
+        const n = GameStorage.getProp();
+        const btns = [this.btnBomb, this.btnColor, this.btnShuffle];
+        btns.forEach((v, i) => {
+            const showAdd = n[i] ? false : true;
+            v.getChildByName("add").active = showAdd;
+            v.getChildByName("num").active = !showAdd;
+            if (!showAdd) {
+                v.getChildByName("num").getChildByName("num").getComponent(NumFont).num = n[i];
+            }
+        })
+    }
     /**显示combo */
     public showCombo(n: number) {
         this.combo.show(n);
@@ -162,39 +218,63 @@ export class GameView extends ViewComponent {
         await this.gp.calShowGift();
         if (GameManger.instance.isPass()) {
             //通关展示倒计时
-
+            await this.showCountDownDialog();
             //通关奖励时间
-            GameManger.instance.passRewardTime = GameUtil.PassRewardTime;
-            GameManger.instance.isPassReward = true;
-            this.boardNode.showPassReward();
-            this.countDownPassTime();
-            ActionEffect.skAni(this.king,"animation2");
+            this.startPassReward();
+            // this.playBgm(true);
+            // GameManger.instance.passRewardTime = GameUtil.PassRewardTime;
+            // GameManger.instance.isPassReward = true;
+            // this.boardNode.showPassReward();
+            // this.countDownPassTime();
+            // ActionEffect.skAni(this.king, "animation2");
         }
+    }
+    private showCountDownDialog() {
+        return new Promise<void>(res => {
+            ViewManager.showCountDownialog(res);
+        })
     }
     private async countDownPassTime() {
         const ins = GameManger.instance;
         while (ins.passRewardTime > 0) {
             await this.delay(1);
             ins.passRewardTime--;
-            this.passTime.num = ins.passRewardTime + "_";
+            this.passTime.num = ins.passRewardTime;
             if (ins.passRewardTime <= 0 && ins.getCombo() == 0) {
                 this.endPassReward();
             }
         }
 
     }
+    /**开始奖励关卡 */
+    public startPassReward() {
+        this.showPassRewad(true);
+        this.playBgm(true);
+        GameManger.instance.passRewardTime = GameUtil.PassRewardTime;
+        GameManger.instance.isPassReward = true;
+        this.boardNode.showPassReward();
+        this.countDownPassTime();
+        ActionEffect.skAni(this.king, "animation2");
+    }
     /**结束奖励关卡 */
     public endPassReward() {
-        ActionEffect.skAni(this.king,"animation1");
+        this.showPassRewad(false);
+        ActionEffect.skAni(this.king, "animation1");
         GameManger.instance.isPassReward = false;
 
         ViewManager.showRewardWin(GameManger.instance.passRewardMoney, () => { });
         GameManger.instance.endPassReward();
         this.boardNode.renewDi();
         this.boardNode.hidePassReward();
-
+        this.ts.show();
+        this.playBgm(false);
     }
-
+    private showPassRewad(v: boolean) {
+        this.boardLight.active = v;
+        this.passTime.node.parent.active = v;
+        this.moneybg.active = v;
+        this.ts.node.active = !v;
+    }
     private delay(time: number, node?: Node) {
         return new Promise<void>(resolve => {
             const n = node ? node : this.node;
@@ -217,9 +297,9 @@ export class GameView extends ViewComponent {
 
     playBgm(isFrrGame: boolean) {
         if (isFrrGame)
-            AudioManager.playBgm("bgm2", 0.7);
+            AudioManager.playBgm("bgm1", 0.5);
         else
-            AudioManager.playBgm("bgm1", 0.3);
+            AudioManager.playBgm("bgm", 0.5);
     }
 
 

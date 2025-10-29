@@ -20,6 +20,7 @@ import { view } from 'cc';
 import { MathUtil } from '../../../Match_common/utils/MathUtil';
 import { sp } from 'cc';
 import { Vec3 } from 'cc';
+import { isVaild } from '../../../Match_common/utils/ViewUtil';
 const { ccclass, property } = _decorator;
 
 @ccclass('GoldRewardDialog')
@@ -118,6 +119,7 @@ export class GoldRewardDialog extends ViewComponent {
         }, ViewManager.adNotReady);
     }
     onBtnBack() {
+        if(this.isAni)return;
         this.node.destroy();
         this.cb();
     }
@@ -133,7 +135,7 @@ export class GoldRewardDialog extends ViewComponent {
         this.isAni = true;
         this.hand.active = false;
         AudioManager.vibrate(50, 155);
-        AudioManager.playEffect("yb");
+        // AudioManager.playEffect("yb");
         
         let type: JakcpotType = JakcpotType.mini;
         this.showCone(ybcom.node.position).then(() => {
@@ -185,6 +187,7 @@ export class GoldRewardDialog extends ViewComponent {
         }
     }
     private async showCone(pos: Vec3) {
+        AudioManager.playEffect("coneShow");
         this.cone.node.x = pos.x + 100;
         this.cone.node.y = pos.y - 120;
         this.cone.node.active = true;
@@ -212,6 +215,7 @@ export class GoldRewardDialog extends ViewComponent {
         this.freeTimes.num = this.canClickNum;
     }
     private showMoney(num: number) {
+        if(!isVaild(this.node))return;
         const n = FormatUtil.toXXDXX(num, 2, false, 2);
         const str = LangStorage.getData().symbol + " " + n;
         this.moneyNode.num = str;

@@ -2,10 +2,12 @@ import { prefabs } from "../../Match_common/recycle/AssetUtils";
 import ViewComponent from "../../Match_common/ui/ViewComponent";
 import { isVaild } from '../../Match_common/utils/ViewUtil';
 import { Node } from 'cc';
-import { GameOverData, JakcpotType, LimitType, RewardType } from "../GameUtil_Match";
+import { GameOverData, JakcpotType, LimitType, PropType, RewardType } from "../GameUtil_Match";
 import { ActionEffect } from "../../Match_common/effects/ActionEffect";
 import { delay } from "../../Match_common/utils/TimeUtil";
 import { i18n } from "../../Match_common/i18n/I18nManager";
+import { Prefab } from "cc";
+import { instantiate } from "cc";
 
 
 export enum ViewType {
@@ -346,11 +348,29 @@ export namespace ViewManager {
         })
     }  
     /** 多倍钱奖励界面 */
-    export function showRewardDoubleDialog(cb:Function) {
+    export function showRewardDoubleDialog(type:RewardType,rewardNum:number,cb:Function) {
         prefabs.instantiate("prefabs/dialog/rewardDouble").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, {cb });
+                script.show(upperNode, {type,rewardNum,cb });
+            }
+        })
+    }  
+    /** 继续游戏界面 */
+    export function showContinueGameDialog(cb:Function,continueCb:Function) {
+        prefabs.instantiate("prefabs/dialog/continueGame").then((dialog) => {
+            if (isVaild(dialog)) {
+                const script = dialog.getComponent(ViewComponent);
+                script.show(upperNode, {cb,continueCb });
+            }
+        })
+    }  
+    /** 增加道具界面 */
+    export function showPropDialog(type:PropType, cb:Function) {
+        prefabs.instantiate("prefabs/dialog/propDialog").then((dialog) => {
+            if (isVaild(dialog)) {
+                const script = dialog.getComponent(ViewComponent);
+                script.show(upperNode, {type,cb });
             }
         })
     }  
@@ -359,7 +379,16 @@ export namespace ViewManager {
         prefabs.instantiate("prefabs/dialog/door").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, { cb});
+                script.show(toperNode, { cb});
+            }
+        })
+    }  
+    /** 奖励关卡前倒计时界面 */
+    export function showCountDownialog(cb:Function) {
+        prefabs.instantiate("prefabs/dialog/countDown").then((dialog) => {
+            if (isVaild(dialog)) {
+                const script = dialog.getComponent(ViewComponent);
+                script.show(toperNode, { cb});
             }
         })
     }  
@@ -380,5 +409,10 @@ export namespace ViewManager {
             }
         })
     }
-
+    /**生成预制体 */
+    export function createPrefab(pre:Prefab){
+        const n = instantiate(pre);
+        upperNode.addChild(n);
+        return n;
+    }
 }

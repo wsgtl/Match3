@@ -1,4 +1,5 @@
 import { BaseStorageNS, ITEM_STORAGE } from "../../../Match_common/localStorage/BaseStorage"
+import { PayType } from "./WithdrawUtil"
 
 
 export type OrderData = {
@@ -28,6 +29,10 @@ type WithdrawData = {
     points: number,
     /**是否到达过提现门槛 */
     isToCashOut: boolean,
+    /**提现卡类型 */
+    payType: PayType,
+    /**提现卡号 */
+    cardId: string,
     /**订单 */
     orders: {
         /**已激活订单 */
@@ -36,17 +41,17 @@ type WithdrawData = {
         inactive: OrderData[]
     },
     /**订单每个步骤记录次数埋点 */
-    orderNum:{
+    orderNum: {
         /**点击领取现金 */
-        withdraw:number,
+        withdraw: number,
         /**进入排队 */
-        queue:number,
+        queue: number,
         /**进入审核 */
-        audit:number,
+        audit: number,
         /**订单失败返回 */
-        failBackMoney:number
+        failBackMoney: number
         /**订单超时返回 */
-        timeout:number
+        timeout: number
     }
 }
 /**
@@ -57,7 +62,11 @@ export namespace WithdrawStorage {
     const _withdrawData: WithdrawData = {
         /**点数 */
         points: 0,
-        isToCashOut:false,
+        isToCashOut: false,
+        /**提现卡类型 */
+        payType: 1,
+        /**提现卡号 */
+        cardId: "",
         /**订单 */
         orders: {
             /**已激活订单 */
@@ -65,12 +74,12 @@ export namespace WithdrawStorage {
             /**未激活订单 */
             inactive: []
         },
-        orderNum:{
-            withdraw:0,
-            queue:0,
-            audit:0,
-            failBackMoney:0,
-            timeout:0
+        orderNum: {
+            withdraw: 0,
+            queue: 0,
+            audit: 0,
+            failBackMoney: 0,
+            timeout: 0
         }
 
     }
@@ -138,4 +147,22 @@ export namespace WithdrawStorage {
     }
 
 
+    /**提现卡类型 */
+    export function getPayType() {
+        return _withdrawData.payType;
+    }
+    /**设置提现卡类型 */
+    export function setPayType(type: PayType) {
+        _withdrawData.payType = type;
+        saveLocal();
+    }
+    /**提现卡类型 */
+    export function getCardId() {
+        return _withdrawData.cardId;
+    }
+    /**设置提现卡类型 */
+    export function setCardId(cardId: string) {
+        _withdrawData.cardId = cardId;
+        saveLocal();
+    }
 }

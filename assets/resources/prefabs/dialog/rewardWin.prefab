@@ -5154,11 +5154,11 @@
       "__id__": 2
     },
     "btnClose": null,
-    "btnClaim": {
-      "__id__": 199
-    },
     "num": {
       "__id__": 107
+    },
+    "btnClaim": {
+      "__id__": 199
     },
     "btnReceive": {
       "__id__": 121

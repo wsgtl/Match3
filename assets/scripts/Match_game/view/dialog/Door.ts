@@ -4,6 +4,7 @@ import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { delay, tweenPromise } from '../../../Match_common/utils/TimeUtil';
 import { v3 } from 'cc';
 import { ViewManager } from '../../manager/ViewManger';
+import { AudioManager } from '../../manager/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Door')
@@ -18,19 +19,22 @@ export class Door extends DialogComponent {
     /**开始动画 */
     async startAni() {
         const time = 0.3;
-        ActionEffect.fadeIn(this.bg, 0.3);
+        ActionEffect.fadeIn(this.bg, 0.9);
         ActionEffect.scale(this.content, 0.3, 1, 0, "backOut");
 
         this.isAni = true;
-        
+        AudioManager.playEffect("goldChange");
+        // AudioManager.playEffect("door");
         await delay(0.3);
+        delay(0.5).then(()=>{ ViewManager.showGoldRewardDialog(this.cb);})
+       
         this.xz.active = true;
         this.xz.scale=v3();
-        tweenPromise(this.xz,tw=>tw.to(1.2,{angle:-720,scale:v3(1,1,1)}))
+        tweenPromise(this.xz,tw=>tw.to(2,{angle:-720,scale:v3(1,1,1)}))
         await delay(0.9);
         this.isAni = false;
         this.closeAni();
-        ViewManager.showGoldRewardDialog(this.cb);
+        
     }
 }
 

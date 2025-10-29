@@ -43,7 +43,7 @@ export class RewardWinDialog extends DialogComponent {
         this.init();
     }
     init() {
-        AudioManager.playEffect("reward", 2);
+        AudioManager.playEffect("happy1");
         this.num.num = "+" + FormatUtil.toMoney(this.rewardNum);
         this.btnNum.num = FormatUtil.toMoney(this.reciveNum);
 

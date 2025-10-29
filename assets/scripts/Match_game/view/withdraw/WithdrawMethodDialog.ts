@@ -5,6 +5,7 @@ import { ViewManager } from '../../manager/ViewManger';
 import { i18n } from '../../../Match_common/i18n/I18nManager';
 import { DialogComponent } from '../../../Match_common/ui/DialogComtnet';
 import { GameStorage } from '../../GameStorage_Match';
+import { WithdrawStorage } from './WithdrawStorage';
 const { ccclass, property } = _decorator;
 
 @ccclass('WithdrawMethodDialog')
@@ -23,7 +24,7 @@ export class WithdrawMethodDialog extends DialogComponent {
         this.showBtn();
         this.btns.forEach((v, i) => {
             v.on(Button.EventType.CLICK, () => {
-                GameStorage.setPayType(i + 1);
+                WithdrawStorage.setPayType(i + 1);
                 this.showBtn();
                 cb();
             })
@@ -33,19 +34,19 @@ export class WithdrawMethodDialog extends DialogComponent {
             // if (!this.eb.string)
                 closeCb&&closeCb();
         });
-        const id = GameStorage.getCardId();
+        const id = WithdrawStorage.getCardId();
         this.eb.string = id;
     }
 
     private showBtn() {
-        const type = GameStorage.getPayType();
+        const type = WithdrawStorage.getPayType();
         this.btns.forEach((v, i) => {
             v.getChildByName("k").active = i + 1 == type;
         })
     }
     private onSubmit() {
         const id = this.eb.string;
-        GameStorage.setCardId(id);
+        WithdrawStorage.setCardId(id);
         // ViewManager.showTips("Account setup successful.");
         ViewManager.showTips(i18n.string("str_ass"));
     }
