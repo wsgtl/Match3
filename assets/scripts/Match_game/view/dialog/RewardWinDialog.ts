@@ -41,6 +41,7 @@ export class RewardWinDialog extends DialogComponent {
         this.rewardNum = args.rewardNum;
         this.reciveNum = this.rewardNum * WithdrawUtil.MoneyBls.PassAd;
         this.init();
+        AudioManager.vibrate(100,100);
     }
     init() {
         AudioManager.playEffect("happy1");

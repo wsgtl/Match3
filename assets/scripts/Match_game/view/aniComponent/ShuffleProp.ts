@@ -26,6 +26,7 @@ export class ShuffleProp extends DialogComponent {
         ActionEffect.fadeIn(this.bg, time);
         ActionEffect.scale(this.shuffle, time, 1, 0.44);
         await tweenPromise(this.shuffle, t => t.to(0.5, { position: v3() }, { easing: "backOut" }));
+        AudioManager.vibrate(300,100);
         AudioManager.playEffect("shuffle");
         tweenPromise(this.shuffle, t => t.to(0.3, { angle:360,scale:v3() }));
         tweenPromise(this.wind, t => t.to(0.8, { angle:720,scale:v3(1.2,1.2) }));//风旋转

@@ -81,7 +81,7 @@ export class GameView extends ViewComponent {
         this.btnColor.on(Button.EventType.CLICK, this.onColor, this);
 
         this.showPropNum();
-        // this.initGuide();
+        this.initGuide();
     }
 
     fit() {
@@ -113,8 +113,13 @@ export class GameView extends ViewComponent {
         this.playBgm(false);
         GameManger.clearInstance();
         GameManger.instance.init(this);
-        if (!GuideManger.isGuide()) {
-
+        if (GuideManger.isGuide()) {
+            GameManger.instance.initDiBoard();
+            GameManger.instance.initGuideBoard();
+            this.boardNode.initDi();
+            this.boardNode.initBoard();
+            this.showTaskDi();
+            return;
         }
         const isContinue = this.boardNode.recoverGame();
         this.boardNode.initDi();
@@ -122,15 +127,18 @@ export class GameView extends ViewComponent {
         this.showTaskDi();
         if (isContinue) {
             ViewManager.showContinueGameDialog(() => {
-                this.boardNode.newGame();
-                this.boardNode.renewDi();
-                this.boardNode.renewBoard();
-                this.showTaskDi();
-                this.afterCombo();
-            },()=>{
+                this.renewGame();
+            }, () => {
                 this.afterCombo();
             })
         }
+    }
+    public renewGame() {
+        this.boardNode.newGame();
+        this.boardNode.renewDi();
+        this.boardNode.renewBoard();
+        this.showTaskDi();
+        this.afterCombo();
     }
     private set isAni(v: boolean) {
         GameManger.instance.isAni = v;
@@ -142,6 +150,10 @@ export class GameView extends ViewComponent {
     public showTaskDi() {
         this.ts.show();
 
+    }
+    /**互换 */
+    public change(i1: number, i2: number) {
+        this.guidStpe1();
     }
     /**打乱道具 */
     private onShuffle() {
@@ -228,6 +240,7 @@ export class GameView extends ViewComponent {
             // this.countDownPassTime();
             // ActionEffect.skAni(this.king, "animation2");
         }
+        this.guidStpe2();
     }
     private showCountDownDialog() {
         return new Promise<void>(res => {
@@ -268,6 +281,10 @@ export class GameView extends ViewComponent {
         this.boardNode.hidePassReward();
         this.ts.show();
         this.playBgm(false);
+        this.isAni = true;
+        this.delay(1).then(() => {
+            this.isAni = false;
+        })
     }
     private showPassRewad(v: boolean) {
         this.boardLight.active = v;
@@ -305,34 +322,34 @@ export class GameView extends ViewComponent {
 
     private gm: GuideMask;
     /**新手引导 */
-    // private initGuide() {
-    //     if (!GuideManger.isGuide()) return;
-    //     this.delay(5).then(()=>{EventTracking.sendEventLevel(1);})//第一关上报
+    private initGuide() {
+        if (!GuideManger.isGuide()) return;
+        // this.delay(5).then(()=>{EventTracking.sendEventLevel(1);})//第一关上报
 
-    //     ViewManager.showGuideMask(async (n: Node) => {
-    //         this.gm = n.getComponent(GuideMask);
-    //         this.gm.showMask();
-    //         this.gm.showTips(1);
-    //         await this.delay(3);
-    //         this.gm.hideDb();
-    //         this.guidStpe1();
-    //     })
-    // }
-    // private guidStpe1() {
-    //     this.gm.showSpin(this.btnSpin.node);
-    // }
+        ViewManager.showGuideMask(async (n: Node) => {
+            this.gm = n.getComponent(GuideMask);
+            await this.gm.moveTo(this.boardNode.node, 1000, 1000);
+            this.gm.isShowHand = true;
+            this.gm.showHand(this.boardNode.getCard(14).node, this.boardNode.getCard(15).node, true);
+        })
+    }
+    private guidStpe1() {
+        if (!this.gm || !GuideManger.isGuide()) return;
+        this.gm.showAll(false, false);
+        this.gm.hideHand();
+    }
 
 
-    // private async guidStpe2() {
-    //     if (!this.gm || !GuideManger.isGuide()) return;
-    //     this.gm.node.active = true;
-    //     this.gm.showMask();
-    //     this.gm.showTips(2);
-    //     await this.delay(3);
-    //     this.gm.hideDb();
-    //     this.gm.node.active = true;
-    //     this.gm.showMoneyNode(MoneyManger.instance.getMoneyNode().node);
-    // }
+    private async guidStpe2() {
+        if (!this.gm || !GuideManger.isGuide()) return;
+        this.gm.node.active = true;
+        await this.gm.moveTo(this.ts.node, 300, 300);
+        this.gm.showTips(1);
+        await this.delay(3);
+        this.gm.node.destroy();
+        this.gm = null;
+        GuideManger.passGameStep();
+    }
 
 
 

@@ -31,14 +31,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 84
+        "__id__": 88
       },
       {
-        "__id__": 86
+        "__id__": 90
       }
     ],
     "_prefab": {
-      "__id__": 88
+      "__id__": 92
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -1049,10 +1049,16 @@
       },
       {
         "__id__": 81
+      },
+      {
+        "__id__": 83
+      },
+      {
+        "__id__": 85
       }
     ],
     "_prefab": {
-      "__id__": 83
+      "__id__": 87
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -1972,6 +1978,63 @@
     "fileId": "a2i5LctIVPFofWVU8KE4yG"
   },
   {
+    "__type__": "822408pS9JFfr82pQpHF3k/",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 42
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 84
+    },
+    "time": 0.5,
+    "range": 0.03,
+    "moveY": 5,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "devwtSZSdPi4prmOPmYXRe"
+  },
+  {
+    "__type__": "cc.Widget",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 42
+    },
+    "_enabled": false,
+    "__prefab": {
+      "__id__": 86
+    },
+    "_alignFlags": 8,
+    "_target": null,
+    "_left": -26.849000000000004,
+    "_right": 0,
+    "_top": 0,
+    "_bottom": 0,
+    "_horizontalCenter": 0,
+    "_verticalCenter": 0,
+    "_isAbsLeft": true,
+    "_isAbsRight": true,
+    "_isAbsTop": true,
+    "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
+    "_originalWidth": 0,
+    "_originalHeight": 0,
+    "_alignMode": 2,
+    "_lockFlags": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "1eehpN/QFB1I0BZGNX9Wuy"
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -1994,7 +2057,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 85
+      "__id__": 89
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -2022,7 +2085,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 87
+      "__id__": 91
     },
     "icon": {
       "__id__": 3
@@ -2090,6 +2153,10 @@
       },
       {
         "__uuid__": "fecf7708-4e8b-4217-aa9c-54939c1b6ab5@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "58c48822-723c-44c7-a592-7bbfe116d835@f9941",
         "__expectedType__": "cc.SpriteFrame"
       }
     ],

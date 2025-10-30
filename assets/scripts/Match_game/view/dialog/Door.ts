@@ -26,15 +26,15 @@ export class Door extends DialogComponent {
         AudioManager.playEffect("goldChange");
         // AudioManager.playEffect("door");
         await delay(0.3);
-        delay(0.5).then(()=>{ ViewManager.showGoldRewardDialog(this.cb);})
-       
+        delay(0.5).then(() => { ViewManager.showGoldRewardDialog(this.cb); })
+        AudioManager.vibrate(500, 50);
         this.xz.active = true;
-        this.xz.scale=v3();
-        tweenPromise(this.xz,tw=>tw.to(2,{angle:-720,scale:v3(1,1,1)}))
+        this.xz.scale = v3();
+        tweenPromise(this.xz, tw => tw.to(2, { angle: -720, scale: v3(1, 1, 1) }))
         await delay(0.9);
         this.isAni = false;
         this.closeAni();
-        
+
     }
 }
 

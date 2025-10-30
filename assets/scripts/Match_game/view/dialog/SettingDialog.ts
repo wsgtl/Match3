@@ -9,6 +9,7 @@ import { NativeFun } from '../../../Match_common/native/NativeFun';
 import { DialogComponent } from '../../../Match_common/ui/DialogComtnet';
 import { LangTag } from '../../../Match_common/native/LocalRate';
 import { i18n } from '../../../Match_common/i18n/I18nManager';
+import { GameManger } from '../../manager/GameManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SettingDialog')
@@ -22,6 +23,8 @@ export class SettingDialog extends DialogComponent {
     @property(Node)
     btnShock: Node = null;
     @property(Node)
+    btnRestart: Node = null;
+    @property(Node)
     btnEn: Node = null;
     @property(Node)
     btnBr: Node = null;
@@ -31,6 +34,7 @@ export class SettingDialog extends DialogComponent {
         this.btnPrivacy.on(Button.EventType.CLICK, this.onBtnPrivacy, this);
         this.btnSound.on(Button.EventType.CLICK, this.onBtnSound, this);
         this.btnShock.on(Button.EventType.CLICK, this.onBtnShock, this);
+        this.btnRestart.on(Button.EventType.CLICK, this.onBtnRestart, this);
         this.showMute(this.btnMusic, AudioManager.getIsPlayBGM());
         this.showMute(this.btnSound, AudioManager.getIsPlay());
         this.showMute(this.btnShock, AudioManager.getIsShock());
@@ -59,6 +63,10 @@ export class SettingDialog extends DialogComponent {
     onBtnShock() {
         AudioManager.setIsShock(!AudioManager.getIsShock());
         this.showMute(this.btnShock, AudioManager.getIsShock());
+    }
+    onBtnRestart() {
+        GameManger.instance.renewGame();
+        this.closeAni();
     }
     private showMute(node: Node, isHide: boolean) {
         node.getChildByName("close").active = !isHide;

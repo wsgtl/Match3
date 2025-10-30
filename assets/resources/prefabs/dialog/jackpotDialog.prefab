@@ -930,7 +930,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "a7vjgDX8ZEQo27JtuFgjfN"
+    "fileId": "a7nYxIEYNNG6c3VzAVrn6n"
   },
   {
     "__type__": "cc.Sprite",
@@ -955,7 +955,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "198ef896-9b08-40bc-90bd-981a225050f7@e7223",
+      "__uuid__": "906369af-15e0-4107-9e61-aaee1e7b9d58@e7223",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -975,7 +975,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "39iHYfWxlOw455/c8mu8zm"
+    "fileId": "0aplXqJ75CDordEdXEipeo"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -985,7 +985,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "5czPNszSJJe4jlX7A6oDce",
+    "fileId": "5eEqX5pv1BOb0siifrNUZ4",
     "instance": null,
     "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
@@ -1066,7 +1066,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "01yznfLRdE9JiOLgAAkLER"
+    "fileId": "ed4SH/aSVC5rznYBoCN+4T"
   },
   {
     "__type__": "cc.Sprite",
@@ -1091,7 +1091,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "198ef896-9b08-40bc-90bd-981a225050f7@e7223",
+      "__uuid__": "906369af-15e0-4107-9e61-aaee1e7b9d58@e7223",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -1111,7 +1111,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "edJ0VZ1NhDcZytkK7jHSWd"
+    "fileId": "5c1d1oPzREIrsYodjRjZKk"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1121,7 +1121,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "54BGUpKk5EtJzwJqNMwZv9",
+    "fileId": "80OomgExxC4p1GYBhU+dgL",
     "instance": null,
     "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
@@ -1187,7 +1187,7 @@
     "_affectedByScale": false,
     "_isAlign": false,
     "spriteAtlas": {
-      "__uuid__": "198ef896-9b08-40bc-90bd-981a225050f7",
+      "__uuid__": "906369af-15e0-4107-9e61-aaee1e7b9d58",
       "__expectedType__": "cc.SpriteAtlas"
     },
     "blankWidth": 10,

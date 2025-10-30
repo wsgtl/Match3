@@ -32,6 +32,7 @@ export class ColorProp extends DialogComponent {
         ActionEffect.fadeIn(this.bg, time);
         ActionEffect.scale(this.ball, time, 1, 0.44);
         await tweenPromise(this.ball, t => t.to(0.5, { position: v3() }, { easing: "backOut" }));
+        AudioManager.vibrate(400,150);
         this.light.active = true;
         ActionEffect.scale(this.light, time, 1, 0, "backOut");
         await ActionEffect.fadeIn(this.light, 0.2);

@@ -25,7 +25,7 @@ export class Loading extends ViewComponent {
     qq: Node = null;
 
     async showProgress() {
-        const all = sys.platform === sys.Platform.ANDROID ? 150 : 30;
+        const all = sys.platform === sys.Platform.ANDROID ? 100 : 10;
         for (let i = 0; i <= all; i++) {
             this.progress.progress = i / all;
             const num = Math.floor(i / all * 100);

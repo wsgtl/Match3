@@ -187,6 +187,7 @@ export class Bird extends Component {
         )
         await this.clearAni();
     }
+
 }
 
 

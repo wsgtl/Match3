@@ -22,19 +22,25 @@ export class GiftProgress extends Component {
 
     onLoad() {
         this.recover();
-        this.show();
+        this.showJd();
+        this.showGift();
     }
-    show() {
-        const pro = this.comboNum / GameUtil.CombosProgress;
-        this.jd.fillRange = pro;
+    showGift() {
         this.gifts.forEach((v, i) => {
-            const isGift = GameUtil.ComboGifts[i] <= pro;
             if (i == 2) {
 
             } else {
-                v.getChildByName("gs").active = isGift;
+                v.getChildByName("gs").active = this.curGift > i && this.giftClaim <= i;
             }
-            v.getComponent(Sprite).grayscale = !isGift;
+            v.getComponent(Sprite).grayscale = this.giftClaim > i;
+
+        })
+    }
+    private showJd() {
+        const pro = this.comboNum / GameUtil.CombosProgress;
+        this.jd.fillRange = pro;
+        GameUtil.ComboGifts.forEach((v, i) => {
+            const isGift = GameUtil.ComboGifts[i] <= pro;
             if (isGift && this.curGift < i + 1) {
                 this.curGift = i + 1;
             }
@@ -42,9 +48,11 @@ export class GiftProgress extends Component {
     }
     addCombo() {
         this.comboNum++;
-        this.show();
+        this.showJd();
+        this.showGift();
         this.saveData();
     }
+
     /**有礼物就弹 */
     async calShowGift() {
         await this.showGiftDialog();
@@ -57,6 +65,7 @@ export class GiftProgress extends Component {
             if (this.curGift > this.giftClaim) {
                 this.giftClaim++;
                 this.saveData();
+                this.showGift();
                 if (this.giftClaim == 3) {
                     this.renew();
                     ViewManager.showDoorDialog(() => {
@@ -78,7 +87,8 @@ export class GiftProgress extends Component {
         this.giftClaim = 0;
         this.curGift = 0;
         this.saveData();
-        this.show();
+        this.showJd();
+        this.showGift();
     }
 
     private key = ITEM_STORAGE.GameGift;

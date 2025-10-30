@@ -41,7 +41,7 @@ export type WaitControl = {
 }
 export namespace WithdrawUtil {
    /**激活订单需要玩多少次 */
-   export const ActivatePlay: number = 100;
+   export const ActivatePlay: number = 500;
    // export const ActivatePlay: number = 10;
    /**激活订单限定时间 单位：秒*/
    export const ActivateTimes: number = 28 * 60 * 60;
@@ -50,8 +50,8 @@ export namespace WithdrawUtil {
    export const WaitTimes: number = 15 * 24 * 60 * 60;
    /**订单失败返回金额比例 */
    export const BackMoney: number = 1.2;
-   /**每次玩老虎机增加点数 */
-   export const AddPoints: number = 18;
+   /**每次消除增加点数 */
+   export const AddPoints: number = 2;
    // export const AddPoints: number = 1000;
    /**每次前进排名 */
    export const OneQueue: number = 10;
@@ -86,8 +86,8 @@ export namespace WithdrawUtil {
       return Math.floor(ct / 1000);
    }
 
-   /**每次点击旋转增加点数和激活订单次数 */
-   export function spinToOrder() {
+   /**每次combo增加点数和激活订单次数 */
+   export function comboToOrder() {
       const order = WithdrawStorage.getOrder();
       const t = getCurSecond();
       let sy = 0;
@@ -240,11 +240,11 @@ export namespace WithdrawUtil {
       RewardFree: 0.3,//免费
       Bubble: 1,//气泡
       GoldReward: 0.2,//彩金
-      Pass: 0.1,//通关三消奖励
+      Pass: 0.02,//通关三消奖励
       Mini: 2,//mini
       PassAd:2,//通关奖励看广告倍数
-      BoxFree:1,//礼包免费
-      Box: 3,//礼包
+      BoxFree:0.5,//礼包免费
+      Box: 2,//礼包
       Slot: 1.3,//老虎机钱
    }
 

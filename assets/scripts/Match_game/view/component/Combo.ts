@@ -24,8 +24,10 @@ export class Combo extends Component {
         this.node.active = false;
     }
     async show(n: number) {
+        // AudioManager.vibrate(100,100);
         const an = Math.min(8, Math.floor(n/2)+1);
-        AudioManager.playEffect("clear"+an,2);
+        // AudioManager.playEffect("clear"+an,2);
+        // AudioManager.playEffect("clears",0.6);
         this.node.active = true;
         const color =Math.floor((n - 1) / 5)% 4;
         this.combo.spriteAtlas = this.sas[color];

@@ -52,6 +52,7 @@ export class PropDialog extends DialogComponent {
                 .by(0.1,{y:-30})
             )
             this.cb();
+            this.closeAni();
         }, ViewManager.adNotReady);
         this.isAni = true;
         await delay(0.5);

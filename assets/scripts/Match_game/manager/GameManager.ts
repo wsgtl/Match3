@@ -48,7 +48,10 @@ export class GameManger {
 
     isAni: boolean = false;
 
-
+    public initGuideBoard(){
+        this.board=MathUtil.copyArr(GameUtil.GuideBoard);
+        return this.board;
+    }
     public initDiBoard() {
         this.diBoard = [];
         for (let i = 0; i < GameUtil.MaxIdnex; i++) {
@@ -84,6 +87,7 @@ export class GameManger {
         this.board[i1] = this.board[i2];
         this.board[i2] = t;
         this.showLog();
+        this.gv.change(i1,i2);
     }
     private initVisited() {
         this.visited.fill(0);
@@ -174,7 +178,7 @@ export class GameManger {
         const type = this.board[group[0]];
         let ct = 0;
         group.forEach((v, i) => {
-            if (i == 0 && type < CardType.c13) {
+            if (i == 0 && type < CardType.c14) {
                 ct = type + 1;
                 this.board[v] = ct;
                 md.push({ from: v, changeType: ct });
@@ -351,7 +355,7 @@ export class GameManger {
     /**获取随机必连消次数 */
     public calMustCombo() {
         this.mustCombo = MathUtil.probability(0.6) ? 0 : MathUtil.probability(0.5) ? 5 : 10;
-        // this.mustCombo = 10;
+        // this.mustCombo = 5;
     }
     /**结束连击后 */
     public async afterCombo() {
@@ -371,7 +375,7 @@ export class GameManger {
                 res();
             } else if (this.combo < 10) {
                 const type: RewardType = MathUtil.random(1, 2);
-                const num = type == RewardType.money ? MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree) : CoinManger.instance.getReward();
+                const num = type == RewardType.money ? MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardAd) : CoinManger.instance.getReward();
                 ViewManager.showRewardDoubleDialog(type,num,  () => {
                     res();
                 });    
@@ -405,5 +409,8 @@ export class GameManger {
         this.board = data.board;
         this.diBoard = data.diBoard;
         return true;
+    }
+    public renewGame(){
+        this.gv.renewGame();
     }
 }

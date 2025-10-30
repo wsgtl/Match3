@@ -103,7 +103,10 @@ export namespace FormatUtil {
 
     /**将数字改为1,000.00这种格式,并控制小数点数量 */
     export function toXXDXXxsd(num: number, useGrouping: boolean = true, minDecimalDigits: number = 0) {
-        const xsd = num > 1 ? 2 : (num > 0.01 ? 4 : 6);
+        const xsd = num > 1 ? 2 :
+            num > 0.01 ? 3 :
+            num > 0.001 ? 4 :
+            num > 0.0001 ? 5 : 6;
         return FormatUtil.toXXDXX(num, xsd, useGrouping, minDecimalDigits);
     }
 
@@ -113,6 +116,6 @@ export namespace FormatUtil {
     }
     /**显示钱格式 $33.33 */
     export function toMoneyLabel(num: number, useGrouping: boolean = false, minDecimalDigits: number = 0) {
-        return toMoney(num,useGrouping,minDecimalDigits).replace("_",".");
+        return toMoney(num, useGrouping, minDecimalDigits).replace("_", ".");
     }
 }

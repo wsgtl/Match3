@@ -56,7 +56,7 @@ export class RewardDoubleDialog extends DialogComponent {
         this.btnClaim.once(Button.EventType.CLICK, this.onBtnClaim, this);
         this.btnReceive.on(Button.EventType.CLICK, this.onBtnReceive, this);
 
-
+        AudioManager.vibrate(100,100);
 
     }
 

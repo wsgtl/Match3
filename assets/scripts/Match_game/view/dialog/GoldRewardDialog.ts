@@ -148,6 +148,7 @@ export class GoldRewardDialog extends ViewComponent {
         })
 
         await delay(0.7);
+        AudioManager.vibrate(100,255);
         AudioManager.playEffect("cone",1);
         if (this.randomJackpot.length) {
             type = this.randomJackpot.pop();

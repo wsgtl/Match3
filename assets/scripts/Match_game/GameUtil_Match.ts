@@ -35,6 +35,7 @@ export enum CardType {
    c11,
    c12,
    c13,
+   c14,
 }
 
 
@@ -76,8 +77,8 @@ export enum ColorType {
    pink
 }
 /**道具 */
-export enum PropType{
-   none=0,
+export enum PropType {
+   none = 0,
    bomb,//炸弹道具
    color,//颜色道具
    shuffle,//打乱道具
@@ -133,7 +134,7 @@ export namespace GameUtil {
    /**主页送钱倒计时时间 */
    export const GetMoneyTime: number = 10;
    /**每次观看广告增加的道具数 */
-   export const PropAddNum: number = 3;
+   export const PropAddNum: number = 5;
    /**3~5个免费游戏标可以有几次免费游戏 */
    export const FreeGameTimes: number[] = [5, 6, 7];
    /**看广告增加的免费游戏次数 */
@@ -151,6 +152,15 @@ export namespace GameUtil {
    export const Nearby8: number[] = [-1, 1, AllCol, -AllCol, AllCol - 1, AllCol + 1, -AllCol - 1, -AllCol + 1];
    /**炸弹位置纠正 */
    export const BombPos: number[] = [1, 1, 2, 3, 4, 4];
+   /**新手引导牌面 */
+   export const GuideBoard: number[] = [
+      1, 2, 1, 3, 4, 5,
+      2, 1, 3, 4, 1, 2,
+      1, 4, 2, 1, 4, 3,
+      5, 2, 1, 2, 4, 6,
+      6, 2, 1, 2, 3, 5,
+      1, 3, 2, 3, 4, 3,
+   ]
 
 
    export function getCashNum(bl: number = 1) {//获取最低提现金额
@@ -171,7 +181,7 @@ export namespace GameUtil {
       return (lv - 1) + 10;
    }
    export function getRandomCard() {
-      return MathUtil.random(1, 13);
+      return MathUtil.random(1, 14);
    }
    export function getRandomMiniCard() {
       return MathUtil.random(1, 5);

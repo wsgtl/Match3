@@ -33,6 +33,7 @@ export class RewardPopDialog extends DialogComponent {
             v.active = i+1==this.type;
         })
         AudioManager.playEffect("rewardShow");
+        AudioManager.vibrate(100,100);
     }
 
     onClaim() {

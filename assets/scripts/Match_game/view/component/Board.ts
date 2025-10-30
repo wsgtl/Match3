@@ -180,6 +180,7 @@ export class Board extends Component {
     }
     /**清理相连 */
     private async clearGroup(group: number[]) {
+        WithdrawUtil.comboToOrder();
         // AudioManager.playEffect("drop");
         GameManger.instance.addCombo();
         let money: number = 0;
@@ -212,6 +213,8 @@ export class Board extends Component {
             this.showAniClear(first.from);
             this.board[first.from].setType(first.changeType,true);
         }
+        AudioManager.playEffect("clears",0.6);
+        AudioManager.vibrate(50,100);
 
 
     }
@@ -405,7 +408,11 @@ export class Board extends Component {
         // return;
         this.clearSprite.node.active = true;
         this.clearSprite.node.position = GameUtil.getPost(index);
-        ActionEffect.playAni(this.clearSprite, 5, 0.05);//清除帧动画
+        ActionEffect.playAni(this.clearSprite, 6, 0.05);//清除帧动画
+    }
+    /**获取卡片 */
+    getCard(index:number):Bird{
+        return this.board[index];
     }
 }
 

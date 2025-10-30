@@ -53,8 +53,10 @@ export class RewardBox extends DialogComponent {
         this.isAni = true;
         if (this.bg) ActionEffect.fadeIn(this.bg, 0.3);
         if (this.content) ActionEffect.scale(this.content, 0.3, 1, 0, "backOut");
+        AudioManager.vibrate(600,50);
         ActionEffect.skAniOnce(this.box, "animation",true);
         await delay(0.9);
+        AudioManager.vibrate(100,255);
         // AudioManager.playEffect("kaixiang");
         this.s2.active = true;
         this.isAni = false;
