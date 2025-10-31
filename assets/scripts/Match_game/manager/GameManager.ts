@@ -48,9 +48,15 @@ export class GameManger {
 
     isAni: boolean = false;
 
+    /**新手引导初始化棋盘 */
     public initGuideBoard(){
-        this.board=MathUtil.copyArr(GameUtil.GuideBoard);
+        this.board=MathUtil.copyArr(GuideManger.GuideBoard);
         return this.board;
+    }
+    /**新手引导初始化底血量 */
+    public initGuideDiBoard(){
+        this.diBoard=MathUtil.copyArr(GuideManger.GuideDiBoard);
+        return this.diBoard;
     }
     public initDiBoard() {
         this.diBoard = [];
@@ -356,6 +362,8 @@ export class GameManger {
     public calMustCombo() {
         this.mustCombo = MathUtil.probability(0.6) ? 0 : MathUtil.probability(0.5) ? 5 : 10;
         // this.mustCombo = 5;
+        if(GuideManger.isGuide())
+            this.mustCombo = 10;
     }
     /**结束连击后 */
     public async afterCombo() {

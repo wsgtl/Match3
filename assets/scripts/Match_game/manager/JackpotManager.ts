@@ -12,7 +12,7 @@ export namespace JackpotManger {
 
     let isStart: boolean = false;
     const registers: NumFont[] = [];
-    /**音频信息 */
+    /**奖池信息 */
     const _jackpotData = {
         grand: grandBase,
         major: majorBase,

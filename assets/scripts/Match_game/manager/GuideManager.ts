@@ -2,6 +2,27 @@ import { GameStorage } from "../GameStorage_Match";
 import { ViewManager } from "./ViewManger";
 
 export namespace GuideManger {
+    /**新手引导可点击的两个 */
+    export const CanClick: number[] = [20, 21];
+    /**新手引导牌面 */
+    export const GuideBoard: number[] = [
+        1, 3, 2, 6, 5, 3,
+        1, 2, 5, 3, 4, 5,
+        2, 3, 1, 2, 1, 4,
+        1, 1, 2, 1, 2, 2,
+        5, 2, 1, 2, 4, 6,
+        6, 2, 1, 2, 3, 5,
+    ];
+    /**新手引导底血量 */
+    export const GuideDiBoard: number[] = [
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 1, 1, 0, 0,
+        0, 0, 1, 1, 0, 0,
+        0, 0, 1, 1, 0, 0,
+        0, 0, 1, 1, 0, 0,
+    ];
+
     /**通过游戏页引导 */
     export function passGameStep() {
         GameStorage.setGuideStep(1);

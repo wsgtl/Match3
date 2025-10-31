@@ -21,6 +21,7 @@ import { MathUtil } from '../../../Match_common/utils/MathUtil';
 import { sp } from 'cc';
 import { Vec3 } from 'cc';
 import { isVaild } from '../../../Match_common/utils/ViewUtil';
+import { WithdrawUtil } from '../withdraw/WithdrawUtil';
 const { ccclass, property } = _decorator;
 
 @ccclass('GoldRewardDialog')
@@ -157,7 +158,7 @@ export class GoldRewardDialog extends ViewComponent {
             type = m < GameUtil.GrandPro ? JakcpotType.grand : (m < GameUtil.MajorPro ? JakcpotType.major : (m < 0.6 ? 0 : JakcpotType.mini));//有概率出中奖池和大奖池
         }
         if (type == 0) {
-            const money = MoneyManger.instance.getReward(0.5);
+            const money = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.GoldReward);
             ybcom.show(type, money);
             MoneyManger.instance.addMoney(money, true);
             ViewManager.showRewardParticle(RewardType.money, ybcom.node, this.moneyNode.node, () => {

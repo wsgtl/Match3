@@ -35,7 +35,7 @@ export class BtnMoneys extends Component {
                 return;
             }
 
-            ViewManager.showRewardPop(RewardType.money, this.money, () => {
+            ViewManager.showRewardPop(RewardType.money, MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree), () => {
                 this.money = 0;
                 this.curTime = GameUtil.GetMoneyTime;
                 this.setMoney(false);
@@ -76,9 +76,9 @@ export class BtnMoneys extends Component {
             .start();
     }
     private setMoney(v: boolean, money: number = 0) {
-        this.moneyNode.node.active = v;
-        this.time.node.parent.active = !v;
-        this.moneyNode.num = FormatUtil.toMoney(money);
+        this.moneyNode.node.active = false;
+        // this.time.node.parent.active = !v;
+        // this.moneyNode.num = FormatUtil.toMoney(money);
     }
 }
 

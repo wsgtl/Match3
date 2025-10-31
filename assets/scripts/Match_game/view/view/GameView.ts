@@ -114,7 +114,7 @@ export class GameView extends ViewComponent {
         GameManger.clearInstance();
         GameManger.instance.init(this);
         if (GuideManger.isGuide()) {
-            GameManger.instance.initDiBoard();
+            GameManger.instance.initGuideDiBoard();
             GameManger.instance.initGuideBoard();
             this.boardNode.initDi();
             this.boardNode.initBoard();
@@ -228,6 +228,7 @@ export class GameView extends ViewComponent {
     /**结束连击后 */
     public async afterCombo() {
         await this.gp.calShowGift();
+        await this.guidStpe2();
         if (GameManger.instance.isPass()) {
             //通关展示倒计时
             await this.showCountDownDialog();
@@ -240,7 +241,7 @@ export class GameView extends ViewComponent {
             // this.countDownPassTime();
             // ActionEffect.skAni(this.king, "animation2");
         }
-        this.guidStpe2();
+        
     }
     private showCountDownDialog() {
         return new Promise<void>(res => {
@@ -330,7 +331,8 @@ export class GameView extends ViewComponent {
             this.gm = n.getComponent(GuideMask);
             await this.gm.moveTo(this.boardNode.node, 1000, 1000);
             this.gm.isShowHand = true;
-            this.gm.showHand(this.boardNode.getCard(14).node, this.boardNode.getCard(15).node, true);
+            
+            this.gm.showHand(this.boardNode.getCard(GuideManger.CanClick[0]).node, this.boardNode.getCard(GuideManger.CanClick[1]).node, true);
         })
     }
     private guidStpe1() {

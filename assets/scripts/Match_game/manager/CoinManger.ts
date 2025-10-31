@@ -55,6 +55,6 @@ export class CoinManger {
     }
     /**获取奖励金币 */
     public getReward() {
-        return MathUtil.random(5, 20) * 1000;
+        return MathUtil.random(10, 40) * 1000;
     }
 }

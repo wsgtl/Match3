@@ -16,6 +16,7 @@ import { Vec2 } from 'cc';
 import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { MoneyManger } from '../../manager/MoneyManger';
 import { WithdrawUtil } from '../withdraw/WithdrawUtil';
+import { GuideManger } from '../../manager/GuideManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SlotDialog')
@@ -73,11 +74,12 @@ export class SlotDialog extends ViewComponent {
         AudioManager.playEffect("toubi");
         AudioManager.playEffect("slotSpin");
         // this.index = MathUtil.probability(0.8) ? 0 : MathUtil.random(1, 2);
-        this.index = this.isFirst? GameUtil.calPropBackType(GameUtil.SlotProbability):0;
+        this.index = this.isFirst ? GameUtil.calPropBackType(GameUtil.SlotProbability) : 0;
         // if(GameUtil.IsTest) this.index = MathUtil.random(0,3);
+        if (GuideManger.isGuide()) this.index = 0;
         const t = this.my[this.index];
         const all: Promise<void>[] = [];
-        const times = [2,4,6]
+        const times = [2, 4, 6]
         for (let x = 0; x < 3; x++) {
             all.push(this.spinOne(x, t + times[x] * 4, x * 0.2));
         }
@@ -94,7 +96,7 @@ export class SlotDialog extends ViewComponent {
                 const isDown = curY == 3
                 const pos = this.getPos(x, isDown ? -1 : curY);
                 const it = this.boards[y * 3 + x];
-                
+
                 tween(it)
                     .to(time, { position: pos }, { easing: i == times ? "backOut" : "linear" })
                     .call(() => {
@@ -104,7 +106,7 @@ export class SlotDialog extends ViewComponent {
                     })
                     .start();
             }
-            if(i==times-2){
+            if (i == times - 2) {
                 // AudioManager.playEffect("kaixiang");
                 AudioManager.playEffect("slotStop");
             }
@@ -115,7 +117,7 @@ export class SlotDialog extends ViewComponent {
     private end() {
         this.node.destroy();
         if (this.index == 0) {
-            ViewManager.showRewardDoubleDialog(RewardType.money,MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.Slot), this.cb);
+            ViewManager.showRewardDoubleDialog(RewardType.money, MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.Slot), this.cb);
         } else if (this.index == 1) {
             ViewManager.showRewardDoubleDialog(RewardType.coin, CoinManger.instance.getReward(), this.cb);
         } else {

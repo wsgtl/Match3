@@ -132,7 +132,7 @@ export namespace GameUtil {
    /**通关奖励时间 */
    export const PassRewardTime: number = 30;
    /**主页送钱倒计时时间 */
-   export const GetMoneyTime: number = 10;
+   export const GetMoneyTime: number = 60;
    /**每次观看广告增加的道具数 */
    export const PropAddNum: number = 5;
    /**3~5个免费游戏标可以有几次免费游戏 */
@@ -152,16 +152,7 @@ export namespace GameUtil {
    export const Nearby8: number[] = [-1, 1, AllCol, -AllCol, AllCol - 1, AllCol + 1, -AllCol - 1, -AllCol + 1];
    /**炸弹位置纠正 */
    export const BombPos: number[] = [1, 1, 2, 3, 4, 4];
-   /**新手引导牌面 */
-   export const GuideBoard: number[] = [
-      1, 2, 1, 3, 4, 5,
-      2, 1, 3, 4, 1, 2,
-      1, 4, 2, 1, 4, 3,
-      5, 2, 1, 2, 4, 6,
-      6, 2, 1, 2, 3, 5,
-      1, 3, 2, 3, 4, 3,
-   ]
-
+   
 
    export function getCashNum(bl: number = 1) {//获取最低提现金额
       const rate = LangStorage.getData().rate;

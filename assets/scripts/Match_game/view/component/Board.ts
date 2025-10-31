@@ -20,6 +20,7 @@ import { WithdrawUtil } from '../withdraw/WithdrawUtil';
 import { ColorProp } from '../aniComponent/ColorProp';
 import { ShuffleProp } from '../aniComponent/ShuffleProp';
 import { Sprite } from 'cc';
+import { GuideManger } from '../../manager/GuideManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Board')
@@ -92,6 +93,9 @@ export class Board extends Component {
         if (GameManger.instance.isAni) return;
         this.hideClick();
         this.lastIndex = -1;
+        if(GuideManger.isGuide()){
+            if(!(GuideManger.CanClick.indexOf(i1)>-1)||!(GuideManger.CanClick.indexOf(i2)>-1))return;
+        }
         GameManger.instance.change(i1, i2);
         const t = this.board[i1];
         this.board[i1] = this.board[i2];

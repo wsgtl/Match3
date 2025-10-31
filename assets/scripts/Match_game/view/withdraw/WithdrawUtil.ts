@@ -240,7 +240,7 @@ export namespace WithdrawUtil {
       RewardFree: 0.3,//免费
       Bubble: 1,//气泡
       GoldReward: 0.2,//彩金
-      Pass: 0.02,//通关三消奖励
+      Pass: 0.008,//通关三消奖励
       Mini: 2,//mini
       PassAd:2,//通关奖励看广告倍数
       BoxFree:0.5,//礼包免费
