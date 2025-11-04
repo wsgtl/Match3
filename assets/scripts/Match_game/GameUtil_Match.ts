@@ -126,7 +126,7 @@ export namespace GameUtil {
    /**颜色数量 */
    export const ColorNum: number = 7;
    /**出中奖池概率 */
-   export const MajorPro: number = 0.1;
+   export const MajorPro: number = 0;
    /**出大奖池概率 */
    export const GrandPro: number = 0;
    /**通关奖励时间 */
@@ -152,7 +152,15 @@ export namespace GameUtil {
    export const Nearby8: number[] = [-1, 1, AllCol, -AllCol, AllCol - 1, AllCol + 1, -AllCol - 1, -AllCol + 1];
    /**炸弹位置纠正 */
    export const BombPos: number[] = [1, 1, 2, 3, 4, 4];
-   
+
+   /**临近四个位置 */
+   export const Near4: Vec2[] = [v2(-1, 0), v2(1, 0), v2(0, -1), v2(0, 1)];
+   /**间隔临近几个位置 */
+   export const NearGe: Vec2[] = [v2(-2, 0), v2(2, 0), v2(0, -2), v2(0, 2), v2(-1, -1), v2(1, -1), v2(-1, 1), v2(1, 1)];
+   /**是否溢出 */
+   export function isOverP(x: number, y: number) {
+      return x < 0 || x >= AllCol || y < 0 || y >= AllRow;
+   }
 
    export function getCashNum(bl: number = 1) {//获取最低提现金额
       const rate = LangStorage.getData().rate;

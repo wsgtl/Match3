@@ -32,15 +32,16 @@ export class CoinManger {
     }
 
     /**增加金币 */
-    public addCoin(num: number, isShow: boolean = true) {
+    public addCoin(num: number, isShow: boolean = true, isAni: boolean = true) {
         const last = GameStorage.getCoin();
         const cur = GameStorage.addCoin(num);
         if (isShow) {//立即显示
             if (isVaild(this._curCoin)) {
                 this._curCoin.showCurCoin();
             }
-        }else{
-            ActionEffect.numAddAni(last,cur,(n:number)=>{this.showNum(n)},true);
+        } else {
+            if (isAni)
+                ActionEffect.numAddAni(last, cur, (n: number) => { this.showNum(n) }, true);
         }
     }
     public showNum(num: number) {

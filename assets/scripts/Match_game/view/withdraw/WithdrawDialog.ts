@@ -65,6 +65,8 @@ export class WithdrawDialog extends ViewComponent {
     orderItem: Prefab = null;
     @property(Sprite)
     jd: Sprite = null;
+    @property(Sprite)
+    jdCoin: Sprite = null;
     @property(Node)
     hand: Node = null;
 
@@ -164,6 +166,10 @@ export class WithdrawDialog extends ViewComponent {
         const n = WithdrawUtil.getCashNum();
         const pro = cur/n;
         this.jd.fillRange = pro;
+
+        const nc = WithdrawUtil.getCashCoinNum();
+        const proCoin = curCoin/nc;
+        this.jdCoin.fillRange = proCoin;
     
          this.moneyCards.children.forEach((v) => {
             v.getComponent(WithdrawItem)?.setBtnCanClick();

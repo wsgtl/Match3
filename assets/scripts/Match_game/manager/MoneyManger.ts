@@ -41,7 +41,7 @@ export class MoneyManger {
         }
     }
     /**增加钱 */
-    public addMoney(num: number, isShow: boolean = true) {
+    public addMoney(num: number, isShow: boolean = true, isAni: boolean = true) {
         const last = GameStorage.getMoney();
         const curMoney = GameStorage.addMoney(num);
         EventTracking.sendEventCoin(curMoney);
@@ -50,20 +50,21 @@ export class MoneyManger {
                 this._curMoney.showCurMoney();
             }
         } else {
-            ActionEffect.numAddAni(last, curMoney, (n: number) => { this.showNum(n) });
+            if (isAni)
+                ActionEffect.numAddAni(last, curMoney, (n: number) => { this.showNum(n) });
         }
-        if(!WithdrawStorage.getIsToCashOut()){
+        if (!WithdrawStorage.getIsToCashOut()) {
             // if(curMoney>=WithdrawUtil.getCashNum()){
             //     GameManger.instance.guideTipCashOut();
             //     WithdrawStorage.setIsToCashOut();
             //     return;
             // }
         }
-        // const m = WithdrawUtil.getCashNumAuto(curMoney);
-        // if(m){//气泡显示还剩多少钱可提现
-        //     const sy = m-curMoney;
-        //     GameManger.instance.tipCashOut(1,[FormatUtil.toMoneyLabel(sy),FormatUtil.toMoneyLabel(m)]);
-        // }   
+        const m = WithdrawUtil.getCashNumAuto(curMoney);
+        if(m){//气泡显示还剩多少钱可提现
+            const sy = m-curMoney;
+            GameManger.instance.tipCashOut(1,[FormatUtil.toMoneyLabel(sy),FormatUtil.toMoneyLabel(m)]);
+        }   
     }
     public showNum(num: number) {
         if (isVaild(this._curMoney)) {

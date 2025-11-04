@@ -18,19 +18,32 @@ export namespace GuideManger {
         0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0,
         0, 0, 1, 1, 0, 0,
-        0, 0, 1, 1, 0, 0,
+        1, 1, 1, 1, 1, 1,
         0, 0, 1, 1, 0, 0,
         0, 0, 1, 1, 0, 0,
     ];
 
+    /**通过提现引导页引导 */
+    export function passCashStep() {
+        GameStorage.setGuideStep(1);
+    }
     /**通过游戏页引导 */
     export function passGameStep() {
-        GameStorage.setGuideStep(1);
+        GameStorage.setGuideStep(2);
+    }
+    /**通过提现引导 */
+    export function passCashOutStep() {
+        GameStorage.setGuideStep(3);
     }
     /**是否是新手引导 */
     export function isGuide() {
         // return true;
         const step = GameStorage.getGuideStep();
-        return step < 1;
+        return step < 2;
+    }
+    /**是否是提现新手引导 */
+    export function isGuideCash() {
+        const step = GameStorage.getGuideStep();
+        return step ==2;
     }
 }

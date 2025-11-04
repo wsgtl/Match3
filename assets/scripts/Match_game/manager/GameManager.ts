@@ -11,6 +11,7 @@ import { MoneyManger } from "./MoneyManger";
 import { WithdrawUtil } from "../view/withdraw/WithdrawUtil";
 import { CoinManger } from "./CoinManger";
 import { BaseStorageNS, ITEM_STORAGE } from "../../Match_common/localStorage/BaseStorage";
+import { i18n } from "../../Match_common/i18n/I18nManager";
 
 const debug = Debugger("GameManger");
 export class GameManger {
@@ -49,19 +50,21 @@ export class GameManger {
     isAni: boolean = false;
 
     /**新手引导初始化棋盘 */
-    public initGuideBoard(){
-        this.board=MathUtil.copyArr(GuideManger.GuideBoard);
+    public initGuideBoard() {
+        this.board = MathUtil.copyArr(GuideManger.GuideBoard);
         return this.board;
     }
     /**新手引导初始化底血量 */
-    public initGuideDiBoard(){
-        this.diBoard=MathUtil.copyArr(GuideManger.GuideDiBoard);
+    public initGuideDiBoard() {
+        this.diBoard = MathUtil.copyArr(GuideManger.GuideDiBoard);
         return this.diBoard;
     }
     public initDiBoard() {
         this.diBoard = [];
+        const dis = [1, 1, 2, 2, 3, 3];
         for (let i = 0; i < GameUtil.MaxIdnex; i++) {
-            this.diBoard[i] = GameUtil.DiBlood;
+            this.diBoard[i] = dis[~~(i / GameUtil.AllCol)];
+            // this.diBoard[i] = GameUtil.DiBlood;
             // this.diBoard[i] = 1;
         }
         return this.diBoard;
@@ -93,7 +96,7 @@ export class GameManger {
         this.board[i1] = this.board[i2];
         this.board[i2] = t;
         this.showLog();
-        this.gv.change(i1,i2);
+        this.gv.change(i1, i2);
     }
     private initVisited() {
         this.visited.fill(0);
@@ -255,6 +258,7 @@ export class GameManger {
             this.board[i] = type;
             group.push({ index: i, type });
         })
+
         return group;
     }
     /**获取相邻卡片类型使得可以连消 */
@@ -362,7 +366,7 @@ export class GameManger {
     public calMustCombo() {
         this.mustCombo = MathUtil.probability(0.6) ? 0 : MathUtil.probability(0.5) ? 5 : 10;
         // this.mustCombo = 5;
-        if(GuideManger.isGuide())
+        if (GuideManger.isGuide())
             this.mustCombo = 10;
     }
     /**结束连击后 */
@@ -384,9 +388,21 @@ export class GameManger {
             } else if (this.combo < 10) {
                 const type: RewardType = MathUtil.random(1, 2);
                 const num = type == RewardType.money ? MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardAd) : CoinManger.instance.getReward();
-                ViewManager.showRewardDoubleDialog(type,num,  () => {
-                    res();
-                });    
+                if (MathUtil.probability(0.15)) {//直接飞奖励
+                    if (type == RewardType.coin) {
+                        CoinManger.instance.addCoin(num, false, false);
+                    } else {
+                        MoneyManger.instance.addMoney(num * WithdrawUtil.MoneyBls.AutoReward, false, false);
+                    }
+                    ViewManager.showRewardAni1(type, num, () => {
+                        res();
+                    });
+                } else {
+                    ViewManager.showRewardDoubleDialog(type, num, () => {
+                        res();
+                    });
+                }
+
             } else {
                 ViewManager.showSlotDialog(true, () => {
                     res();
@@ -418,7 +434,47 @@ export class GameManger {
         this.diBoard = data.diBoard;
         return true;
     }
-    public renewGame(){
+    public renewGame() {
         this.gv.renewGame();
+    }
+
+
+    /**找到可移动消除的方块 */
+    public findMoveCanClear() {
+        for (let i = 0; i < this.board.length; i++) {
+            const type = this.board[i];
+            const pos = GameUtil.getPos(i);
+            let isNear = false;
+            for (let p of GameUtil.Near4) {//临近位置有相同的方块组成才能进下一步
+                const _x = pos.x + p.x;
+                const _y = pos.y + p.y;
+                if (GameUtil.isOverP(_x, _y)) continue;
+                const ni = GameUtil.getIndex(_x, _y);
+                if (this.board[ni] == type) {
+                    isNear = true;
+                    break;
+                }
+            }
+            if (isNear) {
+                for (let p of GameUtil.NearGe) {//间隔位置有方块就下一步
+                    const _x = pos.x + p.x;
+                    const _y = pos.y + p.y;
+                    if (GameUtil.isOverP(_x, _y)) continue;
+                    const ni = GameUtil.getIndex(_x, _y);
+                    if (this.board[ni] == type) {
+                        return ni;//算出可移动消除的方块位置
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**提示金额或订单还差几次激活
+    * @param status 1:金额 2:转几次
+    */
+    public tipCashOut(status: number, str: string[]) {
+        const tip = i18n.string(["str_with_emtu", "str_with_smttu"][status - 1], ...str);
+        this.gv.showTipBubble(tip);
     }
 }

@@ -36,10 +36,10 @@ export class AddMoney extends Component {
         })
 
          this.addCoin.on(Node.EventType.TOUCH_START, () => {
-            CoinManger.instance.addCoin(10000000);
+            CoinManger.instance.addCoin(1000000);
         })
         this.subCoin.on(Node.EventType.TOUCH_START, () => {
-             CoinManger.instance.addCoin(-10000000);
+             CoinManger.instance.addCoin(-1000000);
         })
     }
     private addNum: number = 0;

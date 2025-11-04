@@ -93,9 +93,10 @@ export class Board extends Component {
         if (GameManger.instance.isAni) return;
         this.hideClick();
         this.lastIndex = -1;
-        if(GuideManger.isGuide()){
-            if(!(GuideManger.CanClick.indexOf(i1)>-1)||!(GuideManger.CanClick.indexOf(i2)>-1))return;
+        if (GuideManger.isGuide()) {
+            if (!(GuideManger.CanClick.indexOf(i1) > -1) || !(GuideManger.CanClick.indexOf(i2) > -1)) return;
         }
+        this.progress1();
         GameManger.instance.change(i1, i2);
         const t = this.board[i1];
         this.board[i1] = this.board[i2];
@@ -105,8 +106,7 @@ export class Board extends Component {
         this.board[i1].changeTo(i1);
         await this.board[i2].changeTo(i2);
         await this.changeToClear(i1, i2);
-        GameManger.instance.afterCombo();
-        GameManger.instance.isAni = false;
+        this.afterCombo();
     }
 
     private board: Bird[] = [];
@@ -215,10 +215,10 @@ export class Board extends Component {
         // AudioManager.playEffect("yb");
         if (first.changeType) {
             this.showAniClear(first.from);
-            this.board[first.from].setType(first.changeType,true);
+            this.board[first.from].setType(first.changeType, true);
         }
-        AudioManager.playEffect("clears",0.6);
-        AudioManager.vibrate(50,100);
+        AudioManager.playEffect("clears", 0.6);
+        AudioManager.vibrate(50, 100);
 
 
     }
@@ -280,9 +280,11 @@ export class Board extends Component {
         })
         const cp = ViewManager.createPrefab(this.shufflePrefab);
         await cp.getComponent(ShuffleProp).ani(this.shuffleNode, this.node);
+        this.progress1();
+        GameManger.instance.isAni = true;
         GameManger.instance.calMustCombo();
         await this.findOneClear();
-        GameManger.instance.afterCombo();
+        this.afterCombo();
     }
     /**颜色道具 */
     public async clearSameColor(index: number) {
@@ -300,12 +302,11 @@ export class Board extends Component {
         })
         const cp = ViewManager.createPrefab(this.colorPrefab);
         await cp.getComponent(ColorProp).ani(this.colorNode, groups);
-
+        this.progress1();
         this.diBlood(data.group);
         // await this.justClearGroup(data.group);
         await this.dropAndClear();
-        GameManger.instance.afterCombo();
-        GameManger.instance.isAni = false;
+        this.afterCombo();
     }
     /**爆炸道具 */
     public async bombClear(index: number) {
@@ -335,10 +336,10 @@ export class Board extends Component {
         this.shock();
         AudioManager.playEffect("bomb");
         ActionEffect.fadeOut(this.bombNode, 0.2);
+        this.progress1();
         await this.justClearGroup(group);
         await this.dropAndClear();
-        GameManger.instance.afterCombo();
-        GameManger.instance.isAni = false;
+        this.afterCombo();
     }
     /**清理掉道具影响的卡片 */
     public async justClearGroup(group: number[]) {
@@ -415,9 +416,30 @@ export class Board extends Component {
         ActionEffect.playAni(this.clearSprite, 6, 0.05);//清除帧动画
     }
     /**获取卡片 */
-    getCard(index:number):Bird{
+    getCard(index: number): Bird {
         return this.board[index];
     }
+    private progress1(){
+        
+    }
+    private afterCombo(){
+        GameManger.instance.afterCombo();
+        GameManger.instance.isAni = false;
+    }
+    private moves: number = 0;
+    /**自动展示可移动消除位置 */
+    public async autoShowCanMoveClear() {
+        let m = ++this.moves;
+        await delay(3);
+        if (GameManger.instance.isAni) return;
+        if (m != this.moves) return;
+        const index = GameManger.instance.findMoveCanClear();
+        if (index >= 0) {
+            this.lastIndex = index;
+            this.showClick(index);
+        }
+    }
+
 }
 
 

@@ -73,7 +73,7 @@ export class RewardDoubleDialog extends DialogComponent {
         }, ViewManager.adNotReady)
     }
     private addReward(num: number) {
-        this.type == RewardType.money ? MoneyManger.instance.addMoney(num, false) : CoinManger.instance.addCoin(num, false);
+        this.type == RewardType.money ? MoneyManger.instance.addMoney(num, false,false) : CoinManger.instance.addCoin(num, false,false);
         ViewManager.showRewardAni1(this.type, num, this.cb);
     }
 

@@ -34,8 +34,10 @@ export class Loading extends ViewComponent {
             if (this.loading) this.loading.string = "Loading... " + num + "%";
             if (i == all) {
                 this.scheduleOnce(() => {
-                    // ViewManager.showHome();
-                    ViewManager.showGameView();
+                    if (GuideManger.isGuide())
+                        ViewManager.showGuideHome();
+                    else
+                        ViewManager.showGameView();
                 }, 0.2);
             }
             await delay(0.03);

@@ -13,6 +13,9 @@ import { GameManger } from '../../manager/GameManager';
 import { AudioManager } from '../../manager/AudioManager';
 import { i18n } from '../../../Match_common/i18n/I18nManager';
 import { EventTracking } from '../../../Match_common/native/EventTracking';
+import { Tween } from 'cc';
+import { delay } from '../../../Match_common/utils/TimeUtil';
+import { Label } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('Top')
@@ -26,6 +29,8 @@ export class Top extends Component {
     coinbg: Coin = null;
     @property(Money)
     moneybg: Money = null;
+    @property(Node)
+    tipBubble: Node = null;
 
 
     protected onLoad(): void {
@@ -36,7 +41,7 @@ export class Top extends Component {
     }
 
     onRule() {
-        if (GameManger.instance.isAni){
+        if (GameManger.instance.isAni) {
             ViewManager.showTips(i18n.string("str_pstf"));
             return;
         }
@@ -51,7 +56,7 @@ export class Top extends Component {
     }
 
     onBack() {
-        this.cb?.();
+    this.cb?.();
         this.showBack(false);
     }
 
@@ -65,8 +70,14 @@ export class Top extends Component {
         this.moneybg.canClick = !v;
     }
 
-   
-   
+    public async showTipBubble(tip: string) {
+        this.tipBubble.active = true;
+        this.tipBubble.getChildByName("tip").getComponent(Label).string = tip;
+        Tween.stopAllByTarget(this.tipBubble);
+        await delay(6, this.tipBubble);
+        this.tipBubble.active = false;
+    }
+
 }
 
 

@@ -58,7 +58,7 @@ export class BtnMoneys extends Component {
                 this.setMoney(true, this.money);
             }
 
-            // this.hand.active = true;
+            this.hand.active = true;
             this.breathAni();
         }
         await delay(1, this.node);

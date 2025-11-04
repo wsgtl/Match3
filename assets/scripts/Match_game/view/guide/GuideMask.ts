@@ -12,6 +12,7 @@ import { GuideManger } from '../../manager/GuideManager';
 import { MoveMask } from './MoveMask';
 import { delay } from '../../../Match_common/utils/TimeUtil';
 import { Tween } from 'cc';
+import { sp } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('GuideMask')
@@ -20,6 +21,8 @@ export class GuideMask extends ViewComponent {
     db: DialogBox = null;
     @property(Node)
     hand: Node = null;
+    @property(sp.Skeleton)
+    handSp: sp.Skeleton = null;
     @property(Node)
     content: Node = null;
     @property(Node)
@@ -47,6 +50,7 @@ export class GuideMask extends ViewComponent {
         this.moveMask.node.active = true;
         const tp = UIUtils.transformOtherNodePos2localNode(node, this.moveMask.node);
         await this.moveMask.moveTo(tp, width, height);
+        return tp;
     }
 
     async showHand(from: Node, to: Node, isLoop: boolean) {
@@ -69,6 +73,20 @@ export class GuideMask extends ViewComponent {
         Tween.stopAllByTarget(this.hand);
         this.hand.active = false;
         this.isShowHand = false;
+    }
+    async showMoneyNode(money: Money, width: number, height: number){
+        money.cb=()=>{
+            money.cb = null;
+            this.node.destroy();
+            GuideManger.passCashOutStep();
+        }
+        const pos = await this.moveTo(money.node,width,height);
+        this.showHandSpine(pos.x+180,pos.y);
+    }
+    showHandSpine(x:number,y:number){
+        this.handSp.node.active = true;
+        this.handSp.node.x = x;
+        this.handSp.node.y = y;
     }
     hideDb() {
         this.db.node.active = false;

@@ -68,7 +68,7 @@ export class RewardWinDialog extends DialogComponent {
         }, ViewManager.adNotReady)
     }
     private addReward(num: number) {
-        MoneyManger.instance.addMoney(num, false);
+        MoneyManger.instance.addMoney(num, false,false);
         ViewManager.showRewardAni1(RewardType.money, num, this.cb);
     }
 

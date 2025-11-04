@@ -56,7 +56,7 @@ export class SlotDialog extends ViewComponent {
         let a: number[] = this.createY;
         a.forEach((v, y) => {
             for (let x = 0; x < 3; x++) {
-                const it = instantiate(this.item);
+            const it = instantiate(this.item);
                 it.active = true;
                 this.boardNode.addChild(it);
                 this.boards[y * 3 + x] = it;

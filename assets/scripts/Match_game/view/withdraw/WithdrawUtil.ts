@@ -60,14 +60,17 @@ export namespace WithdrawUtil {
    export const OneWait: number = 100;
    /**钱提现金额 */
    export const moneyCash: number[] = [500, 800, 1000];
-   const yi = 10000000;
+   const yi = 100000;
    /**金币提现金额 */
-   export const coinCash: CoinCashData[] = [{ coin: 30 * yi, money: 500 }, { coin: 48 * yi, money: 800 }, { coin: 60 * yi, money: 1000 }];
+   export const coinCash: CoinCashData[] = [{ coin: 10 * yi, money: 500 }, { coin: 16 * yi, money: 800 }, { coin: 20 * yi, money: 1000 }];
 
    export function getCashNum(bl: number = 1) {//获取最低提现金额
       const rate = LangStorage.getData().rate;
       // return Math.floor(rate * CashNum * bl);
       return Math.floor(rate * moneyCash[0] * bl);
+   }
+   export function getCashCoinNum() {//获取最低提现金币金额
+      return coinCash[0].coin;
    }
    export function getCashNumAuto(money: number) {//获取提现金额
       const rate = LangStorage.getData().rate;
@@ -120,9 +123,9 @@ export namespace WithdrawUtil {
             }
          }
          WithdrawStorage.saveLocal();
-         // if (sy > 0) {
-         //    GameManger.instance.tipCashOut(2, [sy.toString(), FormatUtil.toMoneyLabel(mo.money * LangStorage.getData().rate)])
-         // }
+         if (sy > 0) {
+            GameManger.instance.tipCashOut(2, [sy.toString(), FormatUtil.toMoneyLabel(mo.money * LangStorage.getData().rate)])
+         }
       }
       if (order?.activated?.length) {
          WithdrawStorage.addPoints(AddPoints);
@@ -171,8 +174,8 @@ export namespace WithdrawUtil {
       const orders = WithdrawStorage.getOrder().activated;
       orders.forEach(v => {
          if (v.status == 1) {
-            if (MathUtil.probability(0.3)) {
-               v.queue = Math.max(0, v.queue - MathUtil.random(1, 3));
+            if (MathUtil.probability(0.5)) {
+               v.queue = Math.max(0, v.queue - MathUtil.random(2, 8));
                if (v.queue == 0) {
                   orderWait(v);
                }
@@ -244,8 +247,9 @@ export namespace WithdrawUtil {
       Mini: 2,//mini
       PassAd:2,//通关奖励看广告倍数
       BoxFree:0.5,//礼包免费
-      Box: 2,//礼包
+      Box: 1,//礼包
       Slot: 1.3,//老虎机钱
+      AutoReward: 0.33,//连消后自动弹钱比例
    }
 
    /**排队消耗数据 */

@@ -40,9 +40,9 @@ export class RewardPopDialog extends DialogComponent {
         if (this.isAni) return;
         this.closeAni();
         if (this.type == RewardType.coin) {
-            CoinManger.instance.addCoin(this.rewardNum);
+            CoinManger.instance.addCoin(this.rewardNum,false,false);
         } else {
-            MoneyManger.instance.addMoney(this.rewardNum);
+            MoneyManger.instance.addMoney(this.rewardNum,false,false);
         }
         ViewManager.showRewardAni1(this.type,this.rewardNum,this.cb);
         

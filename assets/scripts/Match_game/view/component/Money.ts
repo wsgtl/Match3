@@ -28,10 +28,12 @@ export class Money extends Component {
     moneyNode: Node = null;
 
     public canClick: boolean = true;
+    public cb:Function;
     protected onLoad(): void {
         this.num.aligning = 1;
         this.showCurMoney();
         this.node.on(Node.EventType.TOUCH_START, this.onGet, this);
+        this.btnGet.on(Button.EventType.CLICK, this.onGet, this);
         MoneyManger.instance.setMoneyNode(this);
     }
     showNum(num: number) {
@@ -51,6 +53,7 @@ export class Money extends Component {
     onGet() {
         if (!this.canClick || GameManger.instance.isAni) return;
         MoneyManger.instance.showDialog();
+        this.cb?.();
     }
 
     showTips() {

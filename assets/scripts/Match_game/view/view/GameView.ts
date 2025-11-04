@@ -25,6 +25,7 @@ import { NumFont } from '../../../Match_common/ui/NumFont';
 import { sp } from 'cc';
 import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { GameStorage } from '../../GameStorage_Match';
+import { MoneyManger } from '../../manager/MoneyManger';
 const { ccclass, property } = _decorator;
 
 const debug = Debugger("GameView")
@@ -103,7 +104,7 @@ export class GameView extends ViewComponent {
     show(parent: Node, args?: any) {
         parent.addChild(this.node);
         this.init(args.isShowWin);
-        JackpotManger.startLoop(this.node);
+        // JackpotManger.startLoop(this.node);
 
     }
 
@@ -132,6 +133,7 @@ export class GameView extends ViewComponent {
                 this.afterCombo();
             })
         }
+        this.boardNode.autoShowCanMoveClear();
     }
     public renewGame() {
         this.boardNode.newGame();
@@ -139,6 +141,7 @@ export class GameView extends ViewComponent {
         this.boardNode.renewBoard();
         this.showTaskDi();
         this.afterCombo();
+        this.boardNode.autoShowCanMoveClear();
     }
     private set isAni(v: boolean) {
         GameManger.instance.isAni = v;
@@ -241,7 +244,7 @@ export class GameView extends ViewComponent {
             // this.countDownPassTime();
             // ActionEffect.skAni(this.king, "animation2");
         }
-        
+        this.boardNode.autoShowCanMoveClear();
     }
     private showCountDownDialog() {
         return new Promise<void>(res => {
@@ -276,7 +279,11 @@ export class GameView extends ViewComponent {
         ActionEffect.skAni(this.king, "animation1");
         GameManger.instance.isPassReward = false;
 
-        ViewManager.showRewardWin(GameManger.instance.passRewardMoney, () => { });
+        ViewManager.showRewardWin(GameManger.instance.passRewardMoney, () => {
+            if (GuideManger.isGuideCash()) {
+                this.guidStpe3();
+            }
+        });
         GameManger.instance.endPassReward();
         this.boardNode.renewDi();
         this.boardNode.hidePassReward();
@@ -292,6 +299,9 @@ export class GameView extends ViewComponent {
         this.passTime.node.parent.active = v;
         this.moneybg.active = v;
         this.ts.node.active = !v;
+    }
+    public showTipBubble(tip: string) {
+        this.top.showTipBubble(tip);
     }
     private delay(time: number, node?: Node) {
         return new Promise<void>(resolve => {
@@ -329,9 +339,13 @@ export class GameView extends ViewComponent {
 
         ViewManager.showGuideMask(async (n: Node) => {
             this.gm = n.getComponent(GuideMask);
-            await this.gm.moveTo(this.boardNode.node, 1000, 1000);
+            await this.gm.moveTo(this.ts.node, 300, 300);
+            this.gm.showTips(1);
+            await this.delay(3);
+            this.gm.showAll(false, true);
+
+            await this.gm.moveTo(this.boardNode.node, 1020, 1020);
             this.gm.isShowHand = true;
-            
             this.gm.showHand(this.boardNode.getCard(GuideManger.CanClick[0]).node, this.boardNode.getCard(GuideManger.CanClick[1]).node, true);
         })
     }
@@ -339,6 +353,10 @@ export class GameView extends ViewComponent {
         if (!this.gm || !GuideManger.isGuide()) return;
         this.gm.showAll(false, false);
         this.gm.hideHand();
+
+        // this.gm.node.destroy();
+        // this.gm = null;
+        // GuideManger.passGameStep();
     }
 
 
@@ -352,6 +370,13 @@ export class GameView extends ViewComponent {
         this.gm = null;
         GuideManger.passGameStep();
     }
+    private async guidStpe3() {
+        ViewManager.showGuideMask(async (n: Node) => {
+            this.gm = n.getComponent(GuideMask);
+            await this.gm.showMoneyNode(MoneyManger.instance.getMoneyNode(), 560, 120);
+        })
+    }
+
 
 
 

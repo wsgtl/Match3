@@ -112,7 +112,6 @@ export namespace ViewManager {
         })
     }
 
-
     /** 询问弹窗 */
     export function showAskTips(parent: Node, confirmCb: CallableFunction, cancelCb?: CallableFunction) {
         prefabs.instantiate("prefabs/askTips").then((dialog) => {

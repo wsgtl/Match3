@@ -17,5 +17,8 @@
     "str_nec": "Not enough coins.",
     "str_pstf": "Please stop rotating first.",
     "str_teif": "The energy is full.",
-    "str_twcynt": "To withdraw cash, you need to queue up. There are still %s people ahead of you."
+    "str_twcynt": "To withdraw cash, you need to queue up. There are still %s people ahead of you.",
+    "str_with_emtu": "Earn %s more to unlock%s!",
+    "str_with_smttu": "Combo %s more times to unlock %s!",
+    "str_bulletin": "<color=#0fffff>Congrats</color> <color=#FDF760>%s</color> <color=#0fffff>ezkw Withdraw</color> <color=#00ff00>%s</color>"
 }

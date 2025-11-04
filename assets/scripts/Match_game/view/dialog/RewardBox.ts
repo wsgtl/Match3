@@ -73,7 +73,7 @@ export class RewardBox extends DialogComponent {
         })
     }
     addMoney(num:number){
-        MoneyManger.instance.addMoney(num,false);
+        MoneyManger.instance.addMoney(num,false,false);
         ViewManager.showRewardAni1(RewardType.money,num,this.cb);
     }
 }

@@ -1,0 +1,188 @@
+// Copyright (c) 2017-2020 Xiamen Yaji Software Co., Ltd.
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:
+        cullMode: none
+      properties:
+        alphaThreshold: { value: 0.5 }
+        lightTime: { value: 0.0 }
+        sparkleSpeed: { value: 5.0 }
+        sparkleDensity: { value: 80.0 }
+        edgeWidth: { value: 0.1 }
+        sparkleColor: { value: [1.0, 1.0, 0.8, 1.0], editor: { type: color } }
+}%
+
+CCProgram sprite-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #if USE_LOCAL
+    #include <builtin/uniforms/cc-local>
+  #endif
+  #if SAMPLE_FROM_RT
+    #include <common/common-define>
+  #endif
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+
+  out vec4 color;
+  out vec2 uv0;
+
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1);
+
+    #if USE_LOCAL
+      pos = cc_matWorld * pos;
+    #endif
+
+    #if USE_PIXEL_ALIGNMENT
+      pos = cc_matView * pos;
+      pos.xyz = floor(pos.xyz);
+      pos = cc_matProj * pos;
+    #else
+      pos = cc_matViewProj * pos;
+    #endif
+
+    uv0 = a_texCoord;
+    #if SAMPLE_FROM_RT
+      CC_HANDLE_RT_SAMPLE_FLIP(uv0);
+    #endif
+    color = a_color;
+
+    return pos;
+  }
+}%
+
+CCProgram sprite-fs %{
+  precision highp float;
+  #include <builtin/internal/embedded-alpha>
+  #include <builtin/internal/alpha-test>
+
+  in vec4 color;
+  
+  uniform SparkleParams {
+    float lightTime;
+    float sparkleSpeed;
+    float sparkleDensity;
+    float edgeWidth;
+    vec4 sparkleColor;
+  };
+
+  #if USE_TEXTURE
+    in vec2 uv0;
+    #pragma builtin(local)
+    layout(set = 2, binding = 12) uniform sampler2D cc_spriteTexture;
+  #endif
+
+  // 简单的伪随机函数
+  float hash(float n) {
+    return fract(sin(n) * 43758.5453);
+  }
+
+  // 生成光点效果
+  float generateSparkle(vec2 position, float time) {
+    // 计算边缘距离
+    float leftEdge = position.x;
+    float rightEdge = 1.0 - position.x;
+    float bottomEdge = position.y;
+    float topEdge = 1.0 - position.y;
+    
+    // 找到最近的边缘距离
+    float minEdge = min(min(leftEdge, rightEdge), min(bottomEdge, topEdge));
+    
+    // 只在外侧10%边缘生成光点
+    if (minEdge > edgeWidth) {
+      return 0.0;
+    }
+    
+    // 确定在哪条边上
+    float edgePos = 0.0;
+    if (minEdge == leftEdge) {
+      edgePos = position.y; // 左边
+    } else if (minEdge == topEdge) {
+      edgePos = position.x; // 顶边
+    } else if (minEdge == rightEdge) {
+      edgePos = 1.0 - position.y; // 右边
+    } else {
+      edgePos = 1.0 - position.x; // 底边
+    }
+    
+    // 为每条边上的不同位置生成不同的光点（数量增加10倍）
+    float sparkleIndex = floor(edgePos * sparkleDensity);
+    float sparkleSeed = sparkleIndex * 123.456;
+    
+    // 生成光点生命周期
+    float lifeCycle = hash(sparkleSeed + floor(time * sparkleSpeed));
+    float sparkleTime = fract(time * sparkleSpeed + lifeCycle);
+    
+    // 光点出现的时间偏移
+    float spawnOffset = hash(sparkleSeed + 1.0) * 0.8;
+    
+    // 如果不在活动周期内，返回0
+    if (sparkleTime < spawnOffset || sparkleTime > spawnOffset + 0.15) {
+      return 0.0;
+    }
+    
+    // 计算光点进度 (0~1)
+    float progress = (sparkleTime - spawnOffset) * 6.666; // 0.15秒内完成
+    
+    // 光点大小变化：出现->变大->消失（大小缩小10倍）
+    float size = 0.0;
+    if (progress < 0.3) {
+      size = progress / 0.3 * 0.1; // 出现阶段，最大0.1
+    } else if (progress < 0.7) {
+      size = 0.1; // 最大阶段，保持0.1
+    } else {
+      size = 0.1 * (1.0 - (progress - 0.7) / 0.3); // 消失阶段
+    }
+    
+    // 计算光点中心位置
+    float sparkleCenter = (sparkleIndex + 0.5) / sparkleDensity;
+    float distToCenter = abs(edgePos - sparkleCenter) * sparkleDensity;
+    
+    // 光点形状（圆形），大小缩小10倍
+    float sparkle = 1.0 - smoothstep(0.0, size * 0.1, distToCenter);
+    
+    // 亮度衰减
+    sparkle *= (size * 10.0); // 补偿大小缩小带来的亮度损失
+    
+    return sparkle;
+  }
+
+  vec4 frag () {
+    vec4 o = vec4(0.0, 0.0, 0.0, 0.0); // 完全透明背景
+
+    #if USE_TEXTURE
+      // 只使用纹理的透明度，颜色设为透明
+      vec4 texColor = CCSampleWithAlphaSeparated(cc_spriteTexture, uv0);
+      o.a = texColor.a; // 保持原始透明度
+    #endif
+
+    // 生成闪烁光点
+    float sparkle = generateSparkle(uv0, lightTime);
+    
+    if (sparkle > 0.0) {
+      // 只显示光点，背景透明
+      o.rgb = sparkleColor.rgb * sparkle;
+      o.a = max(o.a, sparkle); // 光点区域设置透明度
+    }
+    
+    // 应用顶点颜色（保持透明度支持）
+    o *= color;
+    
+    ALPHA_TEST(o);
+    return o;
+  }
+}%
