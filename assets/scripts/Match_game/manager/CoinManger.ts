@@ -6,6 +6,8 @@ import { isVaild } from "../../Match_common/utils/ViewUtil";
 import { Top } from "../view/component/Top";
 import { MathUtil } from "../../Match_common/utils/MathUtil";
 import { ActionEffect } from "../../Match_common/effects/ActionEffect";
+import { v3 } from "cc";
+import { tweenPromise } from "../../Match_common/utils/TimeUtil";
 
 export class CoinManger {
     public static _instance: CoinManger = null;
@@ -40,8 +42,11 @@ export class CoinManger {
                 this._curCoin.showCurCoin();
             }
         } else {
-            if (isAni)
+            if (isAni) {
                 ActionEffect.numAddAni(last, cur, (n: number) => { this.showNum(n) }, true);
+                this.scaleAni();
+            }
+
         }
     }
     public showNum(num: number) {
@@ -57,5 +62,8 @@ export class CoinManger {
     /**获取奖励金币 */
     public getReward() {
         return MathUtil.random(10, 40) * 1000;
+    }
+    public scaleAni() {
+        ActionEffect.rewardScaleAni(this._curCoin.node);
     }
 }

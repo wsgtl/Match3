@@ -5,6 +5,7 @@ import { tween } from 'cc';
 import { tweenPromise } from '../../../Match_common/utils/TimeUtil';
 import { ViewManager } from '../../manager/ViewManger';
 import { BaseStorageNS, ITEM_STORAGE } from '../../../Match_common/localStorage/BaseStorage';
+import { SpriteFrame } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('GiftProgress')
@@ -13,15 +14,17 @@ export class GiftProgress extends Component {
     jd: Sprite = null;
     @property([Node])
     gifts: Node[] = [];
+    @property([SpriteFrame])
+    sf: SpriteFrame[] = [];
 
-    private comboNum: number = 77;
+    private comboNum: number = 0;
     /**已领取到第几个礼物 */
-    public giftClaim: number = 2;
+    public giftClaim: number = 0;
     /**当前可领取到的礼物 */
     public curGift: number = 0;
 
     onLoad() {
-        // this.recover();
+        this.recover();
         this.showJd();
         this.showGift();
     }
@@ -30,9 +33,11 @@ export class GiftProgress extends Component {
             if (i == 2) {
 
             } else {
-                v.getChildByName("gs").active = this.curGift > i && this.giftClaim <= i;
+                v.getChildByName("gs").active =  this.giftClaim <= i;
+                // v.getComponent(Sprite).grayscale = this.giftClaim > i;
+                v.getComponent(Sprite).spriteFrame = this.sf[this.giftClaim > i?1:0] ;
             }
-            v.getComponent(Sprite).grayscale = this.giftClaim > i;
+            
 
         })
     }

@@ -93,8 +93,13 @@ export class GameView extends ViewComponent {
         const ch = cha / 2;
         const cy = (ch < 60 ? ch : ch - 70);
         this.top.node.y = 960 + cy;
-        this.bottom.y = -840 - ch * 0.4;
-        this.content.y = -190 + ch * 0.2;
+        this.bottom.y = -840 - ch * 0.45;
+        this.content.y = -170 - ch * 0.15;
+        if(cha<100)
+            this.content.getChildByName("boardContent").y=-20
+        else
+            this.content.getChildByName("top").y=800+ch*0.2;
+
 
         nextFrame().then(() => {
             const p = UIUtils.transformOtherNodePos2localNode(this.node, this.dialogNode);

@@ -94,6 +94,9 @@ export class RewardAni extends ViewComponent {
                     this.node.destroy();
                     ins.showCurNum();
                 }
+                if(i==0){
+                    ins.scaleAni();
+                }
             })
         }
     }

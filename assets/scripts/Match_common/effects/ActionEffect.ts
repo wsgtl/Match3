@@ -1,6 +1,6 @@
 import { instantiate, Node, Tween, tween, UIOpacity, UITransform, v3, Vec2, Vec3 } from 'cc';
 import { UIUtils } from '../utils/UIUtils';
-import { awaitTween, delay } from '../utils/TimeUtil';
+import { awaitTween, delay, tweenPromise } from '../utils/TimeUtil';
 import BezierCurve from './BezierCurve';
 import { Sprite } from 'cc';
 import { TweenEasing } from 'cc';
@@ -458,5 +458,15 @@ export namespace ActionEffect {
         sk.node.active = true;
         sk.setCompleteListener(null);
         sk.setAnimation(1, name, true);
+    }
+    /**飞钱后缩放动画 */
+    export async function rewardScaleAni(node: Node) {
+        await tweenPromise(node, t => t
+            .to(0.1, { scale: v3(1.1, 1.1) })
+            .to(0.1, { scale: v3(1, 1) })
+            .to(0.1, { scale: v3(1.1, 1.1) })
+            .to(0.1, { scale: v3(1, 1) })
+        )
+
     }
 }

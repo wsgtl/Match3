@@ -12,6 +12,8 @@ import { FormatUtil } from "../../Match_common/utils/FormatUtil";
 import { WithdrawStorage } from "../view/withdraw/WithdrawStorage";
 import { WithdrawUtil, MoneyControl } from "../view/withdraw/WithdrawUtil";
 import { GameManger } from "./GameManager";
+import { tweenPromise } from "../../Match_common/utils/TimeUtil";
+import { v3 } from "cc";
 
 export class MoneyManger {
     public static _instance: MoneyManger = null;
@@ -50,8 +52,11 @@ export class MoneyManger {
                 this._curMoney.showCurMoney();
             }
         } else {
-            if (isAni)
+            if (isAni){
                 ActionEffect.numAddAni(last, curMoney, (n: number) => { this.showNum(n) });
+                this.scaleAni();
+            }
+                
         }
         if (!WithdrawStorage.getIsToCashOut()) {
             // if(curMoney>=WithdrawUtil.getCashNum()){
@@ -128,5 +133,7 @@ export class MoneyManger {
     public rate(money: number) {
         return LangStorage.getData().rate * money;
     }
-
+    public scaleAni(){
+        ActionEffect.rewardScaleAni(this._curMoney.node);        
+    }
 }

@@ -9,6 +9,7 @@ import { AudioStorage } from './Match_common/localStorage/AudioStorage';
 import { LangStorage } from './Match_common/localStorage/LangStorage';
 import { JackpotManger } from './Match_game/manager/JackpotManager';
 import { WithdrawStorage } from './Match_game/view/withdraw/WithdrawStorage';
+import { WebManger } from './Match_game/manager/WebManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameLaunch')
@@ -44,6 +45,7 @@ export class GameLaunch extends Component {
         AudioStorage.init();
         JackpotManger.init();
         WithdrawStorage.init();
+        WebManger.init();
         i18n.loadLang();//加载多语言
 
     }
