@@ -8,6 +8,7 @@ import { CoinManger } from '../../manager/CoinManger';
 import { MoneyManger } from '../../manager/MoneyManger';
 import { ViewManager } from '../../manager/ViewManger';
 import { AudioManager } from '../../manager/AudioManager';
+import { adHelper } from '../../../Match_common/native/AdHelper';
 const { ccclass, property } = _decorator;
 
 @ccclass('RewardPopDialog')
@@ -45,6 +46,7 @@ export class RewardPopDialog extends DialogComponent {
             MoneyManger.instance.addMoney(this.rewardNum,false,false);
         }
         ViewManager.showRewardAni1(this.type,this.rewardNum,this.cb);
+        adHelper.timesToShowInterstitial();
         
     }
 }

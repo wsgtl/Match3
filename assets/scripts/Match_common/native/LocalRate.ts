@@ -33,14 +33,12 @@ export namespace LocalRate {
     // }
     /**初始化获取国家码和汇率，只用一次，后续不会变 */
     export async function initCodeAndRate() {
+        return CountryDatas.US;
         const code = await getCode();
         let data: CountryData = CountryDatas[code];
         if (!data) {
             data = CountryDatas.US;//默认美元
         }
-        // const rate = await getRete(data.code);
-        // if (rate)
-        //     data.rate = rate;
         return data;
     }
     export function isSymbol(s: string) {

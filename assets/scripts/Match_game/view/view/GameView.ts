@@ -83,6 +83,7 @@ export class GameView extends ViewComponent {
 
         this.showPropNum();
         this.initGuide();
+        this.boardNode.usePropCb = this.usePropCb;
     }
 
     fit() {
@@ -90,7 +91,7 @@ export class GameView extends ViewComponent {
 
         const cha = h - 1920;
         const ch = cha / 2;
-        const cy = (ch < 60 ? ch : ch - 80);
+        const cy = (ch < 60 ? ch : ch - 70);
         this.top.node.y = 960 + cy;
         this.bottom.y = -840 - ch * 0.4;
         this.content.y = -190 + ch * 0.2;
@@ -159,53 +160,60 @@ export class GameView extends ViewComponent {
         this.guidStpe1();
     }
     /**打乱道具 */
-    private onShuffle() {
+    private async onShuffle() {
         if (this.isAni || GameManger.instance.isPassReward) return;
         if (this.showPropDialog(PropType.shuffle)) return;
+        this.usePropCb(PropType.shuffle);
         this.boardNode.closeUseProp();
-        adHelper.showRewardVideo("打乱道具", async () => {
-            this.isAni = true;
-            await this.boardNode.shuffle();
-            this.isAni = false;
-        }, ViewManager.adNotReady);
+        // adHelper.showRewardVideo("打乱道具", async () => {
+        this.isAni = true;
+        await this.boardNode.shuffle();
+        this.isAni = false;
+        // }, ViewManager.adNotReady);
     }
     /**颜色道具 */
     private onColor() {
         if (this.isAni || GameManger.instance.isPassReward) return;
-        if (this.showPropDialog(PropType.color)) return;
         if (GameManger.instance.curUseProp == 2) {//再次点击关闭
             this.boardNode.closeUseProp();
             return;
         }
-        adHelper.showRewardVideo("颜色道具", async () => {
-            GameManger.instance.curUseProp = 2;
-            this.boardNode.setUseProp(2);
-        }, ViewManager.adNotReady);
+        if (this.showPropDialog(PropType.color)) return;
+
+        // adHelper.showRewardVideo("颜色道具", async () => {
+        GameManger.instance.curUseProp = 2;
+        this.boardNode.setUseProp(2);
+        // }, ViewManager.adNotReady);
     }
     /**炸弹道具 */
     private onBomb() {
         if (this.isAni || GameManger.instance.isPassReward) return;
-        if (this.showPropDialog(PropType.bomb)) return;
         if (GameManger.instance.curUseProp == 1) {//再次点击关闭
             this.boardNode.closeUseProp();
             return;
         }
+        if (this.showPropDialog(PropType.bomb)) return;
 
-        adHelper.showRewardVideo("炸弹道具", async () => {
-            GameManger.instance.curUseProp = 1;
-            this.boardNode.setUseProp(1);
-        }, ViewManager.adNotReady);
+
+        // adHelper.showRewardVideo("炸弹道具", async () => {
+        GameManger.instance.curUseProp = 1;
+        this.boardNode.setUseProp(1);
+        // }, ViewManager.adNotReady);
     }
     /**显示道具弹窗 */
     private showPropDialog(type: PropType) {
         const n = GameStorage.getProp();
         if (n[type - 1] > 0) {//有道具就使用
-            GameStorage.addProp(type, -1);
-            this.showPropNum();
+            // GameStorage.addProp(type, -1);
+            // this.showPropNum();
             return false;
         }
         ViewManager.showPropDialog(type, () => { this.showPropNum(); })
         return true;
+    }
+    private usePropCb = (type: PropType) => {
+        GameStorage.addProp(type, -1);
+        this.showPropNum();
     }
     /**显示道具数量 */
     private showPropNum() {
@@ -244,6 +252,10 @@ export class GameView extends ViewComponent {
             // this.countDownPassTime();
             // ActionEffect.skAni(this.king, "animation2");
         }
+
+    }
+    /**所有连击和弹窗都结束后 */
+    public afterAllCombo() {
         this.boardNode.autoShowCanMoveClear();
     }
     private showCountDownDialog() {
@@ -373,7 +385,7 @@ export class GameView extends ViewComponent {
     private async guidStpe3() {
         ViewManager.showGuideMask(async (n: Node) => {
             this.gm = n.getComponent(GuideMask);
-            await this.gm.showMoneyNode(MoneyManger.instance.getMoneyNode(), 560, 120);
+            await this.gm.showMoneyNode(MoneyManger.instance.getMoneyNode(), 500, 120);
         })
     }
 

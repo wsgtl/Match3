@@ -61,13 +61,20 @@ export class GameManger {
     }
     public initDiBoard() {
         this.diBoard = [];
+        // const dis = [1, 1, 2, 2, 3, 3];
+        // for (let i = 0; i < GameUtil.MaxIdnex; i++) {
+        //     this.diBoard[i] = dis[~~(i / GameUtil.AllCol)];
+        //     // this.diBoard[i] = GameUtil.DiBlood;
+        //     // this.diBoard[i] = 1;
+        // }
+        this.renewDiBoard();
+        return this.diBoard;
+    }
+    private renewDiBoard(){
         const dis = [1, 1, 2, 2, 3, 3];
         for (let i = 0; i < GameUtil.MaxIdnex; i++) {
             this.diBoard[i] = dis[~~(i / GameUtil.AllCol)];
-            // this.diBoard[i] = GameUtil.DiBlood;
-            // this.diBoard[i] = 1;
         }
-        return this.diBoard;
     }
     public initBoard() {
         this.initVisited();
@@ -375,10 +382,11 @@ export class GameManger {
         this.mustCombo = 0;
         if (!this.isPassReward) await this.showRewardForCombo();
         this.combo = 0;
-        if (!this.isPassReward) this.gv.afterCombo();
+        if (!this.isPassReward) await this.gv.afterCombo();
         if (this.isPassReward && this.passRewardTime <= 0) {
             this.gv.endPassReward();
         }
+        this.gv.afterAllCombo();
     }
     public showRewardForCombo() {
         return new Promise<void>(res => {
@@ -414,10 +422,12 @@ export class GameManger {
     /**通关奖励关卡结束后恢复 */
     public endPassReward() {
         this.passRewardMoney = 0;
-        for (let i in this.diBoard) {
-            this.diBoard[i] = GameUtil.DiBlood;
-        }
+        this.renewDiBoard();
+        // for (let i in this.diBoard) {
+        //     this.diBoard[i] = GameUtil.DiBlood;
+        // }
     }
+
     private key = ITEM_STORAGE.GameBoard;
     /**
      * 保存游戏信息

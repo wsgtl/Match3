@@ -20,5 +20,5 @@
     "str_twcynt": "To withdraw cash, you need to queue up. There are still %s people ahead of you.",
     "str_with_emtu": "Earn %s more to unlock%s!",
     "str_with_smttu": "Combo %s more times to unlock %s!",
-    "str_bulletin": "<color=#0fffff>Congrats</color> <color=#FDF760>%s</color> <color=#0fffff>ezkw Withdraw</color> <color=#00ff00>%s</color>"
+    "str_bulletin": "<color=#0160ba>Congrats</color> <color=#fd6100>%s</color> <color=#0160ba>Withdraw</color> <color=#fd6100>%s</color>"
 }

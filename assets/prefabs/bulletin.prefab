@@ -181,7 +181,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 647.90234375,
+      "width": 611.6171875,
       "height": 63
     },
     "_anchorPoint": {
@@ -208,15 +208,15 @@
       "__id__": 7
     },
     "_lineHeight": 50,
-    "_string": "<b><outline color=#c55a31 width=1><color=#0fffff>Congrats</color> <color=#FDF760>Player</color> <color=#0fffff>ezkw Withdraw</color> <color=#00ff00>$500</color>",
+    "_string": "<b><outline color=#cf5014 width=1><color=#f8ff29>Congrats</color> <color=#FDF760>Player</color> <color=#0fffff>Withdraw</color> <color=#00ff00>$500</color>",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_fontSize": 36,
+    "_fontSize": 40,
     "_fontColor": {
       "__type__": "cc.Color",
-      "r": 111,
-      "g": 228,
-      "b": 222,
+      "r": 15,
+      "g": 121,
+      "b": 141,
       "a": 255
     },
     "_maxWidth": 0,
@@ -297,7 +297,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "f1618198-b50b-4c32-bf26-aa68b8e56202@f9941",
+      "__uuid__": "1edfe2f1-1dc5-44f3-8f39-e44c07875c32@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 1,

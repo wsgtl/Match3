@@ -56,11 +56,14 @@ export class Board extends Component {
     }
 
     private lastIndex: number = -1;
+    public usePropCb: (type: PropType) => void;
     touchStart(e: EventTouch) {
         if (GameManger.instance.isAni) { this.lastIndex = -1; return; }
         const p = UIUtils.touchNodeLocation(this.node, e);
         const index = GameUtil.getIndext(p);
+        if (index < 0) return;//溢出处理
         if (GameManger.instance.curUseProp > 0) {
+            this.hideClick();
             if (GameManger.instance.curUseProp == 1)
                 this.bombClear(index);
             else
@@ -85,6 +88,7 @@ export class Board extends Component {
 
         const p = UIUtils.touchNodeLocation(this.node, e);
         const index = GameUtil.getIndext(p);
+        if (index < 0) return;//溢出处理
         if (GameUtil.isAdjoin(this.lastIndex, index))
             this.change(this.lastIndex, index);//只有上下左右才能互换
     }
@@ -290,6 +294,7 @@ export class Board extends Component {
     public async clearSameColor(index: number) {
 
         this.closeUseProp();
+        this.usePropCb(PropType.color);
         GameManger.instance.isAni = true;
         GameManger.instance.calMustCombo();
         const data = GameManger.instance.clearSameColor(index);
@@ -311,6 +316,7 @@ export class Board extends Component {
     /**爆炸道具 */
     public async bombClear(index: number) {
         this.closeUseProp();
+        this.usePropCb(PropType.bomb);
         AudioManager.playEffect("bombMove");
         GameManger.instance.isAni = true;
         GameManger.instance.calMustCombo();
@@ -419,10 +425,10 @@ export class Board extends Component {
     getCard(index: number): Bird {
         return this.board[index];
     }
-    private progress1(){
-        
+    private progress1() {
+
     }
-    private afterCombo(){
+    private afterCombo() {
         GameManger.instance.afterCombo();
         GameManger.instance.isAni = false;
     }

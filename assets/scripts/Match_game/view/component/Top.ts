@@ -14,8 +14,9 @@ import { AudioManager } from '../../manager/AudioManager';
 import { i18n } from '../../../Match_common/i18n/I18nManager';
 import { EventTracking } from '../../../Match_common/native/EventTracking';
 import { Tween } from 'cc';
-import { delay } from '../../../Match_common/utils/TimeUtil';
+import { delay, nextFrame } from '../../../Match_common/utils/TimeUtil';
 import { Label } from 'cc';
+import { UIUtils } from '../../../Match_common/utils/UIUtils';
 const { ccclass, property } = _decorator;
 
 @ccclass('Top')
@@ -72,8 +73,12 @@ export class Top extends Component {
 
     public async showTipBubble(tip: string) {
         this.tipBubble.active = true;
-        this.tipBubble.getChildByName("tip").getComponent(Label).string = tip;
+        const tips = this.tipBubble.getChildByName("tip");
+        tips.getComponent(Label).string = tip;
         Tween.stopAllByTarget(this.tipBubble);
+        await nextFrame();
+        UIUtils.setWidth(this.tipBubble,Math.max(606,UIUtils.getWidth(tips)+40)); 
+        
         await delay(6, this.tipBubble);
         this.tipBubble.active = false;
     }

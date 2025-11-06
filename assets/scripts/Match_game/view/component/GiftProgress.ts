@@ -14,14 +14,14 @@ export class GiftProgress extends Component {
     @property([Node])
     gifts: Node[] = [];
 
-    private comboNum: number = 0;
+    private comboNum: number = 77;
     /**已领取到第几个礼物 */
-    public giftClaim: number = 0;
+    public giftClaim: number = 2;
     /**当前可领取到的礼物 */
     public curGift: number = 0;
 
     onLoad() {
-        this.recover();
+        // this.recover();
         this.showJd();
         this.showGift();
     }

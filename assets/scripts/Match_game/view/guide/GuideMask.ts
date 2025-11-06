@@ -13,6 +13,7 @@ import { MoveMask } from './MoveMask';
 import { delay } from '../../../Match_common/utils/TimeUtil';
 import { Tween } from 'cc';
 import { sp } from 'cc';
+import { v3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('GuideMask')
@@ -72,7 +73,7 @@ export class GuideMask extends ViewComponent {
     hideHand() {
         Tween.stopAllByTarget(this.hand);
         this.hand.active = false;
-        this.isShowHand = false;
+    this.isShowHand = false;
     }
     async showMoneyNode(money: Money, width: number, height: number){
         money.cb=()=>{
@@ -80,7 +81,9 @@ export class GuideMask extends ViewComponent {
             this.node.destroy();
             GuideManger.passCashOutStep();
         }
-        const pos = await this.moveTo(money.node,width,height);
+        this.moveMask.node.active = true;
+        const pos = UIUtils.transformOtherNodePos2localNode(money.node, this.moveMask.node);
+        await this.moveMask.moveTo(v3(pos.x+40,pos.y+8), width, height);
         this.showHandSpine(pos.x+180,pos.y);
     }
     showHandSpine(x:number,y:number){

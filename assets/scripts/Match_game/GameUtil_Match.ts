@@ -213,7 +213,10 @@ export namespace GameUtil {
    }
    /**通过真实坐标获取标号 */
    export function getIndext(p: Vec3): number {
-      return (Math.floor(p.x / CardW) + 3) + (Math.floor(p.y / CardH) + 3) * AllCol;
+      const x = (Math.floor(p.x / CardW) + 3);
+      const y = (Math.floor(p.y / CardH) + 3);
+      if (isOverP(x, y)) return -1;
+      return x + y * AllCol;
    }
    export function getStartY() {
       return getPost(MaxIdnex).y;

@@ -2,6 +2,7 @@ import { _decorator, Component, Node } from 'cc';
 import { DialogComponent } from '../../../Match_common/ui/DialogComtnet';
 import { Button } from 'cc';
 import { ViewManager } from '../../manager/ViewManger';
+import { adHelper } from '../../../Match_common/native/AdHelper';
 const { ccclass, property } = _decorator;
 
 @ccclass('SlotMoreDialog')
@@ -24,13 +25,17 @@ export class SlotMoreDialog extends DialogComponent {
     }
     onClaim(){
         if(this.isAni)return;
-        this.closeAni();
-        ViewManager.showSlotDialog(false,this.cb);
+        adHelper.showRewardVideo("老虎机再来一次界面",()=>{
+            this.closeAni();
+            ViewManager.showSlotDialog(false,this.cb);
+        },ViewManager.adNotReady);
+        
     }
     onClose(){
         if(this.isAni)return;
         this.closeAni();
         this.cb();
+        adHelper.timesToShowInterstitial();
     }
 }
 

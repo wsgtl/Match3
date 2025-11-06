@@ -20,5 +20,5 @@
     "str_twcynt": "Para sacar dinheiro, você precisa entrar na fila. Ainda há %s pessoas na sua frente.",
     "str_with_emtu": "Ganhe mais %s para desbloquear %s!",
     "str_with_smttu": "Combo %s vezes mais para desbloquear %s!",
-    "str_bulletin": "<color=#0fffff>Parabéns</color> <color=#FDF760>%s</color> <color=#0fffff>ezkw Você sacou</color> <color=#00ff00>%s</color>"
+    "str_bulletin": "<color=#0160ba>Parabéns</color> <color=#fd6100>%s</color> <color=#0160ba>ezkw Você sacou</color> <color=#fd6100>%s</color>"
 }

@@ -9,8 +9,7 @@ buildDir = "${RES_PATH}/proj/build/${project.name ==~ /^[_a-zA-Z0-9-]+$/ ? proje
 android {
     compileSdkVersion PROP_COMPILE_SDK_VERSION.toInteger()
     buildToolsVersion PROP_BUILD_TOOLS_VERSION
-    ndkVersion "23.2.8568313"  // 强制使用旧版本
-    ndkPath PROP_NDK_PATH
+    ndkVersion PROP_NDK_VERSION
     namespace APPLICATION_ID
 
     compileOptions {
@@ -152,7 +151,6 @@ dependencies {
     implementation("io.github.kwainetwork:adImpl:1.2.18")//必须添加
     //Max适配器依赖
     implementation("io.github.kwainetwork:maxAdapter:1.2.15")//根据需求选择
-
 
 
   //af
