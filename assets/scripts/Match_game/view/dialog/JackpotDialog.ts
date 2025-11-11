@@ -19,6 +19,7 @@ import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { UIUtils } from '../../../Match_common/utils/UIUtils';
 import { CoinManger } from '../../manager/CoinManger';
 import { WithdrawUtil } from '../withdraw/WithdrawUtil';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('JackpotDialog')
@@ -57,7 +58,7 @@ export class JackpotDialog extends DialogComponent {
         this.num.aligning = 1;
         // this.num.num = data.symbol + FormatUtil.toXXDXX(num, 6);
         // this.num.num = FormatUtil.toXXDXX(num,0,false);
-        this.moneyNum = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.Mini);
+        this.moneyNum = MoneyManger.instance.getReward(ConfigConst.MoneyBls.Mini);
         const data = LangStorage.getData();
         // this.numBtn.num = data.symbol + " " + FormatUtil.toXXDXXxsd(this.moneyNum);
         this.numBtn.num = FormatUtil.toMoney(this.moneyNum);

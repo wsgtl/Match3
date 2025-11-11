@@ -8,6 +8,7 @@ import { LangStorage } from "../../../Match_common/localStorage/LangStorage";
 import { EventTracking } from "../../../Match_common/native/EventTracking";
 import { FormatUtil } from "../../../Match_common/utils/FormatUtil";
 import { MathUtil } from "../../../Match_common/utils/MathUtil";
+import { ConfigConst } from "../../manager/ConfigConstManager";
 
 
 /**提现卡类型 */
@@ -198,7 +199,20 @@ export namespace WithdrawUtil {
    export function orderFial(order: OrderData) {
       order.status = 3;
    }
-
+   let reduceFreeNum = 0;
+   /**跳过广告降低免费广告比例 */
+   export function reduceFree() {
+      reduceFreeNum++;
+   }
+   /**观看广告恢复免费广告比例 */
+   export function renewFree() {
+      reduceFreeNum = 0;
+   }
+   /**计算免费广告比例 */
+   export function calFreeBl() {
+      const bls = ConfigConst.MoneyBls;
+      return Math.max(bls.RewardFree - bls.ReduceFree * reduceFreeNum, bls.MiniRewardFree);
+   }
    /**钱控制数据 */
    export const MoneyControlData: MoneyControl[] = [
       { right: 250, base: 22, min: 1.2, max: 2 },
@@ -245,11 +259,13 @@ export namespace WithdrawUtil {
       GoldReward: 0.2,//彩金
       Pass: 0.008,//通关三消奖励
       Mini: 2,//mini
-      PassAd:2,//通关奖励看广告倍数
-      BoxFree:0.5,//礼包免费
+      PassAd: 2,//通关奖励看广告倍数
+      BoxFree: 0.5,//礼包免费
       Box: 1,//礼包
       Slot: 1.3,//老虎机钱
       AutoReward: 0.33,//连消后自动弹钱比例
+      MiniRewardFree: 0.1,//免费领取最低比例
+      ReduceFree: 0.05,//每次跳过广告免费领取降低比例
    }
 
    /**排队消耗数据 */

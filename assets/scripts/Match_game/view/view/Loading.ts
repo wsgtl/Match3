@@ -11,6 +11,9 @@ import { sys } from 'cc';
 import { game } from 'cc';
 import { Game } from 'cc';
 import { MathUtil } from '../../../Match_common/utils/MathUtil';
+import { EventTracking } from '../../../Match_common/native/EventTracking';
+import { WebManger } from '../../manager/WebManager';
+import { Jsb } from '../../../Match_common/platform/Jsb';
 const { ccclass, property } = _decorator;
 
 @ccclass('Loading')
@@ -25,13 +28,18 @@ export class Loading extends ViewComponent {
     qq: Node = null;
 
     async showProgress() {
-        const all = sys.platform === sys.Platform.ANDROID ? 100 : 10;
+        const pro = WebManger.getData();
+        EventTracking.sendOneEvent("loading");
+        const all = !Jsb.browser() ? 100 : 10;
         for (let i = 0; i <= all; i++) {
             this.progress.progress = i / all;
             const num = Math.floor(i / all * 100);
             if (this.qq) this.qq.angle -= 10;
             if (this.num) this.num.num = num + "%";
             if (this.loading) this.loading.string = "Loading... " + num + "%";
+            if (i == all - 1) {
+                await pro;
+            }
             if (i == all) {
                 this.scheduleOnce(() => {
                     if (GuideManger.isGuide())

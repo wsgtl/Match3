@@ -91,7 +91,7 @@ export class GameView extends ViewComponent {
 
         const cha = h - 1920;
         const ch = cha / 2;
-        const cy = (ch < 60 ? ch : ch - 70);
+        const cy = (ch < 60 ? ch : ch - 80);
         this.top.node.y = 960 + cy;
         this.bottom.y = -840 - ch * 0.45;
         this.content.y = -170 - ch * 0.15;
@@ -394,7 +394,14 @@ export class GameView extends ViewComponent {
         })
     }
 
-
+/**到达提现门槛引导 */
+    public async guideTipCashOut() {
+        ViewManager.showGuideMask(async (n: Node) => {
+            this.gm = n.getComponent(GuideMask);
+            this.gm.showTips(2);
+            await this.gm.showMoneyNode(MoneyManger.instance.getMoneyNode(), 500, 120);
+        })
+    }
 
 
 

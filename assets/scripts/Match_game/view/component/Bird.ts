@@ -16,6 +16,7 @@ import { ButtonLock } from '../../../Match_common/Decorator';
 import { UIUtils } from '../../../Match_common/utils/UIUtils';
 import { NumFont } from '../../../Match_common/ui/NumFont';
 import { Vec2 } from 'cc';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bird')
@@ -105,7 +106,7 @@ export class Bird extends Component {
     public money: number = 0;
     setMoney() {
         this.moneyL.node.active = true;
-        this.money = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.Pass);
+        this.money = MoneyManger.instance.getReward(ConfigConst.MoneyBls.Pass);
         this.moneyL.num = FormatUtil.toMoney(this.money);
     }
     hideMoney() {

@@ -12,6 +12,8 @@ import { WithdrawUtil } from "../view/withdraw/WithdrawUtil";
 import { CoinManger } from "./CoinManger";
 import { BaseStorageNS, ITEM_STORAGE } from "../../Match_common/localStorage/BaseStorage";
 import { i18n } from "../../Match_common/i18n/I18nManager";
+import { EventTracking } from "../../Match_common/native/EventTracking";
+import { ConfigConst } from "./ConfigConstManager";
 
 const debug = Debugger("GameManger");
 export class GameManger {
@@ -70,7 +72,7 @@ export class GameManger {
         this.renewDiBoard();
         return this.diBoard;
     }
-    private renewDiBoard(){
+    private renewDiBoard() {
         const dis = [1, 1, 2, 2, 3, 3];
         for (let i = 0; i < GameUtil.MaxIdnex; i++) {
             this.diBoard[i] = dis[~~(i / GameUtil.AllCol)];
@@ -102,7 +104,7 @@ export class GameManger {
         const t = this.board[i1];
         this.board[i1] = this.board[i2];
         this.board[i2] = t;
-        this.showLog();
+        // this.showLog();
         this.gv.change(i1, i2);
     }
     private initVisited() {
@@ -371,7 +373,9 @@ export class GameManger {
     }
     /**获取随机必连消次数 */
     public calMustCombo() {
-        this.mustCombo = MathUtil.probability(0.6) ? 0 : MathUtil.probability(0.5) ? 5 : 10;
+        const i = GameUtil.calPropBackType(ConfigConst.Other.MustComboProb);
+        this.mustCombo = [0, 5, 10][i];
+        // this.mustCombo = MathUtil.probability(0.6) ? 0 : MathUtil.probability(0.5) ? 5 : 10;
         // this.mustCombo = 5;
         if (GuideManger.isGuide())
             this.mustCombo = 10;
@@ -383,8 +387,10 @@ export class GameManger {
         if (!this.isPassReward) await this.showRewardForCombo();
         this.combo = 0;
         if (!this.isPassReward) await this.gv.afterCombo();
-        if (this.isPassReward && this.passRewardTime <= 0) {
-            this.gv.endPassReward();
+        if (this.isPassReward) {
+            EventTracking.sendOneEvent("clearPass1");
+            if (this.passRewardTime <= 0)
+                this.gv.endPassReward();
         }
         this.gv.afterAllCombo();
     }
@@ -395,12 +401,12 @@ export class GameManger {
                 res();
             } else if (this.combo < 10) {
                 const type: RewardType = MathUtil.random(1, 2);
-                const num = type == RewardType.money ? MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardAd) : CoinManger.instance.getReward();
+                const num = type == RewardType.money ? MoneyManger.instance.getReward(ConfigConst.MoneyBls.RewardAd) : CoinManger.instance.getReward();
                 if (MathUtil.probability(0.15)) {//直接飞奖励
                     if (type == RewardType.coin) {
                         CoinManger.instance.addCoin(num, false, false);
                     } else {
-                        MoneyManger.instance.addMoney(num * WithdrawUtil.MoneyBls.AutoReward, false, false);
+                        MoneyManger.instance.addMoney(num * ConfigConst.MoneyBls.AutoReward, false, false);
                     }
                     ViewManager.showRewardAni1(type, num, () => {
                         res();
@@ -486,5 +492,9 @@ export class GameManger {
     public tipCashOut(status: number, str: string[]) {
         const tip = i18n.string(["str_with_emtu", "str_with_smttu"][status - 1], ...str);
         this.gv.showTipBubble(tip);
+    }
+    /**到达提现门槛引导 */
+    public guideTipCashOut() {
+        this.gv.guideTipCashOut();
     }
 }

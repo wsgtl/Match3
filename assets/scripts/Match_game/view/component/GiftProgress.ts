@@ -6,6 +6,7 @@ import { tweenPromise } from '../../../Match_common/utils/TimeUtil';
 import { ViewManager } from '../../manager/ViewManger';
 import { BaseStorageNS, ITEM_STORAGE } from '../../../Match_common/localStorage/BaseStorage';
 import { SpriteFrame } from 'cc';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('GiftProgress')
@@ -42,7 +43,7 @@ export class GiftProgress extends Component {
         })
     }
     private showJd() {
-        const pro = this.comboNum / GameUtil.CombosProgress;
+        const pro = this.comboNum / ConfigConst.Other.CombosProgress;
         this.jd.fillRange = pro;
         GameUtil.ComboGifts.forEach((v, i) => {
             const isGift = GameUtil.ComboGifts[i] <= pro;

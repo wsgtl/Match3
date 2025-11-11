@@ -14,6 +14,7 @@ import { WithdrawUtil, MoneyControl } from "../view/withdraw/WithdrawUtil";
 import { GameManger } from "./GameManager";
 import { tweenPromise } from "../../Match_common/utils/TimeUtil";
 import { v3 } from "cc";
+import { ConfigConst } from "./ConfigConstManager";
 
 export class MoneyManger {
     public static _instance: MoneyManger = null;
@@ -46,7 +47,6 @@ export class MoneyManger {
     public addMoney(num: number, isShow: boolean = true, isAni: boolean = true) {
         const last = GameStorage.getMoney();
         const curMoney = GameStorage.addMoney(num);
-        EventTracking.sendEventCoin(curMoney);
         if (isShow) {//立即显示
             if (isVaild(this._curMoney)) {
                 this._curMoney.showCurMoney();
@@ -59,11 +59,11 @@ export class MoneyManger {
                 
         }
         if (!WithdrawStorage.getIsToCashOut()) {
-            // if(curMoney>=WithdrawUtil.getCashNum()){
-            //     GameManger.instance.guideTipCashOut();
-            //     WithdrawStorage.setIsToCashOut();
-            //     return;
-            // }
+            if(curMoney>=WithdrawUtil.getCashNum()){
+                GameManger.instance.guideTipCashOut();
+                WithdrawStorage.setIsToCashOut();
+                return;
+            }
         }
         const m = WithdrawUtil.getCashNumAuto(curMoney);
         if(m){//气泡显示还剩多少钱可提现
@@ -116,7 +116,8 @@ export class MoneyManger {
         const cur = GameStorage.getMoney();
         const rate = LangStorage.getData().rate;
         let data: MoneyControl;
-        for (let n of WithdrawUtil.MoneyControlData) {
+        // for (let n of WithdrawUtil.MoneyControlData) {
+        for (let n of ConfigConst.MoneyControlData) {
             if (n.right * rate > cur) {
                 data = n;
                 break;

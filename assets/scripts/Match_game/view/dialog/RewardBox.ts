@@ -12,6 +12,7 @@ import { delay } from '../../../Match_common/utils/TimeUtil';
 import { ViewManager } from '../../manager/ViewManger';
 import { RewardType } from '../../GameUtil_Match';
 import { AudioManager } from '../../manager/AudioManager';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('RewardBox')
@@ -34,8 +35,8 @@ export class RewardBox extends DialogComponent {
     private cb:Function;
     showStart(args?: any): void {
         this.cb = args.cb;
-        this.freeNum = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.BoxFree);
-        this.moreNum = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.Box);
+        this.freeNum = MoneyManger.instance.getReward(ConfigConst.MoneyBls.BoxFree);
+        this.moreNum = MoneyManger.instance.getReward(ConfigConst.MoneyBls.Box);
 
         this.moreNumNode.num = FormatUtil.toMoney(this.moreNum);
         this.freeNumNode.num = "+" + FormatUtil.toMoney(this.freeNum);

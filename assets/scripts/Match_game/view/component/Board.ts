@@ -21,6 +21,8 @@ import { ColorProp } from '../aniComponent/ColorProp';
 import { ShuffleProp } from '../aniComponent/ShuffleProp';
 import { Sprite } from 'cc';
 import { GuideManger } from '../../manager/GuideManager';
+import { EventTracking } from '../../../Match_common/native/EventTracking';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Board')
@@ -71,7 +73,7 @@ export class Board extends Component {
             this.lastIndex = -1;
             return;
         }
-        console.log("点击位置" + index);
+        // console.log("点击位置" + index);
         this.showClick(index);
         if (this.lastIndex < 0) {
             this.lastIndex = index;
@@ -98,7 +100,8 @@ export class Board extends Component {
         this.hideClick();
         this.lastIndex = -1;
         if (GuideManger.isGuide()) {
-            if (!(GuideManger.CanClick.indexOf(i1) > -1) || !(GuideManger.CanClick.indexOf(i2) > -1)) return;
+            if (!(GuideManger.CanClick.indexOf(i1) > -1) || !(GuideManger.CanClick.indexOf(i2) > -1)){ return;}
+            EventTracking.sendOneEvent("clear1");
         }
         this.progress1();
         GameManger.instance.change(i1, i2);
@@ -221,7 +224,7 @@ export class Board extends Component {
             this.showAniClear(first.from);
             this.board[first.from].setType(first.changeType, true);
         }
-        AudioManager.playEffect("clears", 0.6);
+        AudioManager.playEffect("clears", 1);
         AudioManager.vibrate(50, 100);
 
 
@@ -246,7 +249,7 @@ export class Board extends Component {
                 f.dropTo(v.to);
             })
         }
-        await delay(0.3, this.node);
+        await delay(0.2, this.node);
         let dy = 1;
         cn.forEach(v => { dy = Math.max(GameUtil.AllRow - GameUtil.getPos(v.index).y) });
         cn.forEach(v => {
@@ -254,7 +257,7 @@ export class Board extends Component {
             b.initAni(v.index, dy);
 
         })
-        await delay(0.2, this.node);
+        await delay(0.1, this.node);
         await this.findOneClear();
     }
     /**棋盘中找到可清除的第一个组，然后消除操作 */
@@ -381,7 +384,8 @@ export class Board extends Component {
         this.board.forEach(v => {
             v.setMoney();
         })
-        this.flyMoney(MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree), this.node);
+        // this.flyMoney(MoneyManger.instance.getReward(ConfigConst.MoneyBls.RewardFree), this.node);
+        this.flyMoney(MoneyManger.instance.getReward(WithdrawUtil.calFreeBl()), this.node);
     }
     /**结束通关奖励 */
     public hidePassReward() {
@@ -428,8 +432,9 @@ export class Board extends Component {
     private progress1() {
 
     }
-    private afterCombo() {
+    private async afterCombo() {
         GameManger.instance.afterCombo();
+        await delay(0.3);
         GameManger.instance.isAni = false;
     }
     private moves: number = 0;

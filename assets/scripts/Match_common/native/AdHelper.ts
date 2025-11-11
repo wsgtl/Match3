@@ -6,6 +6,8 @@ import { dragonBones } from "cc";
 import { delay } from "../utils/TimeUtil";
 import { NativeFun } from "./NativeFun";
 import { GameUtil } from "../../Match_game/GameUtil_Match";
+import { ConfigConst } from "../../Match_game/manager/ConfigConstManager";
+import { WithdrawUtil } from "../../Match_game/view/withdraw/WithdrawUtil";
 const debug = Debugger("AdHelper")
 
 export class AdHelper {
@@ -56,16 +58,19 @@ export class AdHelper {
             native.jsbBridgeWrapper.dispatchEventToNative("loadRewardVideo");
         }
     }
+    private getPlacement(p: string) {
+        return p + "    ab_test:" + ConfigConst.getAbTest();
+    }
     /**显示激励视频广告 */
-    public showRewardVideo(placement:string,callback: CallableFunction, fail?: CallableFunction) {
+    public showRewardVideo(placement: string, callback: CallableFunction, fail?: CallableFunction) {
         console.log("显示激励广告1")
         if (sys.platform === sys.Platform.ANDROID) {
-            if(GameUtil.IsTest){//测试模式关闭广告
+            if (GameUtil.IsTest) {//测试模式关闭广告
                 callback?.();
                 return;
             }
             console.log("显示激励广告2")
-            native.jsbBridgeWrapper.dispatchEventToNative("showRewardVideo","激励广告:"+placement);
+            native.jsbBridgeWrapper.dispatchEventToNative("showRewardVideo", this.getPlacement("激励广告:" + placement));
             this._getRewardVideo = callback;
             this._getRewardVideoFail = fail ? fail : callback;
 
@@ -75,7 +80,7 @@ export class AdHelper {
             callback?.();
             // fail(1);
         }
-
+        WithdrawUtil.renewFree();
     }
     /**加载插屏广告 */
     public loadInterstitial() {
@@ -85,16 +90,17 @@ export class AdHelper {
         }
     }
     /**显示插屏广告*/
-    public showInterstitial(placement:string) {
+    public showInterstitial(placement: string) {
         console.log("显示插屏广告1")
         if (sys.platform === sys.Platform.ANDROID) {
             console.log("显示插屏广告2")
-            native.jsbBridgeWrapper.dispatchEventToNative("showInterstitial","插屏广告:"+placement);
+            native.jsbBridgeWrapper.dispatchEventToNative("showInterstitial", this.getPlacement("插屏广告:" + placement));
         }
     }
     private interTime = 0;
     /**限定次数弹插屏广告 */
-    public timesToShowInterstitial(t: number = 4) {
+    public timesToShowInterstitial(t: number = ConfigConst.Other.InterShowNum) {
+        WithdrawUtil.reduceFree();
         this.interTime++;
         if (this.interTime >= t) {
             this.interTime = 0;

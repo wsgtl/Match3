@@ -38,13 +38,13 @@ export class RewardDoubleDialog extends DialogComponent {
     private reciveNum: number = 0;//看广告奖励
     show(parent: Node, args?: any) {
         parent.addChild(this.node);
-        
+
         this.cb = args.cb;
         this.type = args.type;
         this.reciveNum = args.rewardNum;
-        this.rewardNum = this.reciveNum / 2;
-        this.icons.forEach((v,i)=>{
-            v.active = i+1==this.type;
+        this.rewardNum = this.reciveNum * (this.type == RewardType.coin ? 0.5 : WithdrawUtil.calFreeBl());//金币就一半，钱就按免费比例计算
+        this.icons.forEach((v, i) => {
+            v.active = i + 1 == this.type;
         })
         this.init();
     }
@@ -56,7 +56,7 @@ export class RewardDoubleDialog extends DialogComponent {
         this.btnClaim.once(Button.EventType.CLICK, this.onBtnClaim, this);
         this.btnReceive.on(Button.EventType.CLICK, this.onBtnReceive, this);
 
-        AudioManager.vibrate(100,100);
+        AudioManager.vibrate(100, 100);
 
     }
 
@@ -73,7 +73,7 @@ export class RewardDoubleDialog extends DialogComponent {
         }, ViewManager.adNotReady)
     }
     private addReward(num: number) {
-        this.type == RewardType.money ? MoneyManger.instance.addMoney(num, false,false) : CoinManger.instance.addCoin(num, false,false);
+        this.type == RewardType.money ? MoneyManger.instance.addMoney(num, false, false) : CoinManger.instance.addCoin(num, false, false);
         ViewManager.showRewardAni1(this.type, num, this.cb);
     }
 

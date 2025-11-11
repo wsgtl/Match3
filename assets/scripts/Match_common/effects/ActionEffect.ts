@@ -462,10 +462,10 @@ export namespace ActionEffect {
     /**飞钱后缩放动画 */
     export async function rewardScaleAni(node: Node) {
         await tweenPromise(node, t => t
-            .to(0.1, { scale: v3(1.1, 1.1) })
-            .to(0.1, { scale: v3(1, 1) })
-            .to(0.1, { scale: v3(1.1, 1.1) })
-            .to(0.1, { scale: v3(1, 1) })
+            .to(0.1, { scale: v3(1.1, 1.1, 1) })
+            .to(0.1, { scale: v3(1, 1, 1) })
+            .to(0.1, { scale: v3(1.1, 1.1, 1) })
+            .to(0.1, { scale: v3(1, 1, 1) })
         )
 
     }

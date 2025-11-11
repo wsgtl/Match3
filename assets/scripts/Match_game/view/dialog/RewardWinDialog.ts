@@ -16,6 +16,7 @@ import { GuideManger } from '../../manager/GuideManager';
 import { LangStorage } from '../../../Match_common/localStorage/LangStorage';
 import { FormatUtil } from '../../../Match_common/utils/FormatUtil';
 import { WithdrawUtil } from '../withdraw/WithdrawUtil';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('RewardWinDialog')
@@ -39,7 +40,7 @@ export class RewardWinDialog extends DialogComponent {
 
         this.cb = args.cb;
         this.rewardNum = args.rewardNum;
-        this.reciveNum = this.rewardNum * WithdrawUtil.MoneyBls.PassAd;
+        this.reciveNum = this.rewardNum * ConfigConst.MoneyBls.PassAd;
         this.init();
         AudioManager.vibrate(100,100);
     }

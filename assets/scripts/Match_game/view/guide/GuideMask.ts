@@ -14,6 +14,7 @@ import { delay } from '../../../Match_common/utils/TimeUtil';
 import { Tween } from 'cc';
 import { sp } from 'cc';
 import { v3 } from 'cc';
+import { EventTracking } from '../../../Match_common/native/EventTracking';
 const { ccclass, property } = _decorator;
 
 @ccclass('GuideMask')
@@ -80,6 +81,7 @@ export class GuideMask extends ViewComponent {
             money.cb = null;
             this.node.destroy();
             GuideManger.passCashOutStep();
+            EventTracking.sendOneEvent("toCashPage");
         }
         this.moveMask.node.active = true;
         const pos = UIUtils.transformOtherNodePos2localNode(money.node, this.moveMask.node);

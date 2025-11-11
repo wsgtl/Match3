@@ -252,6 +252,10 @@ export namespace GameUtil {
          }
       }
    }
+   /**获取随机ID */
+   export function gerRandomId(){
+      return MathUtil.random(100000, 999999);
+   }
 }
 
 

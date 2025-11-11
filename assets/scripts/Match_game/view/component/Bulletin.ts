@@ -25,7 +25,7 @@ export class Bulletin extends Component {
         await delay(MathUtil.random(10,20),this.node);
         if (!isVaild(this.node)) return;
         this.bulletin.x = 1200;
-        const p = "Player_" + MathUtil.random(100000, 999999);
+        const p = "Player_" + GameUtil.gerRandomId();
         const money = LangStorage.getData().symbol + " " + WithdrawUtil.moneyCash[GameUtil.calPropBackType([0.6,0.3,0.1])];
         // this.text.string = "<b><outline color=#cf5014 width=1>" + i18n.string("str_bulletin", p, money);
         this.text.string = "<b>" + i18n.string("str_bulletin", p, money);

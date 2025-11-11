@@ -51,9 +51,9 @@ export class Money extends Component {
     }
     @ButtonLock(1)
     onGet() {
-        if (!this.canClick || GameManger.instance.isAni) return;
-        MoneyManger.instance.showDialog();
         this.cb?.();
+        if (!this.canClick || GameManger.instance.isAni) return;
+        MoneyManger.instance.showDialog();   
     }
 
     showTips() {

@@ -12,6 +12,7 @@ import { i18n } from '../../../Match_common/i18n/I18nManager';
 import { GameUtil, RewardType } from '../../GameUtil_Match';
 import { MoneyManger } from '../../manager/MoneyManger';
 import { WithdrawUtil } from '../withdraw/WithdrawUtil';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('BtnMoneys')
@@ -27,7 +28,7 @@ export class BtnMoneys extends Component {
     public curTime = 0;
     private money: number = 0;
     start() {
-        this.curTime = GameUtil.GetMoneyTime;
+        this.curTime = ConfigConst.Other.GetMoneyTime;
         this.node.on(Button.EventType.CLICK, () => {
             if (this.curTime > 0) return;
             if (GameManger.instance.isAni) {
@@ -35,9 +36,9 @@ export class BtnMoneys extends Component {
                 return;
             }
 
-            ViewManager.showRewardPop(RewardType.money, MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree), () => {
+            ViewManager.showRewardPop(RewardType.money, MoneyManger.instance.getReward(WithdrawUtil.calFreeBl()), () => {
                 this.money = 0;
-                this.curTime = GameUtil.GetMoneyTime;
+                this.curTime = ConfigConst.Other.GetMoneyTime;
                 this.setMoney(false);
             });
         });
@@ -54,7 +55,7 @@ export class BtnMoneys extends Component {
             this.hand.active = false;
         } else {
             if (this.money == 0) {
-                this.money = MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.RewardFree);
+                this.money = MoneyManger.instance.getReward(WithdrawUtil.calFreeBl());
                 this.setMoney(true, this.money);
             }
 

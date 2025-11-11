@@ -17,6 +17,7 @@ import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { MoneyManger } from '../../manager/MoneyManger';
 import { WithdrawUtil } from '../withdraw/WithdrawUtil';
 import { GuideManger } from '../../manager/GuideManager';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SlotDialog')
@@ -117,7 +118,7 @@ export class SlotDialog extends ViewComponent {
     private end() {
         this.node.destroy();
         if (this.index == 0) {
-            ViewManager.showRewardDoubleDialog(RewardType.money, MoneyManger.instance.getReward(WithdrawUtil.MoneyBls.Slot), this.cb);
+            ViewManager.showRewardDoubleDialog(RewardType.money, MoneyManger.instance.getReward(ConfigConst.MoneyBls.Slot), this.cb);
         } else if (this.index == 1) {
             ViewManager.showRewardDoubleDialog(RewardType.coin, CoinManger.instance.getReward(), this.cb);
         } else {

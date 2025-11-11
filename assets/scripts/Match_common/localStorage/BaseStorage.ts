@@ -11,6 +11,8 @@ export enum ITEM_STORAGE {
     WAITWITHDRWWS = "Match3_waitwithdraws",
     GameBoard = "Match3_gameboard",
     GameGift = "Match3_gamegift",
+    AbTest = "Match3_ab_test",
+    WebConfig = "Match3_web_config",
 }
 
 /**

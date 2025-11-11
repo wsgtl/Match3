@@ -35,9 +35,9 @@ export class Combo extends Component {
         sprites.setTo(this.cnode, i18n.curLangPath("c" + (color + 1)));//多语言切换combo
         ActionEffect.scale(this.node,0.1,1,1.5);
         await ActionEffect.fadeIn(this.node, 0.1);
-        await delay(0.2);
+        await delay(0.1);
         UIUtils.setAlpha(this.node,0.5);
-        await ActionEffect.fadeOut(this.node, 0.3);
+        await ActionEffect.fadeOut(this.node, 0.2);
     }
 }
 

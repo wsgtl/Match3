@@ -10,6 +10,8 @@ import { DialogComponent } from '../../../Match_common/ui/DialogComtnet';
 import { LangTag } from '../../../Match_common/native/LocalRate';
 import { i18n } from '../../../Match_common/i18n/I18nManager';
 import { GameManger } from '../../manager/GameManager';
+import { NumFont } from '../../../Match_common/ui/NumFont';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SettingDialog')
@@ -28,6 +30,8 @@ export class SettingDialog extends DialogComponent {
     btnEn: Node = null;
     @property(Node)
     btnBr: Node = null;
+    @property(NumFont)
+    id: NumFont = null;
     protected onLoad(): void {
         SettingManger.instance.setDialog(this.node);
         this.btnMusic.on(Button.EventType.CLICK, this.onBtnMusic, this);
@@ -40,7 +44,7 @@ export class SettingDialog extends DialogComponent {
         this.showMute(this.btnShock, AudioManager.getIsShock());
         this.btnEn.on(Node.EventType.TOUCH_START, () => { this.setLang("en"); });
         this.btnBr.on(Node.EventType.TOUCH_START, () => { this.setLang("br"); });
-
+        this.id.num = "i" + ConfigConst.getId();
         this.showGray();
     }
     onBtnHome() {
@@ -82,7 +86,7 @@ export class SettingDialog extends DialogComponent {
             this.showGray();
         }
     }
-    private showGray(){
+    private showGray() {
         const tag = i18n.getLanguage();
         this.btnsShowGray(this.btnEn, tag, "en");
         this.btnsShowGray(this.btnBr, tag, "br");

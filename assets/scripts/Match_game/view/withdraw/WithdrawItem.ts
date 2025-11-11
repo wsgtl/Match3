@@ -12,6 +12,7 @@ import { NumFont } from '../../../Match_common/ui/NumFont';
 import { FormatUtil } from '../../../Match_common/utils/FormatUtil';
 import { GameStorage } from '../../GameStorage_Match';
 import { RewardType } from '../../GameUtil_Match';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('WithdrawItem')
@@ -164,8 +165,8 @@ export class WithdrawItem extends Component {
         this.normal.active = !this.isWaitActivate;
         this.activate.active = this.isWaitActivate;
         if (this.isWaitActivate) {
-            this.jdNum.num = this.curOrder.playTimes + "l" + WithdrawUtil.ActivatePlay;
-            this.jd.fillRange = this.curOrder.playTimes / WithdrawUtil.ActivatePlay;
+            this.jdNum.num = this.curOrder.playTimes + "l" + ConfigConst.Other.ActivatePlay;
+            this.jd.fillRange = this.curOrder.playTimes / ConfigConst.Other.ActivatePlay;
         }
     }
     protected update(dt: number): void {
