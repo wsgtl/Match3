@@ -25,6 +25,7 @@ export class GiftProgress extends Component {
     public curGift: number = 0;
 
     onLoad() {
+        this.node.active = !ConfigConst.isShowA;//A面隐藏进度条
         this.recover();
         this.showJd();
         this.showGift();
@@ -34,11 +35,11 @@ export class GiftProgress extends Component {
             if (i == 2) {
 
             } else {
-                v.getChildByName("gs").active =  this.giftClaim <= i;
+                v.getChildByName("gs").active = this.giftClaim <= i;
                 // v.getComponent(Sprite).grayscale = this.giftClaim > i;
-                v.getComponent(Sprite).spriteFrame = this.sf[this.giftClaim > i?1:0] ;
+                v.getComponent(Sprite).spriteFrame = this.sf[this.giftClaim > i ? 1 : 0];
             }
-            
+
 
         })
     }
@@ -61,6 +62,7 @@ export class GiftProgress extends Component {
 
     /**有礼物就弹 */
     async calShowGift() {
+        if (ConfigConst.isShowA) return;
         await this.showGiftDialog();
         if (this.curGift > this.giftClaim) {//连击多次触发多个礼包的情况
             await this.calShowGift();

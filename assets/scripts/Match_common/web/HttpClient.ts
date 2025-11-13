@@ -1,5 +1,7 @@
 import { _decorator, Component } from 'cc';
 import { MD5Util } from '../utils/MD5Util';
+import { ViewManager } from '../../Match_game/manager/ViewManger';
+import { delay } from '../utils/TimeUtil';
 
 /**
  * 网络请求配置接口
@@ -143,7 +145,6 @@ export class HttpClient {
     public async request<T = any>(config: RequestConfig): Promise<ResponseData<T>> {
         const startTime = Date.now();
         const requestId = this.generateRequestId();
-        
         try {
             // 准备请求参数
             const { 
@@ -177,7 +178,6 @@ export class HttpClient {
                     requestData = signedData;
                 }
             }
-
             this.logRequest(requestId, method, fullUrl, requestData, requestHeaders);
 
             // 创建请求选项
@@ -190,16 +190,13 @@ export class HttpClient {
             if (method === 'POST' && requestData) {
                 requestOptions.body = JSON.stringify(requestData);
             }
-
             // 发送请求（超时控制单独处理）
             const response = await this.fetchWithTimeout(fullUrl, requestOptions, timeout);
-            
             // 检查 HTTP 状态码
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
             }
-
             // 尝试解析响应数据
             let responseData;
             const contentType = response.headers.get('content-type');
@@ -209,12 +206,10 @@ export class HttpClient {
             } else {
                 responseData = await response.text();
             }
-
             const endTime = Date.now();
             const duration = endTime - startTime;
 
             this.logResponse(requestId, response.status, responseData, duration);
-
             return {
                 success: true,
                 data: responseData as T,
@@ -224,9 +219,7 @@ export class HttpClient {
         } catch (error) {
             const endTime = Date.now();
             const duration = endTime - startTime;
-            
             this.logError(requestId, error, duration);
-
             return {
                 success: false,
                 error: this.getErrorMessage(error),
@@ -284,33 +277,34 @@ export class HttpClient {
     /**
      * 带超时的 fetch 请求
      */
-    private async fetchWithTimeout(url: string, options: RequestInit, timeout: number): Promise<Response> {
-        return new Promise((resolve, reject) => {
-            const controller = new AbortController();
-            const signal = controller.signal;
+    private async fetchWithTimeout(url: string, options: RequestInit, timeout: number): Promise<Response> {    
+    return new Promise((resolve, reject) => {
+        let isTimeout = false;
+        
+        const timeoutId = setTimeout(() => {
+            console.log("请求超时，但无法取消请求")
+            isTimeout = true;
+            reject(new Error(`Request timeout after ${timeout}ms`));
+        }, timeout);
 
-            const timeoutId = setTimeout(() => {
-                controller.abort();
-                reject(new Error(`Request timeout after ${timeout}ms`));
-            }, timeout);
-
-            // 将 signal 添加到请求选项中
-            const fetchOptions: RequestInit = {
-                ...options,
-                signal
-            };
-
-            fetch(url, fetchOptions)
-                .then(response => {
+        fetch(url, options)
+            .then(response => {
+                if (!isTimeout) {
+                    console.log("请求成功（降级）")
                     clearTimeout(timeoutId);
                     resolve(response);
-                })
-                .catch(error => {
+                }
+            })
+            .catch(error => {
+                if (!isTimeout) {
+                    console.log("请求错误（降级）:", error)
                     clearTimeout(timeoutId);
                     reject(error);
-                });
-        });
+                }
+            });
+    });
     }
+    
 
     /**
      * 构建完整 URL

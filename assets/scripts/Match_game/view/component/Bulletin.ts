@@ -9,6 +9,7 @@ import { WithdrawUtil } from '../withdraw/WithdrawUtil';
 import { i18n } from '../../../Match_common/i18n/I18nManager';
 import { UIUtils } from '../../../Match_common/utils/UIUtils';
 import { GameUtil } from '../../GameUtil_Match';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bulletin')
@@ -19,6 +20,7 @@ export class Bulletin extends Component {
     text: RichText = null;
 
     protected start(): void {
+        if(ConfigConst.isShowA)return;//A面去掉提现公告
         this.showBulletin();
     }
     private async showBulletin() {

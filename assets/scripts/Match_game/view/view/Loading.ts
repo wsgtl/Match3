@@ -14,6 +14,7 @@ import { MathUtil } from '../../../Match_common/utils/MathUtil';
 import { EventTracking } from '../../../Match_common/native/EventTracking';
 import { WebManger } from '../../manager/WebManager';
 import { Jsb } from '../../../Match_common/platform/Jsb';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Loading')
@@ -42,7 +43,7 @@ export class Loading extends ViewComponent {
             }
             if (i == all) {
                 this.scheduleOnce(() => {
-                    if (GuideManger.isGuide())
+                    if (GuideManger.isGuide()&&!ConfigConst.isShowA)
                         ViewManager.showGuideHome();
                     else
                         ViewManager.showGameView();

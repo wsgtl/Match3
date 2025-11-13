@@ -28,6 +28,7 @@ export class BtnMoneys extends Component {
     public curTime = 0;
     private money: number = 0;
     start() {
+        if(ConfigConst.isShowA){this.node.active =false; return;}//A面没有钱按钮
         this.curTime = ConfigConst.Other.GetMoneyTime;
         this.node.on(Button.EventType.CLICK, () => {
             if (this.curTime > 0) return;

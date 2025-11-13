@@ -17,6 +17,7 @@ import { Tween } from 'cc';
 import { delay, nextFrame } from '../../../Match_common/utils/TimeUtil';
 import { Label } from 'cc';
 import { UIUtils } from '../../../Match_common/utils/UIUtils';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Top')
@@ -39,6 +40,10 @@ export class Top extends Component {
         this.btnSetting.on(Button.EventType.CLICK, this.onSetting, this);
         CoinManger.instance.curTop = this;
         this.showBack(false);
+        if(ConfigConst.isShowA){//A面修改成只要金币
+            this.coinbg.node.x = -300;
+            this.moneybg.node.active = false; 
+        }
     }
 
     onRule() {

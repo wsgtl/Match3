@@ -12,6 +12,8 @@ import { ViewManager } from '../../manager/ViewManger';
 import { GameStorage } from '../../GameStorage_Match';
 import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { delay, tweenPromise } from '../../../Match_common/utils/TimeUtil';
+import { ConfigConst } from '../../manager/ConfigConstManager';
+import { CoinManger } from '../../manager/CoinManger';
 const { ccclass, property } = _decorator;
 
 @ccclass('PropDialog')
@@ -26,6 +28,10 @@ export class PropDialog extends DialogComponent {
     numNode: NumFont = null;
     @property(Node)
     btnClaim: Node = null;
+    @property(Node)
+    btns: Node = null;
+    @property(NumFont)
+    coinNum: NumFont = null;
     @property([SpriteFrame])
     sfs: SpriteFrame[] = [];
 
@@ -41,22 +47,42 @@ export class PropDialog extends DialogComponent {
         this.prop.getComponent(Sprite).spriteFrame = this.sfs[this.type - 1];
         this.numNode.num = "x" + GameUtil.PropAddNum;
         this.btnClaim.on(Button.EventType.CLICK, this.onClaim, this);
+        this.btns.getChildByName("btnAd").on(Button.EventType.CLICK, this.onClaim, this);
+        this.btns.getChildByName("btnCoin").on(Button.EventType.CLICK, this.onClaimCoin, this);
+
+        const isShowA = ConfigConst.isShowA;
+        this.btnClaim.active = !isShowA;
+        this.btns.active = isShowA;
+        this.coinNum.num = GameUtil.PropCoin;
     }
     async onClaim() {
         if (this.isAni) return;
         adHelper.showRewardVideo("增加道具界面", () => {
-            GameStorage.addProp(this.type, GameUtil.PropAddNum);
-            ActionEffect.scaleBigToSmall(this.prop,1.3,1,0.4);
-            tweenPromise(this.numNode.node,t=>t
-                .by(0.1,{y:30})
-                .by(0.1,{y:-30})
-            )
-            this.cb();
-            this.closeAni();
+            this.addProp();
         }, ViewManager.adNotReady);
         this.isAni = true;
         await delay(0.5);
         this.isAni = false;
+    }
+    async onClaimCoin() {//使用金币购买道具
+        if (this.isAni) return;
+        const cn = GameUtil.PropCoin;
+        if (GameStorage.getCoin() < cn) {
+            ViewManager.showTips(i18n.string("str_nogold"));
+            return;
+        }
+        CoinManger.instance.addCoin(-cn,false);
+        this.addProp();
+    }
+    private addProp() {
+        GameStorage.addProp(this.type, GameUtil.PropAddNum);
+        ActionEffect.scaleBigToSmall(this.prop, 1.3, 1, 0.4);
+        tweenPromise(this.numNode.node, t => t
+            .by(0.1, { y: 30 })
+            .by(0.1, { y: -30 })
+        )
+        this.cb();
+        this.closeAni();
     }
 }
 

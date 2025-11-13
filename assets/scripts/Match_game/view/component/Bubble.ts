@@ -11,6 +11,7 @@ import { Tween } from 'cc';
 import { LangStorage } from '../../../Match_common/localStorage/LangStorage';
 import { adHelper } from '../../../Match_common/native/AdHelper';
 import { RewardType } from '../../GameUtil_Match';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bubble')
@@ -22,6 +23,7 @@ export class Bubble extends Component {
     private readonly duration = 30;
     private moneyNum = 0;
     onLoad() {
+        if(ConfigConst.isShowA){this.canMove = false;return;}//A面去掉气泡
         this.init(false);
         this.content.on(Node.EventType.TOUCH_START, this.onClick, this);
     }

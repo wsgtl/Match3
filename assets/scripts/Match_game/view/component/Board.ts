@@ -23,6 +23,7 @@ import { Sprite } from 'cc';
 import { GuideManger } from '../../manager/GuideManager';
 import { EventTracking } from '../../../Match_common/native/EventTracking';
 import { ConfigConst } from '../../manager/ConfigConstManager';
+import { CoinManger } from '../../manager/CoinManger';
 const { ccclass, property } = _decorator;
 
 @ccclass('Board')
@@ -100,7 +101,7 @@ export class Board extends Component {
         this.hideClick();
         this.lastIndex = -1;
         if (GuideManger.isGuide()) {
-            if (!(GuideManger.CanClick.indexOf(i1) > -1) || !(GuideManger.CanClick.indexOf(i2) > -1)){ return;}
+            if (!(GuideManger.CanClick.indexOf(i1) > -1) || !(GuideManger.CanClick.indexOf(i2) > -1)) { return; }
             EventTracking.sendOneEvent("clear1");
         }
         this.progress1();
@@ -194,7 +195,7 @@ export class Board extends Component {
         WithdrawUtil.comboToOrder();
         // AudioManager.playEffect("drop");
         GameManger.instance.addCombo();
-        let money: number = 0;
+        let rewardNum: number = 0;
         const md = GameManger.instance.clearAndUp(group);
         const pros: Promise<void>[] = [];
 
@@ -202,19 +203,15 @@ export class Board extends Component {
             if (v.tos) {
                 pros.push(this.board[v.from].moveTos(v.tos));
             }
-            const m = this.board[v.from]?.money;
-            if (m) money += m;
+            const m = this.board[v.from]?.rewardNum;
+            if (m) rewardNum += m;
         })
         this.diBlood(group);
         const first = md[0];
 
         if (GameManger.instance.isPassReward) {
             const b = this.board[first.from].node;
-            this.flyMoney(money, b);
-            // const cur = GameManger.instance.passRewardMoney;
-            // GameManger.instance.passRewardMoney += money;
-            // delay(0.5).then(() => { ActionEffect.numAddAni(cur, GameManger.instance.passRewardMoney, (i) => { this.showMoney(i) }) })
-            // ViewManager.showRewardAni2(RewardType.money, b, this.passRewardMoney.node, () => { })
+            this.flyReward(rewardNum, b);
         }
 
         await Promise.all(pros);
@@ -229,14 +226,16 @@ export class Board extends Component {
 
 
     }
-    private flyMoney(money: number, from: Node) {
+    private flyReward(reward: number, from: Node) {
+        const isShowA = ConfigConst.isShowA;
+        const type = isShowA ? RewardType.coin : RewardType.money;
         const cur = GameManger.instance.passRewardMoney;
-        GameManger.instance.passRewardMoney += money;
-        delay(0.5).then(() => { ActionEffect.numAddAni(cur, GameManger.instance.passRewardMoney, (i) => { this.showMoney(i) }) })
-        ViewManager.showRewardAni2(RewardType.money, from, this.passRewardMoney.node, () => { })
+        GameManger.instance.passRewardMoney += reward;
+        delay(0.5).then(() => { ActionEffect.numAddAni(cur, GameManger.instance.passRewardMoney, (i) => { this.showMoney(i) },isShowA) })
+        ViewManager.showRewardAni2(type, from, this.passRewardMoney.node, () => { })
     }
     private showMoney(n: number) {
-        this.passRewardMoney.num = FormatUtil.toMoney(n);
+        this.passRewardMoney.num = ConfigConst.isShowA ? n : FormatUtil.toMoney(n);
     }
     /**下坠,连消流程 */
     private async dropAndClear() {
@@ -385,7 +384,8 @@ export class Board extends Component {
             v.setMoney();
         })
         // this.flyMoney(MoneyManger.instance.getReward(ConfigConst.MoneyBls.RewardFree), this.node);
-        this.flyMoney(MoneyManger.instance.getReward(WithdrawUtil.calFreeBl()), this.node);
+        const reward = ConfigConst.isShowA ? CoinManger.instance.getPassReward() : MoneyManger.instance.getReward(WithdrawUtil.calFreeBl());
+        this.flyReward(reward, this.node);
     }
     /**结束通关奖励 */
     public hidePassReward() {

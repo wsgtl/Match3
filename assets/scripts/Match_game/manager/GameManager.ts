@@ -374,9 +374,9 @@ export class GameManger {
     /**获取随机必连消次数 */
     public calMustCombo() {
         const i = GameUtil.calPropBackType(ConfigConst.Other.MustComboProb);
-        this.mustCombo = [0, 5, 10][i];
+        this.mustCombo = [0, GameUtil.RewardCombo, GameUtil.RewardSlotCombo][i];
         // this.mustCombo = MathUtil.probability(0.6) ? 0 : MathUtil.probability(0.5) ? 5 : 10;
-        // this.mustCombo = 5;
+        // this.mustCombo = 0;
         if (GuideManger.isGuide())
             this.mustCombo = 10;
     }
@@ -397,12 +397,32 @@ export class GameManger {
     public showRewardForCombo() {
         return new Promise<void>(res => {
             //根据连击数给予奖励
-            if (this.combo < 5) {
+            if (ConfigConst.isShowA) {//A面只有金币奖励弹窗
+                if (this.combo >= GameUtil.RewardCombo) {
+                    const type = RewardType.coin;
+                    const num = CoinManger.instance.getReward(0.2);
+                    if (MathUtil.probability(GameUtil.RandomFlyReward)) {//直接飞奖励
+                        CoinManger.instance.addCoin(num, false, false);
+                        ViewManager.showRewardAni1(type, num, () => {
+                            res();
+                        });
+                    } else {
+                        ViewManager.showRewardDoubleDialog(type, num, () => {
+                            res();
+                        });
+                    }
+                } else {
+                    res();
+                }
+                return;
+            }
+            //B面奖励
+            if (this.combo < GameUtil.RewardCombo) {
                 res();
-            } else if (this.combo < 10) {
+            } else if (this.combo < GameUtil.RewardSlotCombo) {
                 const type: RewardType = MathUtil.random(1, 2);
                 const num = type == RewardType.money ? MoneyManger.instance.getReward(ConfigConst.MoneyBls.RewardAd) : CoinManger.instance.getReward();
-                if (MathUtil.probability(0.15)) {//直接飞奖励
+                if (MathUtil.probability(GameUtil.RandomFlyReward)) {//直接飞奖励
                     if (type == RewardType.coin) {
                         CoinManger.instance.addCoin(num, false, false);
                     } else {

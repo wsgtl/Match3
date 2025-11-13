@@ -88,7 +88,8 @@ export class ConfigConstManager {
 
 
     /**是否显示A面 */
-    public isShowA() {
+    public get isShowA() {
+        // return this.isCheck;
         return (Jsb.ios() || Jsb.browser()) && this.isCheck;
     }
     /**设置随机AB值 */

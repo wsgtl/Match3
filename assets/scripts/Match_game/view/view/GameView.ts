@@ -20,12 +20,14 @@ import { TaskShow } from '../component/TaskShow';
 import { Button } from 'cc';
 import { Combo } from '../component/Combo';
 import { GiftProgress } from '../component/GiftProgress';
-import { GameUtil, PropType } from '../../GameUtil_Match';
+import { GameUtil, PropType, RewardType } from '../../GameUtil_Match';
 import { NumFont } from '../../../Match_common/ui/NumFont';
 import { sp } from 'cc';
 import { ActionEffect } from '../../../Match_common/effects/ActionEffect';
 import { GameStorage } from '../../GameStorage_Match';
 import { MoneyManger } from '../../manager/MoneyManger';
+import { ConfigConst } from '../../manager/ConfigConstManager';
+import { Layout } from 'cc';
 const { ccclass, property } = _decorator;
 
 const debug = Debugger("GameView")
@@ -93,12 +95,24 @@ export class GameView extends ViewComponent {
         const ch = cha / 2;
         const cy = (ch < 60 ? ch : ch - 80);
         this.top.node.y = 960 + cy;
-        this.bottom.y = -840 - ch * 0.45;
-        this.content.y = -170 - ch * 0.15;
-        if(cha<100)
-            this.content.getChildByName("boardContent").y=-20
-        else
-            this.content.getChildByName("top").y=800+ch*0.2;
+        if (ConfigConst.isShowA) {//A面修改布局
+            this.bottom.y = -800 - ch * 0.4;
+            this.content.y = -170 - ch * 0.1;
+            this.content.getChildByName("boardContent").y = 60;
+
+            const m = this.moneybg.getChildByName("money");
+            m.getChildByName("coin").active = true;
+            m.getChildByName("money").active = false;
+            this.bottom.getComponent(Layout).spacingX = 80;
+        } else {
+            this.bottom.y = -840 - ch * 0.45;
+            this.content.y = -170 - ch * 0.15;
+            if (cha < 100)
+                this.content.getChildByName("boardContent").y = -20
+            else
+                this.content.getChildByName("top").y = 800 + ch * 0.2;
+        }
+
 
 
         nextFrame().then(() => {
@@ -295,9 +309,9 @@ export class GameView extends ViewComponent {
         this.showPassRewad(false);
         ActionEffect.skAni(this.king, "animation1");
         GameManger.instance.isPassReward = false;
-
-        ViewManager.showRewardWin(GameManger.instance.passRewardMoney, () => {
-            if (GuideManger.isGuideCash()) {
+        const type = ConfigConst.isShowA ? RewardType.coin : RewardType.money;
+        ViewManager.showRewardWin(type, GameManger.instance.passRewardMoney, () => {
+            if (!ConfigConst.isShowA && GuideManger.isGuideCash()) {
                 this.guidStpe3();
             }
         });
@@ -394,7 +408,7 @@ export class GameView extends ViewComponent {
         })
     }
 
-/**到达提现门槛引导 */
+    /**到达提现门槛引导 */
     public async guideTipCashOut() {
         ViewManager.showGuideMask(async (n: Node) => {
             this.gm = n.getComponent(GuideMask);

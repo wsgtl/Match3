@@ -7,6 +7,7 @@ import { v3 } from 'cc';
 import { GameManger } from '../../manager/GameManager';
 import { FormatUtil } from '../../../Match_common/utils/FormatUtil';
 import { ViewManager } from '../../manager/ViewManger';
+import { ConfigConst } from '../../manager/ConfigConstManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('Coin')
@@ -35,7 +36,7 @@ export class Coin extends Component {
     }
     @ButtonLock(1)
     touch() {
-        if (!this.canClick || GameManger.instance.isAni) return;
+        if (!this.canClick || GameManger.instance.isAni || ConfigConst.isShowA) return;
         // CoinManger.instance.showDialog();
         ViewManager.showWithdrawDialog(true);
     }

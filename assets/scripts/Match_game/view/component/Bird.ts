@@ -17,6 +17,7 @@ import { UIUtils } from '../../../Match_common/utils/UIUtils';
 import { NumFont } from '../../../Match_common/ui/NumFont';
 import { Vec2 } from 'cc';
 import { ConfigConst } from '../../manager/ConfigConstManager';
+import { CoinManger } from '../../manager/CoinManger';
 const { ccclass, property } = _decorator;
 
 @ccclass('Bird')
@@ -103,15 +104,15 @@ export class Bird extends Component {
         const pos = GameUtil.getPost(i);
         await tweenPromise(this.node, t => t.to(0.2, { position: pos }));
     }
-    public money: number = 0;
+    public rewardNum: number = 0;
     setMoney() {
         this.moneyL.node.active = true;
-        this.money = MoneyManger.instance.getReward(ConfigConst.MoneyBls.Pass);
-        this.moneyL.num = FormatUtil.toMoney(this.money);
+        this.rewardNum = ConfigConst.isShowA ? CoinManger.instance.getPassReward() : MoneyManger.instance.getReward(ConfigConst.MoneyBls.Pass);
+        this.moneyL.num = ConfigConst.isShowA ? this.rewardNum : FormatUtil.toMoney(this.rewardNum);
     }
     hideMoney() {
         this.moneyL.node.active = false;
-        this.money = 0;
+        this.rewardNum = 0;
     }
     private isUseProp: boolean = false;
     /**使用道具状态 */

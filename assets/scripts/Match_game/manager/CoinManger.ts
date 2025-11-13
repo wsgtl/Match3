@@ -8,6 +8,7 @@ import { MathUtil } from "../../Match_common/utils/MathUtil";
 import { ActionEffect } from "../../Match_common/effects/ActionEffect";
 import { v3 } from "cc";
 import { tweenPromise } from "../../Match_common/utils/TimeUtil";
+import { ConfigConst } from "./ConfigConstManager";
 
 export class CoinManger {
     public static _instance: CoinManger = null;
@@ -60,8 +61,12 @@ export class CoinManger {
         }
     }
     /**获取奖励金币 */
-    public getReward() {
-        return MathUtil.random(10, 40) * 1000;
+    public getReward(bl: number = 1) {
+        return Math.floor(MathUtil.random(10, 40) * 1000 * bl);
+    }
+    /**奖励关每个元素的金币 */
+    public getPassReward() {
+        return MathUtil.random(50, 200);
     }
     public scaleAni() {
         ActionEffect.rewardScaleAni(this._curCoin.node);

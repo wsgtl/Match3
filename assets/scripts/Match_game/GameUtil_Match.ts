@@ -115,12 +115,18 @@ export type CardCreateData = {
 
 export namespace GameUtil {
    /**是否是测试模式 */
-   export const IsTest: boolean = true;
+   export const IsTest: boolean = false;
    export const CardW: number = 170;//卡牌宽
    export const CardH: number = 170;//卡牌高
    export const AllRow: number = 6;//行数
    export const AllCol: number = 6;//列数
    export const MaxIdnex: number = AllRow * AllCol;
+   /**可得弹窗奖励连消数 */
+   export const RewardCombo:number = 5;
+   /**可得老虎机奖励连消数 */
+   export const RewardSlotCombo:number = 10;
+   /**随机飞奖励概率 */
+   export const RandomFlyReward:number = 0.15;
    /**底血量 */
    export const DiBlood: number = 3;
    /**颜色数量 */
@@ -131,6 +137,8 @@ export namespace GameUtil {
    export const GrandPro: number = 0;
    /**通关奖励时间 */
    export const PassRewardTime: number = 30;
+   /**买道具消耗金币 */
+   export const PropCoin: number = 30000;
    /**主页送钱倒计时时间 */
    export const GetMoneyTime: number = 60;
    /**每次观看广告增加的道具数 */

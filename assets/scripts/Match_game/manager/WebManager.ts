@@ -1,6 +1,7 @@
 import { delay } from "../../Match_common/utils/TimeUtil";
 import { httpClient } from "../../Match_common/web/HttpClient";
 import { ConfigConst } from "./ConfigConstManager";
+import { ViewManager } from "./ViewManger";
 
 export namespace WebManger {
     /**正式域名 */
@@ -17,7 +18,9 @@ export namespace WebManger {
         if(res.code==200){
             ConfigConst.calRes(res.data);
             console.log("获取配置成功");
+            ViewManager.showTips("获取配置成功")
         }else{
+            ViewManager.showTips("获取配置失败"+res.code)
             console.log("获取配置失败"+res.code);
         }
         

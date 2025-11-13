@@ -25,6 +25,8 @@ export class RewardWinDialog extends DialogComponent {
     btnReceive: Node = null;
     @property(Node)
     btnClaim: Node = null;
+    @property(Node)
+    rewardNode: Node = null;
     @property(NumFont)
     num: NumFont = null;
     @property(NumFont)
@@ -39,21 +41,29 @@ export class RewardWinDialog extends DialogComponent {
         parent.addChild(this.node);
 
         this.cb = args.cb;
+        this.type = args.type;
         this.rewardNum = args.rewardNum;
         this.reciveNum = this.rewardNum * ConfigConst.MoneyBls.PassAd;
         this.init();
-        AudioManager.vibrate(100,100);
+        AudioManager.vibrate(100, 100);
     }
     init() {
         AudioManager.playEffect("happy1");
-        this.num.num = "+" + FormatUtil.toMoney(this.rewardNum);
-        this.btnNum.num = FormatUtil.toMoney(this.reciveNum);
+        this.num.num = "+" + this.getShowReward(this.rewardNum);
+        this.btnNum.num = this.getShowReward(this.reciveNum);
 
         this.btnClaim.once(Button.EventType.CLICK, this.onBtnClaim, this);
         this.btnReceive.on(Button.EventType.CLICK, this.onBtnReceive, this);
 
 
-
+        this.rewardNode.getChildByName("coin").active = this.type == RewardType.coin;
+        this.rewardNode.getChildByName("money").active = this.type != RewardType.coin;
+        this.content.getChildByName("kCoin").active = this.type == RewardType.coin;
+        this.content.getChildByName("kMoney").active = this.type != RewardType.coin;
+        
+    }
+    private getShowReward(n: number) {
+        return this.type == RewardType.coin ? n : FormatUtil.toMoney(this.rewardNum);
     }
 
     onBtnClaim() {
@@ -69,8 +79,8 @@ export class RewardWinDialog extends DialogComponent {
         }, ViewManager.adNotReady)
     }
     private addReward(num: number) {
-        MoneyManger.instance.addMoney(num, false,false);
-        ViewManager.showRewardAni1(RewardType.money, num, this.cb);
+        this.type == RewardType.coin ? CoinManger.instance.addCoin(num, false, false) : MoneyManger.instance.addMoney(num, false, false);
+        ViewManager.showRewardAni1(this.type, num, this.cb);
     }
 
 

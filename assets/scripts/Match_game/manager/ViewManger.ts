@@ -209,11 +209,11 @@ export namespace ViewManager {
         })
     }
     /** 通关奖励界面 */
-    export function showRewardWin(rewardNum:number, cb: Function) {
+    export function showRewardWin(type:RewardType, rewardNum:number, cb: Function) {
         prefabs.instantiate("prefabs/dialog/rewardWin").then((dialog) => {
             if (isVaild(dialog)) {
                 const script = dialog.getComponent(ViewComponent);
-                script.show(upperNode, { cb,rewardNum });
+                script.show(upperNode, { type,cb,rewardNum });
             }
         })
     }
